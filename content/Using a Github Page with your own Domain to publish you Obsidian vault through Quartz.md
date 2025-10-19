@@ -194,6 +194,119 @@ upstream        https://github.com/jackyzha0/quartz.git (fetch)
 upstream        https://github.com/jackyzha0/quartz.git (push)
 ```
 
-Now we can sync the content to our repo in Github, and the upstream will allow us to update our Quartz installation. For this first time we will use the command `npx quartz sync --no-pull` to push the content to our empty repository:
+Now we can sync the content to our repo in Github, and the upstream will allow us to update our Quartz installation. For this first time we will use the command `npx quartz sync --no-pull` to push the content to our empty repository and you should see something like:
 
+```bash
+❯ npx quartz sync --no-pull
 
+ Quartz v4.5.2
+
+Backing up your content
+Detected symlink, trying to dereference before committing
+[v4 6fc539a] Quartz sync: Oct 19, 2025, 6:14 PM
+ 12 files changed, 210 insertions(+), 9 deletions(-)
+ delete mode 100644 content/.gitkeep
+ create mode 100644 content/Using a Github Page with your own Domain to publish you Obsidian vault through Quartz.md
+ create mode 100644 content/index.md
+Pushing your changes
+Enumerating objects: 11742, done.
+Counting objects: 100% (11742/11742), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (4271/4271), done.
+Writing objects: 100% (11742/11742), 37.40 MiB | 10.71 MiB/s, done.
+Total 11742 (delta 7384), reused 11702 (delta 7357), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (7384/7384), done.
+To github.com:anibal/anibal.github.io.git
+ * [new branch]      v4 -> v4
+branch 'v4' set up to track 'origin/v4'.
+Done!
+```
+
+**IMPORTANT**: For posterior syncs we can just use `npx quartz sync`
+
+# Configure the Page in the Github Repository
+
+In the "Settings" of the repository select as deployment **Source**, "Github Actions":
+
+![[CleanShot 2025-10-19 at 18.19.13@2x.png]]
+
+After this change, you should see the something like:
+
+![[CleanShot 2025-10-19 at 18.21.53@2x.png]]
+
+# Update the Deployment Strategy
+
+Run the following command in the root of your of your quartz clone, as you have been doing `touch .github/workflows/deploy.yml` this will create a file `deploy.yml` as you can check:
+
+```bash
+❯ ls -la  .github/workflows/deploy.yml
+-rw-r--r--@ 1 anibal  staff  0 Oct 19 18:24 .github/workflows/deploy.yml
+```
+
+Copy and paste this configuration into the newly created `deploy.yml` file:
+
+```yaml
+name: Deploy Quartz site to GitHub Pages
+ 
+on:
+  push:
+    branches:
+      - v4
+ 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+ 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+ 
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for git info
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Dependencies
+        run: npm ci
+      - name: Build Quartz
+        run: npx quartz build
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+ 
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+```
+
+You can check it with:
+
+```bash
+❯ head  .github/workflows/deploy.yml
+name: Deploy Quartz site to GitHub Pages
+
+on:
+  push:
+    branches:
+      - v4
+
+permissions:
+  contents: read
+  pages: write
+  ```
+
+Now we need to commit these changes executing  `npx quartz sync` that should deploy your site to `<username>.github.io/<repository-name>` in my case `anibal/anibal.github.io`
