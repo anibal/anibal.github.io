@@ -393,3 +393,11 @@ anibal.github.io.       3076    IN      A       185.199.111.153
 anibal.github.io.       3076    IN      A       185.199.108.153
 ```
 
+# Enforce HTTPS
+
+If you go to http://your.subdomain.com/ whatever it is, it should render the previously published page. **IMPORTANT**: Note the `http` in the URL instead of `https`, this is required because we haven't add a certificate yet.
+
+![[CleanShot 2025-10-19 at 19.11.30@2x.png]]
+A certificate should be automatically provisioned from **Let's Encrypt** in a few minutes and you should be able to click the **Enforce HTTPS** option
+
+![[CleanShot 2025-10-19 at 19.24.29@2x.png]]
