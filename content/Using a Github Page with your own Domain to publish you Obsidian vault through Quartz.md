@@ -85,7 +85,9 @@ When prompted to "Enter the full path to existing content folder" paste the full
 └
 ```
 
-When prompted to "Choose how Quartz should resolve links in your content" you should choose the option matching your Obsidian settings ("Files and links"), in my case "Treat links as shortest path":
+When prompted to "**Choose how Quartz should resolve links in your content**" you should choose the option matching your Obsidian settings ("Files and links"), in my case "**Treat links as shortest path**":
+
+![[CleanShot 2025-10-19 at 17.48.43@2x.png]]
 
 ```bash
 ❯ npx quartz create
