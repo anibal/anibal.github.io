@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:we.usedtocode.com)",
+      "Read(//Users/anibal/Documents/Obsidian/Aníbal Rojas/Public/**)",
+      "Read(//Users/anibal/Documents/Obsidian/Aníbal Rojas/Public/attachments/**)",
+      "Read(//Users/anibal/Documents/Obsidian/Aníbal Rojas/Public/**)",
+      "Bash(git ls-tree -r HEAD --name-only)",
+      "Bash(readlink /Users/anibal/Sandboxes/Personal/quartz/content)",
+      "Bash(test -e /Users/anibal/Sandboxes/Personal/quartz/content/index.md)",
+      "WebSearch",
+      "WebFetch(domain:quartz.jzhao.xyz)",
+      "Bash(npx quartz create --help)",
+      "Bash(npx quartz --help)",
+      "WebFetch(domain:www.craftengineer.com)",
+      "WebFetch(domain:github.com)",
+      "Read(//Users/anibal/Documents/Obsidian/Aníbal Rojas/**)",
+      "WebFetch(domain:help.obsidian.md)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
