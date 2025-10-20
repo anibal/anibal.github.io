@@ -401,3 +401,6 @@ If you go to http://your.subdomain.com/ whatever it is, it should render the pre
 A certificate should be automatically provisioned from **Let's Encrypt** in a few minutes and you should be able to click the **Enforce HTTPS** option
 
 ![[CleanShot 2025-10-19 at 19.24.29@2x.png]]
+# Write and Sync
+
+The easy part was completed, now you need to actually write and publish :-) Each time you want to publish a change you will need to execute  `npx quartz sync` at the root folder of your Quartz installation.
