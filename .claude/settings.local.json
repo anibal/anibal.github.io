@@ -15,7 +15,14 @@
       "WebFetch(domain:www.craftengineer.com)",
       "WebFetch(domain:github.com)",
       "Read(//Users/anibal/Documents/Obsidian/Aníbal Rojas/**)",
-      "WebFetch(domain:help.obsidian.md)"
+      "WebFetch(domain:help.obsidian.md)",
+      "Bash(gh run list --repo anibal/anibal.github.io -L 5)",
+      "Bash(curl -s \"https://we.usedtocode.com/Using-a-Github-Page-with-your-own-Domain-to-publish-you-Obsidian-vault-through-Quartz\")",
+      "Bash(npx quartz build --no-serve)",
+      "Bash(node -e \"\nconst regex = /!?\\[\\[([^\\[\\]\\|\\#\\\\]+)?(#+[^\\[\\]\\|\\#\\\\]+)?(\\\\?\\|[^\\[\\]\\#]*)?\\]\\]/g;\nconst test = ''![[CleanShot 2025-10-19 at 17.35.29@2x.png]]'';\nconst match = regex.exec(test);\nconsole.log(''Match:'', match);\nconsole.log(''Full match:'', match ? match[0] : ''NO MATCH'');\nconsole.log(''Captured filename:'', match ? match[1] : ''NO MATCH'');\n\")",
+      "Bash(cat /Users/anibal/Sandboxes/Personal/quartz/node_modules/micromark-extension-gfm-autolink-literal/readme.md)",
+      "Bash(cat /Users/anibal/Sandboxes/Personal/quartz/node_modules/remark-gfm/lib/index.js)",
+      "Bash(node -e \"\n// Test if escaping @ helps\nconst test1 = ''![[CleanShot 2025-10-19 at 17.35.29@2x.png]]'';\nconst test2 = ''![[CleanShot 2025-10-19 at 17.35.29\\@2x.png]]'';\n\n// Check wikilink regex\nconst regex = /!?\\[\\[([^\\[\\]\\|\\#\\\\]+)?(#+[^\\[\\]\\|\\#\\\\]+)?(\\\\?\\|[^\\[\\]\\#]*)?\\]\\]/g;\n\nconsole.log(''Test 1 (no escape):'', regex.exec(test1)?.[0]);\nregex.lastIndex = 0;\nconsole.log(''Test 2 (escaped @):'', regex.exec(test2)?.[0]);\n\")"
     ],
     "deny": [],
     "ask": []
