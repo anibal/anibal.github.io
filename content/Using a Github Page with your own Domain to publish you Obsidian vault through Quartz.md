@@ -309,4 +309,87 @@ permissions:
   pages: write
   ```
 
-Now we need to commit these changes executing  `npx quartz sync` that should deploy your site to `<username>.github.io/<repository-name>` in my case `anibal/anibal.github.io`
+Now we need to commit these changes executing  `npx quartz sync` that should trigger the deployment of the site, you should see something like:
+
+```bash
+❯ npx quartz sync
+
+ Quartz v4.5.2
+
+Backing up your content
+Detected symlink, trying to dereference before committing
+[v4 93048d3] Quartz sync: Oct 19, 2025, 6:32 PM
+ 4 files changed, 159 insertions(+), 1 deletion(-)
+ create mode 100644 .github/workflows/deploy.yml
+Pulling updates from your repository. You may need to resolve some `git` conflicts if you've made changes to components or plugins.
+From github.com:anibal/anibal.github.io
+ * branch            v4         -> FETCH_HEAD
+Already up to date.
+Pushing your changes
+Enumerating objects: 16, done.
+Counting objects: 100% (16/16), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (10/10), done.
+Writing objects: 100% (10/10), 617.27 KiB | 8.23 MiB/s, done.
+Total 10 (delta 5), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (5/5), completed with 5 local objects.
+To github.com:anibal/anibal.github.io.git
+   6fc539a..93048d3  v4 -> v4
+branch 'v4' set up to track 'origin/v4'.
+Done!
+```
+
+In the browser head back to `https://<username>.github.io/`  you should see something similar to what you saw at localhost depending on the state of your `Public` folder in Obsidian.
+
+![[CleanShot 2025-10-19 at 17.56.08@2x 1.png]]
+
+# Verify your Domain in Github
+
+Follow these steps in Github:
+1. Click in your **Profile** (top right)
+2. Click **Settings** from the menu that drops
+3. Click **Pages** from the sidebar menu on the left
+4. Copy the **Name** of the TXT record you will need to create in your DNS
+5. Copy the **Value** of the TXT record you will set if your DNS for the **Name**
+
+![[CleanShot 2025-10-19 at 18.41.35@2x.png]]
+
+Go to you DNS management panel and add a `TXT` type record with the **Name** and **Value** you copied from the Github Domain Verification page, should look like this: 
+
+![[CleanShot 2025-10-19 at 18.49.52@2x.png]]
+
+Go back to the verification page and click on **"Verify"** and wait for the verification process to complete.
+
+# Add a Subdomain in your DNS
+
+You can use an apex domain, in this case it will be a subdomain, back in you DNS management panel add a `CNAME` for your `<username>.github.io` similar to what you did for the `TXT` record:
+
+![[CleanShot 2025-10-19 at 19.03.44@2x.png]]
+
+# Add the Subdomain to you Repository
+
+Follow these steps in Github:
+
+1. Go to your repository 
+2. Click on **Settings**, the last option to the right
+3. Click **Pages** from the sidebar menu on the left
+4. Add the **Subdomain** 
+5. Click on **Save**
+
+![[CleanShot 2025-10-19 at 19.05.24@2x.png]]
+
+To confirm that your DNS record was configured correctly, use the `dig` command with your subdomain, in my case:
+
+```bash
+❯ dig we.usedtocode.com +nostats +nocomments +nocmd
+
+; <<>> DiG 9.10.6 <<>> we.usedtocode.com +nostats +nocomments +nocmd
+;; global options: +cmd
+;we.usedtocode.com.             IN      A
+we.usedtocode.com.      13876   IN      CNAME   anibal.github.io.
+anibal.github.io.       3076    IN      A       185.199.110.153
+anibal.github.io.       3076    IN      A       185.199.109.153
+anibal.github.io.       3076    IN      A       185.199.111.153
+anibal.github.io.       3076    IN      A       185.199.108.153
+```
+
