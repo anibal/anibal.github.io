@@ -17,7 +17,7 @@ journal: Website
 journal-date: 2025-10-20
 slug: 2025-10-20-la-alucinacion-en-llms-como-feature
 ---
-Un  LLM no puede no alucinar porque en esencia su funcionamiento es esa, alucinar esa siguiente palabra (tokens) dando como resultado un texto *plausible* (imagen, audio, etc) que puede no ser real.  Entonces, Cuando utilizamos un Asistente de IA que integra un LLM para que nos ayude en la creación de software, en particular para generar código **siempre** existe la posibilidad que ese código no funcione.
+Un  LLM **no** puede no alucinar porque en esencia su funcionamiento es esa, *alucinar* esa siguiente palabra (tokens) dando como resultado un texto *plausible* (imagen, audio, etc) que puede no tener un asiento en la realidad.  Entonces, Cuando utilizamos un Asistente de IA que integra un LLM para que nos ayude en la creación de software, en particular para generar código **siempre** existe la posibilidad que ese código no funcione.
 
 Debido a esto podemos *clasificar* las alucinaciones de los Asistentes de IA de la siguiente forma:
 
@@ -27,9 +27,17 @@ Debido a esto podemos *clasificar* las alucinaciones de los Asistentes de IA de 
 
 En mi experiencia personal reconozco que cuando programaba, porque *yo solía programar*, múltiples veces pasé por la experiencia de decir *"Ummm, seguro que yo puedo hacer algo como... "* y probar a ejecutarlo rápidamente en un REPL y tener "suerte" y que la sintaxis fuera correcta. Claro que esta "suerte" no era tal, sencillamente yo había internalizado los patrones del lenguaje de programación y esa "alucinación" estaba muy bien alineada con los mismos por lo que esta alucinación terminaba siendo **positiva**.
 
-A efectos prácticos los LLMs internalizan, *generalizan*, patrones del lenguaje, entre ellos de los lenguajes de programación y las estructuras de los sistemas de software que al final son un montón de documentos. Esto junto con otros mecanismos hacen que tengan esta capacidad de generar respuesta plausibles cuando les pedimos que escriban código. 
+Hay escuelas de pensamiento que proponen que los humanos constantemente alucinamos el mundo, nuestra mente opera dentro de las limitaciones orgánicas, en particular del cerebro, de almacenar y procesa la información del mundo, y con ese limitado modelo del mundo operamos en el mismo. Si alguna vez se han preguntado "¡¿EN QUÉ MUNDO VIVE ESA PERSONA?!", la respuesta es simple, y es la misma para todos nosotros, *en su mundo*. 
 
-Si yo estuviera creando un lenguaje de programación nuevo y estuviera explorando nuevos constructos para el el mismo, la capacidad de alucinar una sintaxis inexistente también tendría un saldo neto **positivo**. De esta forma podemos concluir que *el valor de las alucinaciones es contextual*, y no absoluto.
+Cuando la *intersección* entre nuestro modelo del mundo, el propio mundo y el modelo del mundo de las personas con las que interactuamos es amplia, todo funciona bien, cuando es muy pequeña, no nos entendemos y puede llegar al caso donde necesitamos ayuda profesional porque alucinamos. Podríamos decir que la **creatividad**. es una forma de alucinación positiva en los humanos.
+
+A efectos prácticos los LLMs internalizan, *generalizan*, patrones del lenguaje, entre ellos de los lenguajes de programación y las estructuras de los sistemas de software que en resumidas cuentas están descritos en diferentes tipos de documentos. Esto junto con otros mecanismos hacen que tengan esta capacidad de generar respuesta *plausibles* cuando les pedimos que escriban código. 
+
+Si yo estuviera creando un lenguaje de programación nuevo y estuviera explorando nuevos constructos para el el mismo, la capacidad de alucinar una sintaxis inexistente también tendría un saldo neto **positivo**. De esta forma podemos concluir que *el valor de las alucinaciones es contextual*, y no absoluto. Yo opino que la creatividad es propia de los humanos, y no de los LLMs. 
+
+¿Por qué este enfoque? Porque somos humanos y es muy fácil caer en el error de atribuir de atribuir cognición, incluso conciencia e intención a una entidad que tiene la capacidad de producir lenguaje. Esto no es útil porque automáticamente le atribuimos una falta a un LLM, o a un asistente que integra uno o más LLMs, cuando su salida no cumple expectativas en nuestra mente.
+
+En los próximo artículos de esta serie partiremos entonces de que el valor que la asignamos a la respuesta de un Asistente de AI es contextual, sumando o restando valor al propio contexto para el que se genera.
 
 ---
 Este texto fue redactado en su totalidad por un ser humano.

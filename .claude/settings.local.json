@@ -26,5 +26,10 @@
     ],
     "deny": [],
     "ask": []
-  }
+  },
+  "sandbox": {
+    "autoAllowBashIfSandboxed": true,
+    "enabled": true
+  },
+  "outputStyle": "Explanatory"
 }
