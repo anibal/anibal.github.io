@@ -109,15 +109,14 @@ button.desktop-explorer {
 }
 
 .explorer-content {
-  list-style: none;
   overflow: hidden;
   overflow-y: auto;
   margin-top: 0.5rem;
 
   & ul {
-    list-style: none;
+    list-style-type: disc;
     margin: 0;
-    padding: 0;
+    padding-left: 1.5rem;
     overscroll-behavior: contain;
 
     & li > a {
