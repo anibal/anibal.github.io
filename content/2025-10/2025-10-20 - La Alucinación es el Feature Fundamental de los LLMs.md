@@ -15,6 +15,7 @@ tags:
   - programar
 journal: Website
 journal-date: 2025-10-20
+slug: 2025-10-20-la-alucinacion-en-llms-como-feature
 ---
 Un  LLM no puede no alucinar porque en esencia su funcionamiento es esa, alucinar esa siguiente palabra (tokens) dando como resultado un texto *plausible* (imagen, audio, etc) que puede no ser real.  Entonces, Cuando utilizamos un Asistente de IA que integra un LLM para que nos ayude en la creación de software, en particular para generar código **siempre** existe la posibilidad que ese código no funcione.
 
