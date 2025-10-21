@@ -2,7 +2,7 @@
 title: La Alucinación es el Feature Fundamental de los LLMs
 description: "Principios Fundamentales, No 1: Alucinaciones como Feature"
 permalink: 2025-10-20-la-alucinacion-en-llms-como-feature
-draft: true
+draft: false
 tags:
   - alucinación
   - feature
