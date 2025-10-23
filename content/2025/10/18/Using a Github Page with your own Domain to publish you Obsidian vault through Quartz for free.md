@@ -1,20 +1,29 @@
+---
+draft: false
+---
+This is a detailed step-by-step tutorial that will allow you to set up Quartz to publish a folder of your vault as a website for free in Github Pages, is mostly a reminder for myself, I hope that it may be useful for you.
+# Requirements
+
+- Familiarity with the CLI in MacOS
+- MacOS whatever version, mine is Sequoia 15.6.1
+- A working installation on Obsidian, mine is 1.9.14
 # Obsidian Setup
 
-Add a `Public` folder in the root of your vault, this folder will replace Quartz default `content/` folder later and its content will be published, also add an `index` file to this folder, Obsidian will add the `.md` extension, Quartz requires it.
+Add a `Public` folder in the root of your vault, this folder will be the source for Quartz' default `content/` folder later and its content will be the target to be published, also add an `index` file to this folder, Obsidian will add the `.md` extension, Quartz requires it.
 
 ![[CleanShot 2025-10-19 at 17.35.29@2x.png]]
 
-And copy the path, full path, to the `Public` folder that will be required later when setting up Quartz:
+And copy the path, *full path*, to the `Public` folder as it will be required later when setting up Quartz:
 
 ![[CleanShot 2025-10-19 at 17.36.34@2x.png]]
 
 In my case this is `/Users/whatever/Obsidian/Aníbal Rojas/Public`
 # Github Repository Setup
 
-Create a new repository that will host the content of your website, in this case we will follow Github convention `<username>.github.io` in this case it will `anibal.github.io` it has to be public, without a default README, .gitignore and license file:
+Create a new repository that will host the content of your website, in this case we will follow Github convention `<username>.github.io` in this case it will `anibal.github.io` it has to be public, *without* a default README, .gitignore and license file:
 
 ![[CleanShot 2025-10-19 at 16.51.09@2x.png]]
-If you navigate to your default website in Github (`https://<username>.github.io/`) you will get a 404 error, which is normal as the website is resolving in an empty repository that doesn't have a index file.
+If you navigate to your default website in Github (`https://<username>.github.io/`) you will get a 404 error, which is normal at this point as the website is resolving in an empty repository that doesn't have a index file.
 
 ![[CleanShot 2025-10-19 at 17.04.22@2x.png]]
 
@@ -25,7 +34,7 @@ In my case it is `git@github.com:anibal/anibal.github.io.git`.
 
 # Quartz Setup
 
-First clone Quartz:
+Now we need to set up Quartz, let's start by cloning it:
 
 ```bash
 ❯ git clone https://github.com/jackyzha0/quartz.git
@@ -56,7 +65,7 @@ up to date, audited 578 packages in 813ms
 found 0 vulnerabilities
 ```
 
-Run `npx quartz create` and select the option "Symlink an existing folder":
+Run the `npx quartz create` command and select the option "Empty Quartz", this will create an empty `content` folder that will later populate:
 
 ```bash
 ❯ npx quartz create
@@ -64,41 +73,24 @@ Run `npx quartz create` and select the option "Symlink an existing folder":
 ┌   Quartz v4.5.2
 │
 ◆  Choose how to initialize the content in `/Users/whatever/quartz/content`
-│  ○ Empty Quartz
+│  ● Empty Quartz
 │  ○ Copy an existing folder
-│  ● Symlink an existing folder (don't select this unless you know what you are doing!)
+│  ○ Symlink an existing folder (don't select this unless you know what you are doing!)
 └
 ```
 
-When prompted to "Enter the full path to existing content folder" paste the full path to your Obsidian `Public` folder:
-
-```bash
-❯ npx quartz create
-
-┌   Quartz v4.5.2
-│
-◇  Choose how to initialize the content in `/Users/whatever/quartz/content`
-│  Symlink an existing folder
-│
-◆  Enter the full path to existing content folder
-│  /Users/whatever/Obsidian/Aníbal Rojas/Public█
-└
-```
-
-When prompted to "**Choose how Quartz should resolve links in your content**" you should choose the option matching your Obsidian settings ("Files and links"), in my case "**Treat links as shortest path**":
+When prompted to "**Choose how Quartz should resolve links in your content**" you should choose the option matching your Obsidian settings ("Files and links"), in my case "**Treat links as shortest path**" as you can see in the screenshot:
 
 ![[CleanShot 2025-10-19 at 17.48.43@2x.png]]
 
+And here the matching selection in Quartz `create`: 
+
 ```bash
 ❯ npx quartz create
 
 ┌   Quartz v4.5.2
 │
-◇  Choose how to initialize the content in `/Users/whatever/quartz/content`
-│  Symlink an existing folder
-│
-◇  Enter the full path to existing content folder
-│  /Users/whatever/Obsidian/Aníbal Rojas/Public
+◇  Empty Quartz
 │
 ◆  Choose how Quartz should resolve links in your content. This should match Obsidian's link format. You can change this later in `quartz.config.ts`.
 │  ● Treat links as shortest path ((default))
@@ -107,18 +99,14 @@ When prompted to "**Choose how Quartz should resolve links in your content**" yo
 └
 ```
 
-And you should see a "You're all set!" message:
+And you should see a `"You're all set!"` message:
 
 ```bash
 ❯ npx quartz create
 
 ┌   Quartz v4.5.2
 │
-◇  Choose how to initialize the content in `/Users/anibal/Sandboxes/Personal/quartz/content`
-│  Symlink an existing folder
-│
-◇  Enter the full path to existing content folder
-│  /Users/anibal/Documents/Obsidian/Aníbal Rojas/Public
+◇  Empty Quartz
 │
 ◇  Choose how Quartz should resolve links in your content. This should match Obsidian's link format. You can change this later in `quartz.config.ts`.
 │  Treat links as shortest path
@@ -129,14 +117,18 @@ And you should see a "You're all set!" message:
   • Hosting your Quartz online (see: https://quartz.jzhao.xyz/hosting)
 ```
 
-And now you should have a symlink for `content` pointing to your `Public` obsidian folder:
+And now you should have the empty `content` folder in which we will automatically copy/update the files from the `Public/` Obsidian folder using the `rsync` command:
 
 ```bash
-❯ ls -la content
-lrwxr-xr-x@ 1 anibal  staff  53 Oct 19 17:47 content@ -> /Users/whatever/Obsidian/Aníbal Rojas/Public
+❯ rsync -av \ # Archive mode, preserves timestamps, permissions, etc
+      --delete \ # removes files in that no longer exist in the source
+      /Users/whatever/Obsidian/Public/ # Folder to copy from
+      /Users/whatever/quartz/content/ # Folder to copy to
 ```
 
-If you start a local server using `npx quartz build --serve` you should see:
+`rsync` is fast and simple to use, feel free to sync the source content from your choosen Obsidian to the `content/` folder as you wish. You can also combine it with `watch` to automate this  process on each file modification in the source.
+
+If you start a local server using `npx quartz build --serve` you should see something like:
 
 ```bash
 ❯ npx quartz build --serve
@@ -160,11 +152,11 @@ hint: exit with ctrl+c
 [200] /static/contentIndex.json
 ```
 
-The warning "Warning: couldn't find git repository for content" will be fixed in. the next steps, and if you navigate to `http://localhost:8080` in your browser you should see something like:
+The warning `"Warning: couldn't find git repository for content"` will be fixed in the next steps, and if you navigate to `http://localhost:8080` in your browser you should see something like:
 
 ![[CleanShot 2025-10-19 at 17.56.08@2x 1.png]]
 
-Depending on the content of the `index` file you created inside the `Public` folder in your Obsidian vault. Shut down the server with `Control + C`, it doesn't have  to stay running.
+Depending on the content of the `index` file you created inside the `Public` folder in your Obsidian vault. Shut down the server with `Control + C`, it is not required to be running, but it is useful to check the build changes locally before syncing to Github for publishing.
 
 # Setup you Repository in your Quartz clone
 
@@ -222,7 +214,7 @@ branch 'v4' set up to track 'origin/v4'.
 Done!
 ```
 
-**IMPORTANT**: For posterior syncs we can just use `npx quartz sync`
+**IMPORTANT**: For posterior syncs we can just use `npx quartz sync` without the `--no-pull` option.
 
 # Configure the Page in the Github Repository
 
@@ -236,7 +228,7 @@ After this change, you should see the something like:
 
 # Update the Deployment Strategy
 
-Run the following command in the root of your of your quartz clone, as you have been doing `touch .github/workflows/deploy.yml` this will create a file `deploy.yml` as you can check:
+Run the following command in the root of your of your Quartz clone, as you have been doing `touch .github/workflows/deploy.yml`, this will create a file `deploy.yml` as you can check:
 
 ```bash
 ❯ ls -la  .github/workflows/deploy.yml
@@ -293,7 +285,7 @@ jobs:
         uses: actions/deploy-pages@v4
 ```
 
-You can check it with:
+I just copied the file from the Quartz docs, feel free to check for an updated version there, you can check it with:
 
 ```bash
 ❯ head  .github/workflows/deploy.yml
@@ -395,12 +387,22 @@ anibal.github.io.       3076    IN      A       185.199.108.153
 
 # Enforce HTTPS
 
-If you go to http://your.subdomain.com/ whatever it is, it should render the previously published page. **IMPORTANT**: Note the `http` in the URL instead of `https`, this is required because we haven't add a certificate yet.
+If you go to http://your.subdomain.com/ whatever it is, it should render the previously published page. **IMPORTANT**: Note the `http` in the URL instead of `https`, this is because we haven't added a certificate yet.
 
 ![[CleanShot 2025-10-19 at 19.11.30@2x.png]]
-A certificate should be automatically provisioned from **Let's Encrypt** in a few minutes and you should be able to click the **Enforce HTTPS** option
+A certificate should be automatically provisioned from **Let's Encrypt** in a few minutes and then you should be able to click the **Enforce HTTPS** option:
 
 ![[CleanShot 2025-10-19 at 19.24.29@2x.png]]
 # Write and Sync
 
-The easy part was completed, now you need to actually write and publish :-) Each time you want to publish a change you will need to execute  `npx quartz sync` at the root folder of your Quartz installation.
+Congratulations the easy part was completed, now you need to actually write and publish :-) Each time you want to publish a change you will need to execute both:  `npx quartz sync` at the root folder of your Quartz installation.
+
+In my case I run:
+
+```bash
+rsync -av --delete "/Users/whatever/Public/" /Users/whatever/quartz/content/ && npx quartz build --serve
+```
+
+So I can check that everything is fine at `http://localhost:8080` *before* pusblishing.
+
+That's it.

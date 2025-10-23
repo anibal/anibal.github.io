@@ -1,6 +1,8 @@
 ---
 title: I Used To Code
+draft: "false"
 ---
+<img src="attachments/i-used-to-code.png" width="150" style="float: left; margin-right: 25px; margin-bottom: 15px; margin-top:0px;" />
 Mi nombre es Aníbal Rojas, hace muchos años yo solía programar, en **Java** hasta que me cansé de los XMLs push-ups del momento, en Ruby **que** sigo considerando el lenguaje de programación más ergonómico. Luego me sucedió el management como a muchos otros desarrolladores, después de sufrir un burn-out horrendo en el proceso de transicionar de individual contributor a manager, resultó que fui bueno en eso. 
 
 Me dediqué al management muchos años, una y otra vez lideré equipos y los ayudé a elevar su nivel, a enfrentar desafíos complejos, grandes. Tuve la suerte de siempre estar involucrado en proyectos con tecnología de punta, desde muy temprano Cloud Computing fue parte de mi día a día. Trabajé con grandes empresas, oil and gas, telco, aviación, y trabajé con startups, mundos completamente aparte.
