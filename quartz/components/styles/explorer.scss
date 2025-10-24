@@ -99,6 +99,10 @@ button.desktop-explorer {
   display: flex;
   align-items: center;
 
+  &:focus {
+    outline: none;
+  }
+
   & h2 {
     font-size: 1rem;
     display: inline-block;
@@ -263,12 +267,5 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
 .mobile-no-scroll {
   @media all and ($mobile) {
     overscroll-behavior: none;
-  }
-}
-
-// Mutual exclusion: Hide Recent Notes when Explorer is expanded (desktop only)
-@media all and not ($mobile) {
-  .explorer:not(.collapsed) ~ .recent-notes {
-    display: none;
   }
 }

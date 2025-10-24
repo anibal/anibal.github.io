@@ -85,6 +85,10 @@ button.desktop-recent-notes {
   display: flex;
   align-items: center;
 
+  &:focus {
+    outline: none;
+  }
+
   & h3 {
     font-size: 1rem;
     display: inline-block;
