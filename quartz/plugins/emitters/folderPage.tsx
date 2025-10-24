@@ -22,6 +22,10 @@ import { BuildCtx } from "../../util/ctx"
 import { StaticResources } from "../../util/resources"
 interface FolderPageOptions extends FullPageLayout {
   sort?: (f1: QuartzPluginData, f2: QuartzPluginData) => number
+  /**
+   * Whether to recursively show all files from nested folders
+   */
+  recursive?: boolean
 }
 
 async function* processFolderInfo(
@@ -104,7 +108,10 @@ export const FolderPage: QuartzEmitterPlugin<Partial<FolderPageOptions>> = (user
   const opts: FullPageLayout = {
     ...sharedPageComponents,
     ...defaultListPageLayout,
-    pageBody: FolderContent({ sort: userOpts?.sort }),
+    pageBody: FolderContent({
+      sort: userOpts?.sort,
+      recursive: userOpts?.recursive,
+    }),
     ...userOpts,
   }
 

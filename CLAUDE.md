@@ -346,3 +346,4 @@ When running `npx quartz build --serve`:
 - **Official docs**: https://quartz.jzhao.xyz/
 - **GitHub**: https://github.com/jackyzha0/quartz
 - **Discord**: https://discord.gg/cRFFHYye7t
+- I usually have a Quartz running in port 8080, you can connect to it and inspect the pages

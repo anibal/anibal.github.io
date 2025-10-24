@@ -16,12 +16,18 @@ interface FolderContentOptions {
    */
   showFolderCount: boolean
   showSubfolders: boolean
+  /**
+   * Whether to recursively collect files from all nested folders
+   * When true, shows all descendant files instead of just immediate children
+   */
+  recursive: boolean
   sort?: SortFn
 }
 
 const defaultOptions: FolderContentOptions = {
   showFolderCount: true,
   showSubfolders: true,
+  recursive: false,
 }
 
 export default ((opts?: Partial<FolderContentOptions>) => {
@@ -36,8 +42,26 @@ export default ((opts?: Partial<FolderContentOptions>) => {
       return null
     }
 
-    const allPagesInFolder: QuartzPluginData[] =
-      folder.children
+    // Helper function to recursively collect all files from a folder and its descendants
+    const collectAllFiles = (node: typeof folder): QuartzPluginData[] => {
+      const files: QuartzPluginData[] = []
+
+      // Get all entries (recursive traversal)
+      const entries = node.entries()
+
+      for (const [_, entryNode] of entries) {
+        // Only include nodes with actual file data (skip synthetic folders)
+        if (entryNode.data) {
+          files.push(entryNode.data)
+        }
+      }
+
+      return files
+    }
+
+    const allPagesInFolder: QuartzPluginData[] = options.recursive
+      ? collectAllFiles(folder)
+      : folder.children
         .map((node) => {
           // regular file, proceed
           if (node.data) {

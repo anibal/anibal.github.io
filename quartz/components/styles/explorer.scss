@@ -267,3 +267,8 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
     overscroll-behavior: none;
   }
 }
+
+// Mutual exclusion: Hide Recent Notes when Explorer is expanded
+.explorer:not(.collapsed) ~ .recent-notes {
+  display: none;
+}

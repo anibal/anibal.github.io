@@ -270,6 +270,7 @@ document.addEventListener("nav", async (e: CustomEventMap["nav"]) => {
   await setupExplorer(currentSlug)
 
   // if mobile hamburger is visible, collapse by default
+  // on desktop, preserve current state (user's toggle preference)
   for (const explorer of document.getElementsByClassName("explorer")) {
     const mobileExplorer = explorer.querySelector(".mobile-explorer")
     if (!mobileExplorer) return
@@ -281,6 +282,8 @@ document.addEventListener("nav", async (e: CustomEventMap["nav"]) => {
       // Allow <html> to be scrollable when mobile explorer is collapsed
       document.documentElement.classList.remove("mobile-no-scroll")
     }
+    // Desktop: no state change - preserves collapsed state from initial load
+    // or user's toggle preference during session
 
     mobileExplorer.classList.remove("hide-until-loaded")
   }

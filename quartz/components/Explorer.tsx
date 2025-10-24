@@ -65,7 +65,7 @@ export default ((userOpts?: Partial<Options>) => {
 
     return (
       <div
-        class={classNames(displayClass, "explorer")}
+        class={classNames(displayClass, "explorer", "collapsed")}
         data-behavior={opts.folderClickBehavior}
         data-collapsed={opts.folderDefaultState}
         data-savestate={opts.useSavedState}
@@ -101,7 +101,7 @@ export default ((userOpts?: Partial<Options>) => {
           type="button"
           class="title-button explorer-toggle desktop-explorer"
           data-mobile={false}
-          aria-expanded={true}
+          aria-expanded={false}
         >
           <h2>{opts.title ?? i18n(cfg.locale).components.explorer.title}</h2>
           <svg

@@ -30,7 +30,8 @@
       "Bash(curl:*)",
       "Bash(sed:*)",
       "Bash(python3:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "WebFetch(domain:localhost)"
     ],
     "deny": [],
     "ask": []

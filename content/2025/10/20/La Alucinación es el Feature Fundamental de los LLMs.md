@@ -1,25 +1,20 @@
 ---
 title: La Alucinación es el Feature Fundamental de los LLMs
-description: "Principios Fundamentales, No 1: Alucinaciones como Feature"
-slug: la-alucinacion-es-elfeature-fundamental-de-los-llms
+slug: la-alucinacion-es-el-feature-fundamental-de-los-llms
 draft: false
 tags:
-  - alucinación
   - feature
-  - llm
   - llms
   - código
   - programación
   - alucinaciones-positivas
   - alucionaciones-negativas
-  - programar
-  - asistente-de-ia
   - alucinaciones
 journal: Website
 journal-date: 2025-10-20
 ---
 Un  LLM **no** puede no alucinar porque en esencia su funcionamiento es esa, *alucinar* esa siguiente palabra (tokens) dando como resultado un texto *plausible* (imagen, audio, etc) que puede no tener un asiento en la realidad.  Entonces, Cuando utilizamos un Asistente de IA que integra un LLM para que nos ayude en la creación de software, en particular para generar código **siempre** existe la posibilidad que ese código no funcione.
-		
+
 Debido a esto podemos *clasificar* las alucinaciones de los Asistentes de IA de la siguiente forma:
 
 - **Alucinaciones Positivas:** Cuando nos agregan valor, esto va más allá de que el código compile, o que pueda ser interpretado, eso no es un valor en si mismo. Una alucinación positiva implica que haya un impacto positivo en nuestro trabajo desarrollando software y eventualmente la vida de las personas que que lo utilizan.
@@ -38,7 +33,4 @@ Si yo estuviera creando un lenguaje de programación nuevo y estuviera explorand
 
 ¿Por qué este enfoque? Porque somos humanos y es muy fácil caer en el error de atribuir de atribuir cognición, incluso conciencia e intención a una entidad que tiene la capacidad de producir lenguaje. Esto no es útil porque automáticamente le atribuimos una falta a un LLM, o a un asistente que integra uno o más LLMs, cuando su salida no cumple expectativas en nuestra mente.
 
-En los próximo artículos de esta serie partiremos entonces de que el valor que la asignamos a la respuesta de un Asistente de AI es contextual, sumando o restando valor al propio contexto para el que se genera.
-
----
-Este texto fue redactado en su totalidad por un ser humano.
+En los próximos artículos de esta serie partiremos entonces de que el valor que la asignamos a la respuesta de un Asistente de AI es contextual, sumando o restando valor al propio contexto para el que se genera.
