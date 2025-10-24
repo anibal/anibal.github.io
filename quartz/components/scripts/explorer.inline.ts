@@ -20,6 +20,10 @@ type FolderState = {
 }
 
 let currentExplorerState: Array<FolderState>
+// Store RecentNotes original position for restoration
+let recentNotesOriginalParent: HTMLElement | null = null
+let recentNotesNextSibling: Node | null = null
+
 function toggleExplorer(this: HTMLElement) {
   const nearestExplorer = this.closest(".explorer") as HTMLElement
   if (!nearestExplorer) return
@@ -29,11 +33,52 @@ function toggleExplorer(this: HTMLElement) {
     nearestExplorer.getAttribute("aria-expanded") === "true" ? "false" : "true",
   )
 
-  if (!explorerCollapsed) {
-    // Stop <html> from being scrollable when mobile explorer is open
-    document.documentElement.classList.add("mobile-no-scroll")
+  // Check if we're on mobile by seeing if the mobile button is visible
+  const mobileExplorer = nearestExplorer.querySelector(".mobile-explorer") as HTMLElement
+  const isMobile = mobileExplorer?.checkVisibility()
+
+  if (isMobile) {
+    // Mobile: unified menu behavior - move RecentNotes into Explorer overlay
+    const recentNotes = document.querySelector(".recent-notes") as HTMLElement
+    const explorerContent = nearestExplorer.querySelector(".explorer-content") as HTMLElement
+
+    if (!explorerCollapsed) {
+      // Opening mobile menu: move RecentNotes into Explorer overlay
+      document.documentElement.classList.add("mobile-no-scroll")
+      if (recentNotes && explorerContent) {
+        // Store original position before moving
+        recentNotesOriginalParent = recentNotes.parentElement as HTMLElement
+        recentNotesNextSibling = recentNotes.nextSibling
+
+        // Move RecentNotes into Explorer overlay
+        explorerContent.appendChild(recentNotes)
+        recentNotes.classList.remove("collapsed")
+        recentNotes.classList.add("mobile-inline")
+      }
+    } else {
+      // Closing mobile menu: restore RecentNotes to original position
+      document.documentElement.classList.remove("mobile-no-scroll")
+      if (recentNotes && recentNotesOriginalParent) {
+        // Restore to original position
+        if (recentNotesNextSibling) {
+          recentNotesOriginalParent.insertBefore(recentNotes, recentNotesNextSibling)
+        } else {
+          recentNotesOriginalParent.appendChild(recentNotes)
+        }
+        recentNotes.classList.add("collapsed")
+        recentNotes.classList.remove("mobile-inline")
+      }
+    }
   } else {
-    document.documentElement.classList.remove("mobile-no-scroll")
+    // Desktop: mutual exclusion with RecentNotes
+    if (!explorerCollapsed) {
+      // Explorer is expanding, collapse RecentNotes
+      const recentNotes = document.querySelector(".recent-notes") as HTMLElement
+      if (recentNotes && !recentNotes.classList.contains("collapsed")) {
+        recentNotes.classList.add("collapsed")
+        recentNotes.setAttribute("aria-expanded", "false")
+      }
+    }
   }
 }
 

@@ -243,8 +243,8 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
       transition:
         transform 200ms ease,
         visibility 200ms ease;
-      overflow: hidden;
-      padding: 4rem 0 2rem 0;
+      overflow-y: auto;
+      padding: 4rem 2rem 2rem 2rem;
       height: 100dvh;
       max-height: 100dvh;
       visibility: hidden;
@@ -268,7 +268,9 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
   }
 }
 
-// Mutual exclusion: Hide Recent Notes when Explorer is expanded
-.explorer:not(.collapsed) ~ .recent-notes {
-  display: none;
+// Mutual exclusion: Hide Recent Notes when Explorer is expanded (desktop only)
+@media all and not ($mobile) {
+  .explorer:not(.collapsed) ~ .recent-notes {
+    display: none;
+  }
 }
