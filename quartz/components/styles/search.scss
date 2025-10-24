@@ -7,6 +7,15 @@
     flex-grow: 0.3;
   }
 
+  // When Search is moved into Explorer overlay on mobile
+  &.mobile-inline {
+    @media all and ($mobile) {
+      max-width: 100%;
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+  }
+
   & > .search-button {
     background-color: transparent;
     border: 1px var(--lightgray) solid;

@@ -23,6 +23,9 @@ let currentExplorerState: Array<FolderState>
 // Store RecentNotes original position for restoration
 let recentNotesOriginalParent: HTMLElement | null = null
 let recentNotesNextSibling: Node | null = null
+// Store Search original position for restoration
+let searchOriginalParent: HTMLElement | null = null
+let searchNextSibling: Node | null = null
 
 function toggleExplorer(this: HTMLElement) {
   const nearestExplorer = this.closest(".explorer") as HTMLElement
@@ -38,13 +41,27 @@ function toggleExplorer(this: HTMLElement) {
   const isMobile = mobileExplorer?.checkVisibility()
 
   if (isMobile) {
-    // Mobile: unified menu behavior - move RecentNotes into Explorer overlay
+    // Mobile: unified menu behavior - move Search and RecentNotes into Explorer overlay
+    const search = document.querySelector(".search") as HTMLElement
     const recentNotes = document.querySelector(".recent-notes") as HTMLElement
     const explorerContent = nearestExplorer.querySelector(".explorer-content") as HTMLElement
 
     if (!explorerCollapsed) {
-      // Opening mobile menu: move RecentNotes into Explorer overlay
+      // Opening mobile menu: move Search and RecentNotes into Explorer overlay
       document.documentElement.classList.add("mobile-no-scroll")
+
+      // Move Search to top of Explorer overlay (before file tree)
+      if (search && explorerContent) {
+        // Store original position before moving
+        searchOriginalParent = search.parentElement as HTMLElement
+        searchNextSibling = search.nextSibling
+
+        // Insert Search at the beginning of Explorer overlay
+        explorerContent.insertBefore(search, explorerContent.firstChild)
+        search.classList.add("mobile-inline")
+      }
+
+      // Move RecentNotes to bottom of Explorer overlay (after file tree)
       if (recentNotes && explorerContent) {
         // Store original position before moving
         recentNotesOriginalParent = recentNotes.parentElement as HTMLElement
@@ -56,8 +73,20 @@ function toggleExplorer(this: HTMLElement) {
         recentNotes.classList.add("mobile-inline")
       }
     } else {
-      // Closing mobile menu: restore RecentNotes to original position
+      // Closing mobile menu: restore Search and RecentNotes to original positions
       document.documentElement.classList.remove("mobile-no-scroll")
+
+      // Restore Search to original position
+      if (search && searchOriginalParent) {
+        if (searchNextSibling) {
+          searchOriginalParent.insertBefore(search, searchNextSibling)
+        } else {
+          searchOriginalParent.appendChild(search)
+        }
+        search.classList.remove("mobile-inline")
+      }
+
+      // Restore RecentNotes to original position
       if (recentNotes && recentNotesOriginalParent) {
         // Restore to original position
         if (recentNotesNextSibling) {
