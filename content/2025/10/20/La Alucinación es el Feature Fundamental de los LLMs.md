@@ -3,13 +3,13 @@ title: La Alucinación es el Feature Fundamental de los LLMs
 slug: la-alucinacion-es-el-feature-fundamental-de-los-llms
 draft: false
 tags:
-  - feature
   - llms
   - código
   - programación
   - alucinaciones-positivas
   - alucionaciones-negativas
   - alucinaciones
+  - software
 journal: Website
 journal-date: 2025-10-20
 ---

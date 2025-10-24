@@ -116,7 +116,7 @@ button.desktop-explorer {
   margin-top: 0.5rem;
 
   & ul {
-    list-style-type: disc;
+    list-style-type: none;
     margin: 0;
     padding-left: 1.5rem;
     overscroll-behavior: contain;
@@ -131,6 +131,10 @@ button.desktop-explorer {
         color: var(--tertiary);
       }
     }
+  }
+
+  & > .explorer-ul {
+    padding-left: 0;
   }
 
   .folder-outer {
@@ -148,6 +152,19 @@ button.desktop-explorer {
     margin-left: 6px;
     padding-left: 0.8rem;
     border-left: 1px solid var(--lightgray);
+  }
+
+  // Add "Explorer" title before file tree in mobile overlay
+  @media all and ($mobile) {
+    & .explorer-ul::before {
+      content: "Explorer";
+      display: block;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--dark);
+      font-family: var(--headerFont);
+      margin-bottom: 0.5rem;
+    }
   }
 }
 
