@@ -5,11 +5,14 @@
   max-width: 14rem;
   @media all and ($mobile) {
     flex-grow: 0.3;
+    // Hide search from top bar on mobile (only show when inside Explorer menu)
+    display: none;
   }
 
   // When Search is moved into Explorer overlay on mobile
   &.mobile-inline {
     @media all and ($mobile) {
+      display: block;
       max-width: 100%;
       width: 100%;
       margin-bottom: 1.5rem;
