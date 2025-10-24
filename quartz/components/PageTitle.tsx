@@ -25,6 +25,12 @@ PageTitle.css = `
   gap: 0.5rem;
 }
 
+@media (max-width: 800px) {
+  .page-title-container {
+    align-self: flex-start;
+  }
+}
+
 .page-title {
   font-size: 1.75rem;
   margin: 0;
