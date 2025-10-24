@@ -6,19 +6,25 @@ import { i18n } from "../i18n"
 const PageTitle: QuartzComponent = ({ fileData, cfg, displayClass }: QuartzComponentProps) => {
   const title = cfg?.pageTitle ?? i18n(cfg.locale).propertyDefaults.title
   const baseDir = pathToRoot(fileData.slug!)
-  const logoPath = joinSegments(baseDir, "static/icon.png")
+  const subtitle = cfg?.pageSubtitle
 
   return (
-    <h2 class={classNames(displayClass, "page-title")}>
-      <a href={baseDir}>
-        <img src={logoPath} alt="IU2C Logo" class="page-title-logo" />
-        <span>{title}</span>
-      </a>
-    </h2>
+    <div class={classNames(displayClass, "page-title-container")}>
+      <h2 class="page-title">
+        <a href={baseDir}>{title}</a>
+      </h2>
+      {subtitle && <h3 class="page-subtitle">{subtitle}</h3>}
+    </div>
   )
 }
 
 PageTitle.css = `
+.page-title-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 .page-title {
   font-size: 1.75rem;
   margin: 0;
@@ -26,16 +32,15 @@ PageTitle.css = `
 }
 
 .page-title a {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+  text-decoration: none;
+  color: inherit;
 }
 
-.page-title-logo {
-  width: 2.5rem;
-  height: 2.5rem;
-  object-fit: contain;
-  flex-shrink: 0;
+.page-subtitle {
+  font-size: 1.12rem;
+  margin: 0;
+  font-family: var(--headerFont);
+  color: var(--dark);
 }
 `
 
