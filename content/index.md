@@ -31,3 +31,5 @@ En el 2025 me tomé un sabático, a mis 56 años, priorice la "deuda técnica" d
 No solo probé montones de Code Assistants sino que además me dediqué a desafiar muchas de las ideas que yo mismo tenía acerca de qué significaba desarrollar, mantener, gestionar una aplicación y en particular *programar*.
 
 Hoy en día estoy enfocado en explorar las posibilidades, compromisos y límites de sistemas de agentes en generación de software, mi *weapon-of-choice* es Claude Code porque me permite jugar con un *agentic harness* de una forma muy sencilla y poderosa. Confieso que ha sido un proceso absorbente y divertido pero no exento de frustración, y extremadamente demandante.
+
+¿Qué cómo e suscribes a mis newsletter, o me sigues o favoriteas? No-can-do, esto es un website vieja escuela, HTML y CSS. En esta época de IA Generativa y Redes Sociales he encontrado refugio en el hecho de escribir como un desafío que me ayuda a pensar, a darle forma a mis ideas y este sitio me permite convertir ese desafío en algo posiblemente útil.
