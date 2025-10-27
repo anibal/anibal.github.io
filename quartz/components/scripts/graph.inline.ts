@@ -573,7 +573,11 @@ function cleanupGlobalGraphs() {
   globalGraphCleanups = []
 }
 
-document.addEventListener("nav", async (e: CustomEventMap["nav"]) => {
+/**
+ * Handle navigation event and render graphs
+ * This is the main entry point called by the graph-loader
+ */
+async function handleNavigation(e: CustomEventMap["nav"]) {
   const slug = e.detail.url
   addToVisited(simplifySlug(slug))
 
@@ -646,4 +650,10 @@ document.addEventListener("nav", async (e: CustomEventMap["nav"]) => {
     cleanupLocalGraphs()
     cleanupGlobalGraphs()
   })
-})
+}
+
+// Expose API for graph-loader to call
+// @ts-ignore
+window.QuartzGraph = {
+  handleNav: handleNavigation,
+}

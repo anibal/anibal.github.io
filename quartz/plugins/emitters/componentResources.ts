@@ -16,8 +16,9 @@ import {
   processGoogleFonts,
 } from "../../util/theme"
 import { Features, transform } from "lightningcss"
-import { transform as transpile } from "esbuild"
+import { transform as transpile, build as esbuild } from "esbuild"
 import { write } from "./helpers"
+import path from "path"
 
 type ComponentResources = {
   css: string[]
@@ -74,6 +75,41 @@ async function joinScripts(scripts: string[]): Promise<string> {
   })
 
   return res.code
+}
+
+/**
+ * Build the graph bundle separately with all dependencies
+ * This creates a standalone bundle that can be loaded on-demand
+ */
+async function buildGraphBundle(ctx: BuildCtx): Promise<Buffer> {
+  const graphScriptPath = path.join(
+    process.cwd(),
+    "quartz",
+    "components",
+    "scripts",
+    "graph.inline.ts",
+  )
+
+  // Use esbuild's build API for proper bundling with dependencies
+  const result = await esbuild({
+    entryPoints: [graphScriptPath],
+    bundle: true,
+    minify: true,
+    format: "iife",
+    globalName: "QuartzGraph",
+    platform: "browser",
+    target: ["es2020"],
+    write: false, // Get the output as a buffer instead of writing to disk
+    logLevel: "error",
+    // Ensure all dependencies are bundled
+    external: [], // Don't externalize anything - bundle everything
+  })
+
+  if (result.outputFiles.length === 0) {
+    throw new Error("Graph bundle build produced no output")
+  }
+
+  return Buffer.from(result.outputFiles[0].contents)
 }
 
 function addGlobalPageResources(ctx: BuildCtx, componentResources: ComponentResources) {
@@ -356,6 +392,16 @@ export const ComponentResources: QuartzEmitterPlugin = () => {
         slug: "postscript" as FullSlug,
         ext: ".js",
         content: postscript,
+      })
+
+      // Build and emit the graph bundle separately
+      // This allows it to be loaded on-demand only on desktop viewports
+      const graphBundle = await buildGraphBundle(ctx)
+      yield write({
+        ctx,
+        slug: joinSegments("static", "graph.bundle") as FullSlug,
+        ext: ".js",
+        content: graphBundle,
       })
     },
     async *partialEmit() {},
