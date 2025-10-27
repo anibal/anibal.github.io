@@ -2,7 +2,24 @@
 title: I Used To Code
 draft: "false"
 ---
-<img src="attachments/i-used-to-code.jpg" width="250" style="float: left; margin-right: 25px; margin-bottom: 15px; margin-top:0px;" />
+  <style>
+  .hero-image {
+    float: left;
+    width: 250px;
+    margin-right: 25px;
+    margin-bottom: 15px;
+    margin-top: 0;
+  }
+
+  @media (max-width: 800px) {
+    .hero-image {
+      float: none;
+      width: 100% !important;
+      margin-right: 0;
+    }
+  }
+  </style>
+  <img src="attachments/i-used-to-code.jpg" width="250" style="float: left; margin-right: 25px; margin-bottom: 15px; margin-top:0px;" class="hero-image"/>
 Mi nombre es Aníbal Rojas, hace muchos años yo solía programar, en Java hasta que me cansé de los XMLs push-ups del momento, en Ruby que sigo considerando el lenguaje de programación más ergonómico. Luego me sucedió el management como a muchos otros desarrolladores, después de sufrir un burn-out horrendo en el proceso de transición de individual contributor a manager, resultó que fui bueno en eso de ser manager.
 
 Me dediqué al management muchos años, una y otra vez lideré equipos y los ayudé a elevar su nivel, a enfrentar desafíos complejos, grandes. Tuve la suerte de siempre estar involucrado en proyectos con tecnología de punta, desde muy temprano la web, y luego cloud computing fue parte de mi día a día. Trabajé con grandes empresas, oil and gas, telco, aviación, y trabajé con startups, mundos completamente aparte.
