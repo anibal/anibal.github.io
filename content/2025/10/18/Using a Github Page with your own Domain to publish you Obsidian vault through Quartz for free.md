@@ -7,6 +7,7 @@ tags:
   - macos
   - website
   - free
+date: 2025-10-18
 ---
 This is a detailed step-by-step tutorial that will allow you to set up Quartz to publish a folder of your vault as a website for free in Github Pages, is mostly a reminder for myself, I hope that it may be useful for you.
 # Requirements

@@ -1,4 +1,4 @@
-import remarkGfm from "remark-gfm"
+import remarkGfm from "remark-gfm-configurable"
 import smartypants from "remark-smartypants"
 import { QuartzTransformerPlugin } from "../types"
 import rehypeSlug from "rehype-slug"
@@ -19,7 +19,20 @@ export const GitHubFlavoredMarkdown: QuartzTransformerPlugin<Partial<Options>> =
   return {
     name: "GitHubFlavoredMarkdown",
     markdownPlugins() {
-      return opts.enableSmartyPants ? [remarkGfm, smartypants] : [remarkGfm]
+      // Configure GFM with all features EXCEPT autolink literals (which conflicts with Obsidian @2x syntax)
+      const gfmConfigured = [
+        remarkGfm,
+        {
+          plugins: {
+            autolinkLiteral: false, // Disabled to prevent @2x in filenames from being treated as email addresses
+            footnote: true,
+            strikethrough: true,
+            table: true,
+            tasklist: true,
+          },
+        },
+      ]
+      return opts.enableSmartyPants ? [gfmConfigured, smartypants] : [gfmConfigured]
     },
     htmlPlugins() {
       if (opts.linkHeadings) {

@@ -13,9 +13,10 @@ export default ((opts?: Options) => {
     const links = opts?.links ?? []
     return (
       <footer class={`${displayClass ?? ""}`}>
-        <p>
-          {i18n(cfg.locale).components.footer.createdWith} {year}
+        <p style={{ whiteSpace: 'pre-line' }}>
+          {i18n(cfg.locale).components.footer.createdWith}
         </p>
+        <p>Aníbal Rojas © {year}</p>
         <ul>
           {Object.entries(links).map(([text, link]) => (
             <li>

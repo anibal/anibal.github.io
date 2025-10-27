@@ -36,7 +36,7 @@ export default {
       title: "Explorer",
     },
     footer: {
-      createdWith: "Escrito exclusivamente con Inteligencia Humana en Obsidian, publicado con la ayuda de IA Gen a través de Quartz ©",
+      createdWith: "Escrito exclusivamente con inteligencia humana en Obsidian.\nTodo lo demás, incluyendo publicarlo en GitHub Pages con Quartz, asistido por Claude Code.",
     },
     graph: {
       title: "Graph View",
