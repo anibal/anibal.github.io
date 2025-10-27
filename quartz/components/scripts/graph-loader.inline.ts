@@ -15,6 +15,10 @@ let graphBundleLoading = false
 // Queue for pending nav events that occur before bundle loads
 const pendingNavEvents: CustomEventMap["nav"][] = []
 
+// Track last processed URL to prevent duplicate nav events
+let lastProcessedUrl: string | null = null
+let lastProcessedTime = 0
+
 /**
  * Check if current viewport is desktop size
  * This is checked dynamically on each nav event to handle window resizing
@@ -83,6 +87,16 @@ function loadGraphBundle(): Promise<void> {
  * Handle navigation events
  */
 async function handleNavEvent(e: CustomEventMap["nav"]) {
+  const currentUrl = e.detail.url
+  const now = Date.now()
+
+  // Ignore duplicate rapid nav events (within 100ms) to the same URL
+  if (lastProcessedUrl === currentUrl && now - lastProcessedTime < 100) {
+    return
+  }
+  lastProcessedUrl = currentUrl
+  lastProcessedTime = now
+
   const isDesktop = isDesktopViewport()
 
   if (!isDesktop) {
@@ -113,9 +127,3 @@ async function handleNavEvent(e: CustomEventMap["nav"]) {
 
 // Register the nav event listener
 document.addEventListener("nav", handleNavEvent)
-
-// Clean up on page unload
-window.addCleanup(() => {
-  document.removeEventListener("nav", handleNavEvent)
-  pendingNavEvents.length = 0
-})
