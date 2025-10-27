@@ -42,3 +42,5 @@ Si yo estuviera creando un lenguaje de programación nuevo y estuviera explorand
 Esto **no es útil** porque automáticamente le atribuimos una "falta" a un LLM, o a un asistente que integra uno o más LLMs, cuando su salida no cumple con las  expectativas en nuestra mente. Y no nos ocupamos de entender los principios fundamentales que gobiernan estas tecnologías ni a ajustar nuestras prácticas en torno a los mismos.
 
 Este es el primer artículo de una serie enfocada en los principios y prácticas fundamentales alrededor del desarrollo de software asistido por Inteligencia Artificial Generativa.
+
+[Publicado en LinkedIn en 27 de Octubre del 2025](https://www.linkedin.com/posts/anibalrojas_un-llmnopuedenoalucinar-porque-en-esencia-activity-7388654847971205120-6cmz?utm_source=share&utm_medium=member_desktop&rcm=ACoAAABYcI8BB_U41_Zfnth-a-K6afvWfwlghiM).
