@@ -9,6 +9,8 @@ tags:
   - liderazgo
   - ia-generativa
   - asistentes-de-programación
+  - claude-code
+  - agentes
 ---
   <style>
   .hero-image {
