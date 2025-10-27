@@ -99,7 +99,7 @@ async function buildGraphBundle(ctx: BuildCtx): Promise<Buffer> {
     bundle: true,
     minify: true,
     format: "iife",
-    globalName: "QuartzGraph",
+    // Note: No globalName - graph.inline.ts manually sets window.QuartzGraph
     platform: "browser",
     target: ["es2020"],
     write: false, // Get the output as a buffer instead of writing to disk
