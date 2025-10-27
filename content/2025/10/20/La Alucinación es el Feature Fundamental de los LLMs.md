@@ -17,7 +17,7 @@ date: 2025-10-20
 ---
 Un  LLM **no** puede **no** alucinar porque en esencia su funcionamiento es ese, *alucinar* esa siguiente palabra (tokens) dando como resultado un texto *plausible* (imagen, audio, etc), *que puede no tener un asiento en la realidad*.  Entonces, Cuando utilizamos un *Asistente de Programación* que integra un LLM para que nos ayude en la creación de software, en particular para programar, generar código, **siempre** existe la posibilidad que ese código no sirva para nada, lo que llamamos *alucinaciones*.
 
-Entonces si las alucinaciones *funcionan*, así sea en una escala muy pequeña tomemos el caso de de un IDEA con el texto predictivo implementado a través de un LLM, pero por otra parte sabemos que nos van a defraudar. *Entonces* podemos clasificar las alucinaciones, en particular las de de los Asistentes Programación de la siguiente forma:
+Si las alucinaciones *funcionan*, así sea en una escala muy pequeña tomemos el caso de de un IDEA con el texto predictivo implementado a través de un LLM, pero por otra parte sabemos que nos van a defraudar. *Entonces* podemos clasificar las alucinaciones, en particular las de de los Asistentes Programación de la siguiente forma:
 
 - **Alucinaciones Positivas:** Cuando nos *agregan* valor, esto va más allá de que el código compile, o que pueda ser interpretado, eso no es un valor en si mismo. Una alucinación positiva implica que haya un *impacto* positivo en nuestro trabajo desarrollando software y eventualmente la vida de las personas que que lo utilizan. ^f28629
 
