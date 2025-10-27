@@ -188,7 +188,10 @@ function createRouter() {
 }
 
 createRouter()
-notifyNav(getFullSlug(window))
+// Defer initial nav event to allow all scripts to register listeners first
+setTimeout(() => {
+  notifyNav(getFullSlug(window))
+}, 0)
 
 if (!customElements.get("route-announcer")) {
   const attrs = {

@@ -56,7 +56,6 @@ export function pageResources(
   resources.js.push({
     src: joinSegments(baseDir, "postscript.js"),
     loadTime: "afterDOMReady",
-    moduleType: "module",
     contentType: "external",
   })
 

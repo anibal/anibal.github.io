@@ -72,6 +72,9 @@ async function joinScripts(scripts: string[]): Promise<string> {
   // minify with esbuild
   const res = await transpile(script, {
     minify: true,
+    platform: "browser",
+    format: "iife",
+    target: ["es2020"],
   })
 
   return res.code
@@ -114,6 +117,19 @@ async function buildGraphBundle(ctx: BuildCtx): Promise<Buffer> {
 
 function addGlobalPageResources(ctx: BuildCtx, componentResources: ComponentResources) {
   const cfg = ctx.cfg.configuration
+
+  // IMPORTANT: SPA router must be FIRST because it defines window.addCleanup
+  // which other component scripts depend on. Use unshift() to add to beginning!
+  if (cfg.enableSPA) {
+    componentResources.afterDOMLoaded.unshift(spaRouterScript)
+  } else {
+    componentResources.afterDOMLoaded.unshift(`
+      window.spaNavigate = (url, _) => window.location.assign(url)
+      window.addCleanup = () => {}
+      const event = new CustomEvent("nav", { detail: { url: document.body.dataset.slug } })
+      document.dispatchEvent(event)
+    `)
+  }
 
   // popovers
   if (cfg.enablePopovers) {
@@ -276,17 +292,6 @@ function addGlobalPageResources(ctx: BuildCtx, componentResources: ComponentReso
       vercelInsightsScript.src = "/_vercel/insights/script.js"
       vercelInsightsScript.defer = true
       document.head.appendChild(vercelInsightsScript)
-    `)
-  }
-
-  if (cfg.enableSPA) {
-    componentResources.afterDOMLoaded.push(spaRouterScript)
-  } else {
-    componentResources.afterDOMLoaded.push(`
-      window.spaNavigate = (url, _) => window.location.assign(url)
-      window.addCleanup = () => {}
-      const event = new CustomEvent("nav", { detail: { url: document.body.dataset.slug } })
-      document.dispatchEvent(event)
     `)
   }
 }

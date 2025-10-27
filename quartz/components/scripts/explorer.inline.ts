@@ -306,7 +306,9 @@ async function setupExplorer(currentSlug: FullSlug) {
     const explorerButtons = explorer.getElementsByClassName(
       "explorer-toggle",
     ) as HTMLCollectionOf<HTMLElement>
+    console.log("[EXPLORER DEBUG] Found", explorerButtons.length, "explorer-toggle buttons")
     for (const button of explorerButtons) {
+      console.log("[EXPLORER DEBUG] Adding click listener to button:", button.className)
       button.addEventListener("click", toggleExplorer)
       window.addCleanup(() => button.removeEventListener("click", toggleExplorer))
     }
@@ -341,7 +343,9 @@ document.addEventListener("prenav", async () => {
 
 document.addEventListener("nav", async (e: CustomEventMap["nav"]) => {
   const currentSlug = e.detail.url
+  console.log("[EXPLORER DEBUG] nav event fired, slug:", currentSlug)
   await setupExplorer(currentSlug)
+  console.log("[EXPLORER DEBUG] setupExplorer completed")
 
   // if mobile hamburger is visible, collapse by default
   // on desktop, preserve current state (user's toggle preference)
