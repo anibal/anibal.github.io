@@ -16,7 +16,7 @@ journal-date: 2025-10-28
 ---
 De nuestro primer artículo en la serie, [La Alucinación es el Feature Fundamental de los LLMs](/2025/10/20/la-alucinacion-es-el-feature-fundamental-de-los-llms), tenemos que las alucinaciones de los  LLMs pueden ser positivas o negativas según agreguen o sustraigan *valor* a nuestro trabajo, a *"nuestro código"*.
 
-Ahora vamos a dar un paso atrás para aproximarnos un poco más formalmente a qué significa usar un LLM, en particular un **Asistente de Programación** como Claude Code, Cursor, Google CLI, Windsurf, etc en nuestro trabajo con:
+Ahora vamos a dar un paso atrás para aproximarnos un poco más formalmente a qué significa usar un LLM, en particular un **Asistente de Programación** como Claude Code, Cursor, Gemini  CLI, Windsurf, etc en nuestro trabajo con:
 
 ```
 f(modelo,contexto,prompt) = contexto'
