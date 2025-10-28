@@ -11,6 +11,7 @@ export const sharedPageComponents: SharedLayout = {
     links: {
       "Twitter (X)": "https://x.com/anibal",
       "LinkedIn": "https://www.linkedin.com/in/anibalrojas",
+      "Substack": "https://anibal.substack.com/",
     },
   }),
 }
