@@ -43,4 +43,9 @@ Esto **no es útil** porque automáticamente le atribuimos una "falta" a un LLM,
 
 Este es el primer artículo de una serie enfocada en los principios y prácticas fundamentales alrededor del desarrollo de software asistido por Inteligencia Artificial Generativa.
 
-[Publicado en LinkedIn en 27 de Octubre del 2025](https://www.linkedin.com/posts/anibalrojas_un-llmnopuedenoalucinar-porque-en-esencia-activity-7388654847971205120-6cmz?utm_source=share&utm_medium=member_desktop&rcm=ACoAAABYcI8BB_U41_Zfnth-a-K6afvWfwlghiM).
+En la segunda parte de la serie, [Las matemáticas del Código Asistido por IA](/2025/10/28/las-matematicas-del-codigo-asistido-por-ia), exploro de una forma más formal el impacto de las alucinaciones positivas y negativas en el valor del uso de los Asistentes de Programación.
+
+Compartido y publicado en: 
+- [LinkedIn el 27 de Octubre del 2025](https://www.linkedin.com/posts/anibalrojas_un-llmnopuedenoalucinar-porque-en-esencia-activity-7388654847971205120-6cmz?utm_source=share&utm_medium=member_desktop&rcm=ACoAAABYcI8BB_U41_Zfnth-a-K6afvWfwlghiM).
+- [Substack el 27 de Octubre del 2025](https://open.substack.com/pub/anibal/p/la-alucinacion-es-el-feature-fundamental?r=7wicq&utm_campaign=post&utm_medium=web&showWelcomeOnShare=false).
+- [(Twitter) el 27 de Octubre del 2025](https://x.com/anibal/status/1982917439898955921).

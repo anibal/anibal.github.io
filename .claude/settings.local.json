@@ -40,7 +40,8 @@
       "mcp__playwright__browser_evaluate",
       "mcp__playwright__browser_close",
       "mcp__playwright__browser_network_requests",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(git log:*)"
     ],
     "deny": [],
     "ask": []

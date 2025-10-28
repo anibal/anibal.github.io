@@ -38,15 +38,16 @@ Files (*.md) → Parse (transform with plugins) → Filter (select content) → 
 ```
 
 **Plugin Types:**
-1. **Transformers** (14 plugins): Modify markdown/HTML AST during parsing
+1. **Transformers** (14 plugins*): Modify markdown/HTML AST during parsing
    - Examples: `FrontMatter`, `SyntaxHighlighting`, `ObsidianFlavoredMarkdown`, `TableOfContents`
    - Provide text transforms, markdown plugins (remark), and HTML plugins (rehype)
+   - *Includes `CustomSlug` (user-added); standard Quartz has 13 transformers
 
-2. **Filters** (3 plugins): Decide which content to publish
-   - Examples: `RemoveDrafts`, `ExplicitFilter`
+2. **Filters** (2 plugins): Decide which content to publish
+   - Examples: `RemoveDrafts`, `ExplicitPublish`
    - Return `shouldPublish()` boolean
 
-3. **Emitters** (14 plugins): Generate output files
+3. **Emitters** (12 plugins): Generate output files
    - Examples: `ContentPage` (HTML pages), `TagPage`, `ContentIndex` (RSS, sitemaps)
    - Support incremental builds via `partialEmit()`
 
@@ -98,7 +99,93 @@ type QuartzComponent = ComponentType<QuartzComponentProps> & {
 - `left`/`right`: Sidebars
 - Each component contributes CSS/JS resources
 
-**Key Components**: `Explorer` (file tree), `Search`, `TableOfContents`, `Graph`, `Backlinks`, `Darkmode`, etc.
+**Key Components**: `Explorer` (file tree), `Search`, `TableOfContents`, `Graph`, `Backlinks`, `Darkmode`, `RecentNotes`, etc.
+
+**Component Inline Scripts Pattern**:
+Some components attach client-side behavior via separate `.inline.ts` files imported into the component:
+
+```typescript
+// In component TSX file:
+// @ts-ignore
+import script from "./scripts/recentNotes.inline"
+
+// Component exported with script attached:
+RecentNotes.afterDOMLoaded = script
+```
+
+Examples: `explorer.inline.ts`, `recentNotes.inline.ts`, `graph.inline.ts`, `graph-loader.inline.ts`
+
+This pattern keeps component logic modular and allows for complex client-side interactions like collapsing, DOM manipulation, and event handling.
+
+### Mobile-First Responsive Architecture
+
+Quartz implements sophisticated mobile-first patterns for optimal UX across devices. The mobile breakpoint is **800px** (defined in `quartz/styles/variables.scss`).
+
+#### Unified Mobile Menu Pattern
+
+On mobile (<800px), Explorer, Search, and RecentNotes merge into a **single overlay menu**:
+
+1. **Opening Explorer on Mobile**:
+   - Explorer overlay opens with file tree
+   - Search component is **dynamically moved** into Explorer overlay (at top)
+   - RecentNotes component is **dynamically moved** into Explorer overlay (at bottom)
+   - Background scroll locked via `mobile-no-scroll` class on `<html>`
+
+2. **Closing Explorer on Mobile**:
+   - All components **restored to original DOM positions**
+   - Scroll lock removed
+   - RecentNotes collapsed
+
+**Implementation** (`quartz/components/scripts/explorer.inline.ts:29-100`):
+- Stores original parent and next sibling references before moving components
+- Uses `checkVisibility()` on mobile button to detect viewport size
+- `insertBefore()` and `appendChild()` for DOM manipulation
+- Components restore to exact original positions on close
+
+#### Desktop Mutual Exclusion
+
+On desktop (≥800px), only **one sidebar can be expanded** at a time:
+- Expanding Explorer collapses RecentNotes
+- Expanding RecentNotes collapses Explorer
+- Prevents overwhelming sidebar content
+
+**Implementation** (`quartz/components/scripts/explorer.inline.ts:103-109` and `recentNotes.inline.ts:24-32`)
+
+#### Viewport Detection Patterns
+
+Two methods used throughout:
+
+1. **`checkVisibility()`** on mobile-only elements:
+   ```typescript
+   const mobileButton = element.querySelector(".mobile-explorer") as HTMLElement
+   const isMobile = mobileButton?.checkVisibility()
+   ```
+
+2. **`window.matchMedia()`** for media queries:
+   ```typescript
+   const isDesktop = window.matchMedia("(min-width: 801px)").matches
+   ```
+
+#### Collapsible Components
+
+**RecentNotes** and **Explorer** both support toggle behavior:
+- Fold/unfold SVG icon with rotation animation
+- `collapsed` CSS class controls visibility
+- `aria-expanded` attribute for accessibility
+- Separate mobile/desktop toggle buttons
+
+**Component Scripts**:
+- `quartz/components/scripts/explorer.inline.ts`
+- `quartz/components/scripts/recentNotes.inline.ts`
+
+#### Scroll Management
+
+When mobile menus open:
+```typescript
+document.documentElement.classList.add("mobile-no-scroll")
+```
+
+Prevents background page scrolling while overlay is active. Removed on close.
 
 ### Performance Features
 
@@ -107,6 +194,15 @@ type QuartzComponent = ComponentType<QuartzComponentProps> & {
 3. **Lazy resources**: Client scripts split into pre/post-DOM-ready
 4. **Hot reload**: WebSocket notifies browser of rebuilds
 5. **Asset optimization**: CSS minified with Lightning CSS, JS bundled with esbuild
+6. **Lazy Graph Loading** ⭐: Graph component (D3, Pixi.js, Tween.js) only loads on desktop viewports (>800px), **saving ~1.2MB for mobile users**
+   - `graph-loader.inline.ts` checks viewport with `window.matchMedia`
+   - Dynamically loads separate `graph.bundle.js` on-demand
+   - Queues navigation events while bundle loads
+   - See `quartz/components/scripts/graph-loader.inline.ts` and `quartz/plugins/emitters/componentResources.ts:buildGraphBundle()`
+7. **Critical Script Loading Order** ⚠️: SPA router MUST be loaded first via `unshift()` in `componentResources.ts:addGlobalPageResources()`
+   - SPA router defines `window.addCleanup` that other component scripts depend on
+   - Without this order, component cleanup breaks during navigation
+   - See `quartz/plugins/emitters/componentResources.ts:84-93`
 
 ## Key Source Directories
 
@@ -214,7 +310,8 @@ resources: {
 **Config Location**: `quartz.config.ts`
 
 **Common Customizations**:
-- **Page title**: `configuration.pageTitle`
+- **Page title**: `configuration.pageTitle` - Main site title shown in header
+- **Page subtitle**: `configuration.pageSubtitle` - Optional subtitle displayed below title (e.g., "by Author Name")
 - **Theme**: `configuration.theme` (light/dark colors, fonts)
 - **Plugins**: `plugins.transformers`, `plugins.filters`, `plugins.emitters`
 - **Analytics**: `configuration.analytics` (supports Plausible, Google, Umami, etc.)
@@ -265,6 +362,25 @@ MyComponent.beforeDOMLoaded = `// runs before page content loads`
 MyComponent.afterDOMLoaded = `// runs after page content loads`
 ```
 
+### 5. Critical Script Loading Order (⚠️ IMPORTANT)
+When adding scripts to `componentResources.afterDOMLoaded` in emitters, use `unshift()` for foundational scripts that other code depends on:
+
+```typescript
+// In componentResources.ts:addGlobalPageResources()
+if (cfg.enableSPA) {
+  // SPA router MUST be first - defines window.addCleanup
+  componentResources.afterDOMLoaded.unshift(spaRouterScript)
+}
+```
+
+**Why this matters**:
+- SPA router defines `window.addCleanup()` used by component scripts for cleanup during navigation
+- Component inline scripts (explorer, recentNotes, etc.) call `window.addCleanup()` expecting it to exist
+- Loading SPA router last causes "window.addCleanup is not a function" errors
+- Always use `unshift()` for foundational utilities, `push()` for dependent scripts
+
+See `quartz/plugins/emitters/componentResources.ts:84-93`
+
 ## Custom Slug Plugin
 
 **Location**: `quartz/plugins/transformers/customSlug.ts`
@@ -304,11 +420,39 @@ When running `npx quartz build --serve`:
   - Emitter regeneration via `partialEmit()`
   - Browser page refresh via WebSocket
 
-## Testing Considerations
+## Testing
 
+### Unit Testing
 - Test files: `*.test.ts` or `*.test.tsx`
 - Run with: `npm run test` (uses tsx test runner)
 - No official test suite in main codebase, but plugins can include tests
+
+### Browser Automation Testing (Playwright MCP)
+
+This project uses **Playwright MCP** for visual regression and interaction testing:
+
+- **Test artifacts**: `.playwright-mcp/` directory contains screenshots from test runs
+- **Testing focus**: Mobile menu behavior, responsive layouts, dark mode, component interactions
+- **Examples of tested scenarios**:
+  - Mobile menu open/close states
+  - Search modal behavior
+  - Explorer/RecentNotes collapsing
+  - Footer rendering
+  - Dark mode toggle
+
+**Playwright MCP Access**: Available via Claude Code's MCP integration
+- Snapshots: `mcp__playwright__browser_snapshot` - Accessibility tree snapshot
+- Screenshots: `mcp__playwright__browser_take_screenshot` - Visual captures
+- Interactions: `mcp__playwright__browser_click`, `browser_navigate`, etc.
+
+**Testing Pattern**:
+1. Navigate to localhost:8080 (requires `npx quartz build --serve` running)
+2. Take snapshots/screenshots to verify UI state
+3. Interact with elements (click, type, etc.)
+4. Verify responsive behavior at different viewport sizes
+5. Store artifacts in `.playwright-mcp/` for comparison
+
+See `.playwright-mcp/` directory for example test artifacts.
 
 ## Debugging Tips
 
@@ -326,6 +470,10 @@ When running `npx quartz build --serve`:
 4. **Relative paths**: Link resolution uses `RelativeURL`; don't mix with other path types
 5. **Incremental builds**: Emitters must implement `partialEmit()` to work efficiently in watch mode
 6. **Resource conflicts**: Ensure CSS/JS resource names don't conflict across plugins
+7. **Script loading order** ⚠️: SPA router and foundational utilities must load first via `unshift()`, not `push()`. Component scripts depend on `window.addCleanup()` from SPA router.
+8. **GFM Autolink Literal Bug**: Standard `remark-gfm` treats `@2x` in filenames (e.g., `image@2x.png`) as email addresses. Use `remark-gfm-configurable` with `autolinkLiteral: false` to fix. See `quartz/plugins/transformers/gfm.ts`
+9. **Mobile viewport detection**: Use `checkVisibility()` on mobile-only elements OR `window.matchMedia()` for viewport checks. Don't rely solely on CSS classes.
+10. **DOM manipulation for mobile**: When moving components between parents, ALWAYS store original parent and next sibling references to restore exact positions. See `explorer.inline.ts` for pattern.
 
 ## File Trie & Searching
 

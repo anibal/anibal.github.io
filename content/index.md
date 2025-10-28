@@ -11,6 +11,7 @@ tags:
   - asistentes-de-programación
   - claude-code
   - agentes
+date: 2025-10-27
 ---
   <style>
   .hero-image {
