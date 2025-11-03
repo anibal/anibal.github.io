@@ -29,8 +29,8 @@ TagList.css = `
   list-style: none;
   display: flex;
   padding-left: 0;
-  gap: 0.4rem;
-  margin: 1rem 0;
+  gap: var(--tag-gap);
+  margin: var(--tag-margin);
   flex-wrap: wrap;
 }
 
@@ -46,10 +46,11 @@ TagList.css = `
 }
 
 a.internal.tag-link {
-  border-radius: 8px;
+  border-radius: var(--tag-border-radius);
   background-color: var(--highlight);
-  padding: 0.2rem 0.4rem;
+  padding: var(--tag-padding-y) var(--tag-padding-x);
   margin: 0 0.1rem;
+  font-size: var(--tag-font-size);
 }
 `
 

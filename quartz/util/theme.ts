@@ -159,6 +159,13 @@ ${stylesheet.join("\n\n")}
   --headerFont: "${getFontSpecificationName(theme.typography.header)}", ${DEFAULT_SANS_SERIF};
   --bodyFont: "${getFontSpecificationName(theme.typography.body)}", ${DEFAULT_SANS_SERIF};
   --codeFont: "${getFontSpecificationName(theme.typography.code)}", ${DEFAULT_MONO};
+
+  --tag-font-size: 0.80rem;
+  --tag-padding-y: 0.12rem;
+  --tag-padding-x: 0.28rem;
+  --tag-border-radius: 6px;
+  --tag-gap: 0.25rem;
+  --tag-margin: 0.5rem 0;
 }
 
 :root[saved-theme="dark"] {

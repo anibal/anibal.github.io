@@ -41,7 +41,10 @@
       "mcp__playwright__browser_close",
       "mcp__playwright__browser_network_requests",
       "Bash(node:*)",
-      "Bash(git log:*)"
+      "Bash(git log:*)",
+      "Bash(dig:*)",
+      "Bash(lsof:*)",
+      "Bash(ps:*)"
     ],
     "deny": [],
     "ask": []

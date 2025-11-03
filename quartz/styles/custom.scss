@@ -12,10 +12,6 @@
     .section .meta {
       font-size: 0.85rem;  // Dates smaller for compact look
     }
-
-    .section ul.tags {
-      font-size: 0.85rem;  // Tags same size as dates
-    }
   }
 }
 
@@ -41,11 +37,10 @@
   & > .tags {
     grid-column: 2;
     grid-row: 2;
-    margin-top: 0.5em;
+    margin-top: 0.3em;
     padding-left: 0;
-    font-size: 0.85rem;  // Match RecentNotes tag size
     display: flex;
     justify-content: flex-start;  // Align tags to the left
-    gap: 0.4em;  // Spacing between tag items
+    gap: var(--tag-gap);  // Compact spacing between tag items
   }
 }
