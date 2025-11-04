@@ -7,6 +7,10 @@ tags:
   - contexto
   - prompting
   - sistemas
+  - steering
+  - backpressure
+  - procesos
+  - flujos
 date: 2025-11-04
 journal: Website
 journal-date: 2025-11-03
