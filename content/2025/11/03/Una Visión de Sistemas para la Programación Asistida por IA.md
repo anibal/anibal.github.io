@@ -78,6 +78,6 @@ Con esta visión de sistema podemos ver con claridad un nuevo factor que potenci
 
 Cada invocación de una herramienta para agregar información al contexto, o modificar el entorno, eventualmente reportando al contexto, lo cual va a tener un impacto en la calidad de las alucinaciones que el modelo genera aguas abajo en el proceso de inferencia.
 
-No es suficiente solo pensar en la calidad nuestros prompts, *estos son solo una parte pequeña del contexto*. Nuestra aproximación a estos sistemas tiene que ser **intencional** y es indispensable alinear los diferentes sub-sistemas y procesos que los conectan para *favorecer* las [alucinaciones positivas por encima de las negativas](/2025/10/28/las-matematicas-del-codigo-asistido-por-ia/).
+No es suficiente solo pensar en la calidad nuestros prompts, *estos son solo una parte pequeña del contexto*. Nuestra aproximación a estos sistemas tiene que ser **intencional** y es indispensable alinear los diferentes sub-sistemas y procesos que los conectan para *favorecer* las [alucinaciones positivas por encima de las negativas](/2025/10/28/las-matematicas-del-codigo-asistido-por-ia).
 
 En las próximas entregas de la serie vamos a definir dos procesos claves con los que podemos ejercer ese control sistemáticamente para maximizar la generación de valor: el **steering**, cómo guiar al modelo hacia alucinaciones positivas, y el **backpressure**, cómo detectar y rechazar las negativas eficientemente.
