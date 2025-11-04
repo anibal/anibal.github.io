@@ -13,7 +13,7 @@ journal-date: 2025-11-03
 ---
 En el primer artículo de esta serie concluimos [que las **alucinaciones** son *el feature fundamental de los LLMs*](/2025/10/20/la-alucinacion-es-el-feature-fundamental-de-los-llms) sobre los que están construidos los Asistentes de Programación como Claude Code, Cursor, Gemini CLI, Windsurf, etc y que estas alucinaciones pueden ser positivas o negativas según aportan valor a nuestro código o no. 
 
-Por otra parte en el segundo artículo de esta serie, [Las matemáticas del Código Asistido por IA](/2025/10/28/las-matematicas-del-codigo-asistido-por-ia/)   concluimos que las alucinaciones negativas son inevitables y que hay un costo no-trivial en detectarlas y rechazarlas para que el ROI del uso de estas herramientas se justifique al maximizar las alucinaciones positivas.
+Por otra parte en el segundo artículo de esta serie, [las matemáticas del Código Asistido por IA](/2025/10/28/las-matematicas-del-codigo-asistido-por-ia),  concluimos que las alucinaciones negativas son inevitables y que hay un costo no-trivial en detectarlas y rechazarlas para que el ROI del uso de estas herramientas se justifique al maximizar las alucinaciones positivas.
 
 Ahora vamos a explorar estos asistentes, y el loop fundamental en el que los usamos, y esto lo exploraremos a través de este diagrama que define varios sub-sistemas y flujos de una forma extremadamente simplificada para enfocarnos en lo fundamental:
 
