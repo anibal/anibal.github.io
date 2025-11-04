@@ -64,10 +64,10 @@ Obviamente si las alucinaciones negativas son más que las positivas pues invert
 **PERO**, la "fórmula" anterior está incompleta, porque determinar si una alucinación es positiva o negativa tiene un costo no trivial. Más aún, descartar, rechazar, corregir las alucinaciones negativas se suma al costo de detectarlas, por esto:
 
 ```
-v(f(m,c,p)) = v(c) + v(∑ a₊) - v(∑ a₋) - c(∑ a₋)
+v(f(m,c,p)) = v(c) + v(∑ a₊) - v(∑ a₋) - k(∑ a₋)
 ```
 
-Donde *c(∑ a₋)* es el costo de detectar y remover las alucinaciones negativas porque nosotros solo queremos quedarnos con las alucinaciones positivas. Porque al final queremos aproximarnos lo máximo posible a:
+Donde *k(∑ a₋)* es el costo de detectar y remover las alucinaciones negativas porque nosotros solo queremos quedarnos con las alucinaciones positivas. Porque al final queremos aproximarnos lo máximo posible a:
 
 ```
 f(m,c,p) = c + ∑ a₊
