@@ -87,5 +87,4 @@ No es suficiente solo pensar en la calidad nuestros prompts, *estos son solo una
 En las próximas entregas de la serie vamos a definir dos procesos claves con los que podemos ejercer ese control sistemáticamente para maximizar la generación de valor: el **steering**, cómo guiar al modelo hacia alucinaciones positivas, y el **backpressure**, cómo detectar y rechazar las negativas eficientemente.
 
 Compartido y publicado en: 
-- [LinkedIn el 4 de Noviembre del 2025].
-- 
+- [LinkedIn el 4 de Noviembre del 2025](https://www.linkedin.com/pulse/una-visi%25C3%25B3n-de-sistemas-para-la-programaci%25C3%25B3n-asistida-por-anibal-rojas-eqdne).
