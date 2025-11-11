@@ -59,6 +59,7 @@ const config: QuartzConfig = {
     transformers: [
       Plugin.FrontMatter(),
       Plugin.CustomSlug(),
+      Plugin.DraftPrefix(), // Publishes draft notes under draft/ prefix
       Plugin.CreatedModifiedDate({
         priority: ["frontmatter", "git", "filesystem"],
       }),
@@ -76,7 +77,9 @@ const config: QuartzConfig = {
       Plugin.Description(),
       Plugin.Latex({ renderEngine: "katex" }),
     ],
-    filters: [Plugin.RemoveDrafts()],
+    filters: [
+      // Plugin.RemoveDrafts(), // Disabled: drafts now published under draft/ prefix instead of excluded
+    ],
     emitters: [
       Plugin.AliasRedirects(),
       Plugin.ComponentResources(),

@@ -31,9 +31,11 @@ export default ((opts?: Partial<TagContentOptions>) => {
 
     const tag = simplifySlug(slug.slice("tags/".length) as FullSlug)
     const allPagesWithTag = (tag: string) =>
-      allFiles.filter((file) =>
-        (file.frontmatter?.tags ?? []).flatMap(getAllSegmentPrefixes).includes(tag),
-      )
+      allFiles
+        .filter((file) => !file.slug!.startsWith("draft/")) // Exclude draft pages from tag listings
+        .filter((file) =>
+          (file.frontmatter?.tags ?? []).flatMap(getAllSegmentPrefixes).includes(tag),
+        )
 
     const content = (
       (tree as Root).children.length === 0
@@ -45,7 +47,10 @@ export default ((opts?: Partial<TagContentOptions>) => {
     if (tag === "/") {
       const tags = [
         ...new Set(
-          allFiles.flatMap((data) => data.frontmatter?.tags ?? []).flatMap(getAllSegmentPrefixes),
+          allFiles
+            .filter((file) => !file.slug!.startsWith("draft/")) // Exclude drafts from tag collection
+            .flatMap((data) => data.frontmatter?.tags ?? [])
+            .flatMap(getAllSegmentPrefixes),
         ),
       ].sort((a, b) => a.localeCompare(b))
       const tagItemMap: Map<string, QuartzPluginData[]> = new Map()
