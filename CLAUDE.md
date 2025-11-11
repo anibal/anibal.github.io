@@ -136,7 +136,7 @@ On mobile (<800px), Explorer, Search, and RecentNotes merge into a **single over
    - Scroll lock removed
    - RecentNotes collapsed
 
-**Implementation** (`quartz/components/scripts/explorer.inline.ts:29-100`):
+**Implementation** (see `toggleExplorer()` function in `quartz/components/scripts/explorer.inline.ts`):
 - Stores original parent and next sibling references before moving components
 - Uses `checkVisibility()` on mobile button to detect viewport size
 - `insertBefore()` and `appendChild()` for DOM manipulation
@@ -149,7 +149,7 @@ On desktop (≥800px), only **one sidebar can be expanded** at a time:
 - Expanding RecentNotes collapses Explorer
 - Prevents overwhelming sidebar content
 
-**Implementation** (`quartz/components/scripts/explorer.inline.ts:103-109` and `recentNotes.inline.ts:24-32`)
+**Implementation**: See the desktop mutual exclusion logic in `toggleExplorer()` function (`explorer.inline.ts`) and `toggleRecentNotes()` function (`recentNotes.inline.ts`)
 
 #### Viewport Detection Patterns
 
@@ -198,11 +198,11 @@ Prevents background page scrolling while overlay is active. Removed on close.
    - `graph-loader.inline.ts` checks viewport with `window.matchMedia`
    - Dynamically loads separate `graph.bundle.js` on-demand
    - Queues navigation events while bundle loads
-   - See `quartz/components/scripts/graph-loader.inline.ts` and `quartz/plugins/emitters/componentResources.ts:buildGraphBundle()`
-7. **Critical Script Loading Order** ⚠️: SPA router MUST be loaded first via `unshift()` in `componentResources.ts:addGlobalPageResources()`
+   - See `loadGraphBundle()` function in `quartz/components/scripts/graph-loader.inline.ts` and `buildGraphBundle()` function in `quartz/plugins/emitters/componentResources.ts`
+7. **Critical Script Loading Order** ⚠️: SPA router MUST be loaded first via `unshift()` in emitters
    - SPA router defines `window.addCleanup` that other component scripts depend on
    - Without this order, component cleanup breaks during navigation
-   - See `quartz/plugins/emitters/componentResources.ts:84-93`
+   - See `addGlobalPageResources()` function in `quartz/plugins/emitters/componentResources.ts`
 
 ## Key Source Directories
 
@@ -216,8 +216,8 @@ quartz/
 ├── plugins/
 │   ├── types.ts              # Plugin interface definitions
 │   ├── transformers/         # 14 content transformation plugins
-│   ├── filters/              # 3 filtering plugins
-│   ├── emitters/             # 14 output generation plugins
+│   ├── filters/              # 2 filtering plugins
+│   ├── emitters/             # 12 output generation plugins
 │   └── vfile.ts              # VFile (virtual file) extensions
 ├── processors/
 │   ├── parse.ts              # Markdown parsing orchestration
@@ -379,7 +379,7 @@ if (cfg.enableSPA) {
 - Loading SPA router last causes "window.addCleanup is not a function" errors
 - Always use `unshift()` for foundational utilities, `push()` for dependent scripts
 
-See `quartz/plugins/emitters/componentResources.ts:84-93`
+See `addGlobalPageResources()` function in `quartz/plugins/emitters/componentResources.ts`
 
 ## Custom Slug Plugin
 
@@ -474,6 +474,26 @@ See `.playwright-mcp/` directory for example test artifacts.
 8. **GFM Autolink Literal Bug**: Standard `remark-gfm` treats `@2x` in filenames (e.g., `image@2x.png`) as email addresses. Use `remark-gfm-configurable` with `autolinkLiteral: false` to fix. See `quartz/plugins/transformers/gfm.ts`
 9. **Mobile viewport detection**: Use `checkVisibility()` on mobile-only elements OR `window.matchMedia()` for viewport checks. Don't rely solely on CSS classes.
 10. **DOM manipulation for mobile**: When moving components between parents, ALWAYS store original parent and next sibling references to restore exact positions. See `explorer.inline.ts` for pattern.
+
+## How to Navigate Code References
+
+This documentation references **function names and file paths** rather than line numbers, which change frequently as code evolves. This approach provides stable references that survive refactoring and make the documentation easier to maintain.
+
+**To find a referenced function**:
+1. Open the file mentioned (e.g., `quartz/components/scripts/explorer.inline.ts`)
+2. Search for the function name (e.g., `toggleExplorer`)
+3. In most IDEs:
+   - Text search: `Ctrl/Cmd + F` then type function name
+   - Symbol search: `Ctrl/Cmd + Shift + O` (VS Code) or `Ctrl/Cmd + O` (JetBrains)
+   - Go to definition: `F12` or `Cmd/Ctrl + Click` on function calls
+
+**Why no line numbers?**
+- Line numbers become outdated with every code change
+- Function names are more stable and self-documenting
+- IDE tools work better with names than coordinates
+- Reduces documentation maintenance burden
+
+**Example**: Instead of "`componentResources.ts:121-131`", we write "`addGlobalPageResources()` function in `componentResources.ts`"
 
 ## File Trie & Searching
 
