@@ -1,5 +1,5 @@
 ---
-slug: steering
+slug: steering-favoreciendo-las-alucinaciones-positivas
 date: 2025-11-06
 draft: false
 tags:
@@ -12,7 +12,7 @@ tags:
 journal: Website
 journal-date: 2025-11-06
 ---
-Esta tercera entrega de la serie de "Principios Fundamentales para el uso de Asistentes de Programación" está enfocada en el "steering", término con el que me voy a referir en este caso a las prácticas que permiten que un [Asistente de Programación](/2025/11/03/una-vision-de-sistemas-para-la-programacion-asistida-por-ia) favorezca de forma consistente la producción de [alucinaciones positivas](/2025/10/20/la-alucinacion-es-el-feature-fundamental-de-los-llms), alucinaciones que aportan valor a los desarrolladores y a los usuarios de nuestra aplicación.
+Esta cuarta entrega de la serie de "Principios Fundamentales para el uso de Asistentes de Programación" está enfocada en el "steering", término con el que me voy a referir en este caso a las prácticas que permiten que un [Asistente de Programación](/2025/11/03/una-vision-de-sistemas-para-la-programacion-asistida-por-ia) favorezca de forma consistente la producción de [alucinaciones positivas](/2025/10/20/la-alucinacion-es-el-feature-fundamental-de-los-llms), alucinaciones que aportan valor a los desarrolladores y a los usuarios de nuestra aplicación.
 
 En esencia el *steering* consiste en crear y mantener el entorno *mínimo indispensable* de *instrucciones* y *ejemplos* (patrones) *alineados* que se integran al contexto en el *momento necesario* y *propician* que el modelo genere "buen software".
 
