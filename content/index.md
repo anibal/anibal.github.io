@@ -46,7 +46,7 @@ Hoy en día estoy enfocado en explorar las posibilidades, compromisos y límites
 
 ¿Qué cómo te suscribes a mis newsletter, o me sigues o favoriteas? Eso no es aquí, esto es un website vieja escuela, HTML y CSS. En esta época de IA Generativa y Redes Sociales he encontrado refugio en el hecho de escribir como un desafío que me ayuda a pensar, a darle forma a mis ideas y este sitio me permite convertir ese desafío en algo posiblemente útil.
 
-Mi plan es compartir lo que escribo aquí en mi [LinkedIn](https://www.linkedin.com/in/anibalrojas), que es como la comida de hospital 😬, en el basurero en llamas que es [X (Twitter)](https://x.com/anibal), en [Substack](https://anibal.substack.com/) y ahí si quieres me sigues y hablamos.
+Mi plan es compartir lo que escribo aquí en mi [LinkedIn](https://www.linkedin.com/in/anibalrojas), que es como la comida de hospital, en el basurero en llamas que es [X (Twitter)](https://x.com/anibal), y en el café donde todo el mundo conversa solo que es  [Substack](https://anibal.substack.com/), tú escoge si quieres "seguirme" o "comentar" y dónde.
 
 ## Principios Fundamentales para trabajar con Asistentes de Programación 
 
@@ -56,4 +56,4 @@ Es una serie de cinco artículos para desarrolladores de software escépticos, d
 2. [Las matemáticas del Código Asistido por IA](/2025/10/28/las-matematicas-del-codigo-asistido-por-ia)
 3. [Una Visión de Sistemas para la Programación Asistida por IA](/2025/11/03/una-vision-de-sistemas-para-la-programacion-asistida-por-ia)
 4. [Steering - Favoreciendo las Alucinaciones Positivas en los Asistentes de Programación](/2025/11/06/steering-favoreciendo-las-alucinaciones-positivas)
-5. TBD
+5. Sale en la tercera semana de Noviembre del 2025.
