@@ -36,10 +36,14 @@ export default (() => {
     )
     const ogImageDefaultPath = `https://${cfg.baseUrl}/static/og-image.png`
 
+    // Check if this is a draft page (slug starts with "draft/")
+    const isDraft = fileData.slug?.startsWith("draft/") ?? false
+
     return (
       <head>
         <title>{title}</title>
         <meta charSet="utf-8" />
+        {isDraft && <meta name="robots" content="noindex, nofollow" />}
         {cfg.theme.cdnCaching && cfg.theme.fontOrigin === "googleFonts" && (
           <>
             <link rel="preconnect" href="https://fonts.googleapis.com" />
