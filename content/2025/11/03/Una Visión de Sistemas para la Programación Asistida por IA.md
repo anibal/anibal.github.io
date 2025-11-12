@@ -88,3 +88,5 @@ En las próximas entregas de la serie vamos a definir dos procesos claves con lo
 
 Compartido y publicado en: 
 - [LinkedIn el 4 de Noviembre del 2025](https://www.linkedin.com/pulse/una-visi%25C3%25B3n-de-sistemas-para-la-programaci%25C3%25B3n-asistida-por-anibal-rojas-eqdne).
+- [X (Twitter) el 4 de Noviembre del 2025](https://x.com/anibal/status/1985869541587763294).
+- 
