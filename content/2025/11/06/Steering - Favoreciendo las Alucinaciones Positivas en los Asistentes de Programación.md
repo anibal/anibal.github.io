@@ -97,4 +97,4 @@ No hay **una única** solución para esto, como en todos los aspectos de la vida
 
 En mi caso, como después de muchísimos años enfocado en el management aún estoy muy lejos de ser programador, yo le estoy apostando a la segunda, que es bastante más compleja, que tiene un feedback loop más dilatado y cuyo ROI aún está por verse.
 
-En la cuarta entrega vamos a enfocarnos en entender qué significa detectar y rechazar las alucinaciones negativas (`k(∑a₋)`), lo que yo denomino **backpressure**. 
+En la quinta entrega vamos a enfocarnos en entender qué significa detectar y rechazar las alucinaciones negativas (`k(∑a₋)`), lo que yo denomino **backpressure**. 

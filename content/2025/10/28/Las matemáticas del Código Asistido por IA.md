@@ -77,4 +77,4 @@ Que debido a que [La Alucinación es el Feature Fundamental de los LLMs](/2025/1
 
 Obviamente no pretendo que esto sea un modelo matemático real, sino un artefacto  que nos ayude a entender el *sistema* que estamos operando en esta búsqueda de tener una aproximación sistemática y metódica, que *tienda* a producir código de calidad de forma repetible.
 
-Más sobre este "sistema" y cómo podemos operarlo en el próximo post de la serie [Una Visión de Sistemas para la Programación Asistida por IA](/2025/11/04/una-vision-de-sistemas-para-la-programacion-asistida-por-ia).
+Más sobre este "sistema" y cómo podemos operarlo en el próximo post de la serie [Una Visión de Sistemas para la Programación Asistida por IA](/2025/11/03/una-vision-de-sistemas-para-la-programacion-asistida-por-ia).

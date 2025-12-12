@@ -1,6 +1,6 @@
 ---
-title: "Backpressure - Rechazando las Alucinaciones Negativas en los Asistentes de Programación"
-draft: true
+title: Backpressure - Rechazando las Alucinaciones Negativas en los Asistentes de Programación
+draft: false
 tags:
   - asistentes-de-programación
   - alucinaciones-negativas
@@ -13,7 +13,9 @@ slug: backpressure-rechazando-las-alucinaciones-negativas
 ---
 En esta quinta y última entrega de la serie "Principios Fundamentales para el uso de Asistentes de Programación" vamos a reconciliarnos, incluso a abrazar el hecho de que no importa cuántas instrucciones y ejemplos (*steering*) le entreguemos a un LLM, no existe forma de que este no genere código que no sirve, es decir: alucinaciones negativas.
 
-Vamos a definir **Backpressure** como el proceso y mecanismos que nos permiten *señalar* al asistente la presencia de alucinaciones negativas que deben ser corregidas *por el sistema*. Y con esto introducimos el feedback loop fundamental que estos sistemas necesitan para que el estado del codebase *converja* hacia las alucinaciones positivas.
+En artículos anteriores de esta serie establecimos que [las alucinaciones son el feature fundamental de los LLMs](/2025/10/20/la-alucinacion-es-el-feature-fundamental-de-los-llms), exploramos [las matemáticas del valor generado por estas interacciones](/2025/10/28/las-matematicas-del-codigo-asistido-por-ia), presentamos [una visión de sistemas para la programación asistida](/2025/11/03/una-vision-de-sistemas-para-la-programacion-asistida-por-ia), y detallamos el [steering como mecanismo para favorecer las alucinaciones positivas](/2025/11/06/steering-favoreciendo-las-alucinaciones-positivas).
+
+Ahora vamos a definir **Backpressure** como el proceso y mecanismos que nos permiten *señalar* al asistente la presencia de alucinaciones negativas que deben ser corregidas *por el sistema*. Y con esto introducimos el feedback loop fundamental que estos sistemas necesitan para que el estado del codebase *converja* hacia las alucinaciones positivas.
 
 **¿Por qué separar el Backpressure y dejarlo solo como una señal?** Porque si ya el sistema tiene la capacidad de generar el código, colapsar la *corrección* en la *detección* genera una *duplicidad* que compromete el Contexto de la tarea sobrecargándolo con múltiples responsabilidades.
 
