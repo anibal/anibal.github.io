@@ -17,13 +17,15 @@ En artículos anteriores de esta serie establecimos que [las alucinaciones son e
 
 Ahora vamos a definir **Backpressure** como el proceso y mecanismos que nos permiten *señalar* al asistente la presencia de alucinaciones negativas que deben ser corregidas *por el sistema*. Y con esto introducimos el feedback loop fundamental que estos sistemas necesitan para que el estado del codebase *converja* hacia las alucinaciones positivas.
 
-**¿Por qué separar el Backpressure y dejarlo solo como una señal?** Porque si ya el sistema tiene la capacidad de generar el código, colapsar la *corrección* en la *detección* genera una *duplicidad* que compromete el Contexto de la tarea sobrecargándolo con múltiples responsabilidades.
+**¿Por qué separar el Backpressure y dejarlo solo como una señal?** Porque si ya *alguna parte el sistema* tiene la capacidad de generar el código, agregar la *corrección* a la *detección* genera una *duplicidad* que automáticamente va a comprometer  el Contexto de la tarea sobrecargándolo con información y múltiples responsabilidades.
 
-Desde este punto de vista, los sistemas de tipos, los compiladores, los linters, los test automatizados son todos *mecanismos de backpressure* que tradicionalmente nos señalan que algo no está bien, es decir no estamos inventando nada nuevo. Pero en este artículo nos vamos a concentrar en el **proceso** que se basa en el propio LLM que está en el núcleo de los asistentes de programación.
+Desde este punto de vista, los sistemas de tipos, los compiladores, los linters, los test automatizados son todos *mecanismos de backpressure* **determinísticos** que tradicionalmente nos señalan que algo no está bien, es decir no estamos inventando nada nuevo. **En este contexto siempre que podamos atacar un problema de una forma determinística debemos aprovechar esa opción, porque muy eficaz y eficiente**.
+
+Pero en este artículo nos vamos a concentrar en el **proceso** que se basa en el propio LLM que está en el núcleo de los asistentes de programación.
 
 Muchas personas son escépticas en cuanto a la posibilidad de corregir los errores en el codebase introducidos por un asistente con el mismo asistente, y todos nos hemos reído con los memes en este sentido. Y efectivamente uno de los principios fundamentales que yo he propuesto en esta serie es que la probabilidad de que **no** ocurran errores cuando un modelo "echa código" nunca va a ser cero, y entonces lógicamente **usar un modelo para corregir errores tiene implícito introducir nuevos errores**.
 
-**Pero**, si tenemos buenos mecanismos y proceso de backpressure estos deberían reducir el *espacio de solución* de la corrección de errores muchísimo en comparación al proceso original de modificar el código, minimizando la posibilidad de introducir nuevas alucinaciones negativas. Y si aplicamos esta reducción del espacio de solución a través de un proceso iterativo, el sistema *en general debería converger* hacia un estado donde las alucinaciones negativas se minimicen.
+**Pero**, si tenemos buenos mecanismos (**determinísticos**) y proceso de backpressure estos deberían reducir el *espacio de solución* de la corrección de errores muchísimo en comparación al proceso original de modificar el código, minimizando la posibilidad de introducir nuevas alucinaciones negativas. Y si aplicamos esta reducción del espacio de solución a través de un proceso iterativo, el sistema *en general debería converger* hacia un estado donde las alucinaciones negativas se minimicen.
 
 Entonces vamos a describir una **I**nteracción (*i*) con un **A**sistente de Programación (*ap*) en un **E**ntorno (*e*) (codebase, etc) con un **C**ontexto (*c*) a través de un **P**rompt (*p*) de la siguiente forma:
  
@@ -108,3 +110,11 @@ Como en todo proceso iterativo, tiene que haber una condición de parada, y la r
 En este ejemplo hemos estado operando sobre un contexto mutado, esto no es una recomendación, y muchas veces un proceso iterativo como el que describimos sea mucho más eficiente aplicando la familia de prompts `p̃` sobre un contexto limpio.
 
 Y para finalizar pensemos en todos los mecanismos que nombramos al principio, y que pueden y deben ser integrados en este proceso porque aportan mucha información para generar el steering correctivo después de la detección.
+
+---
+## Otros artículos de la serie
+
+1. [La Alucinación es el Feature Fundamental de los LLMs](/2025/10/20/la-alucinacion-es-el-feature-fundamental-de-los-llms)
+2. [Las matemáticas del Código Asistido por IA](/2025/10/28/las-matematicas-del-codigo-asistido-por-ia)
+3. [Una Visión de Sistemas para la Programación Asistida por IA](/2025/11/03/una-vision-de-sistemas-para-la-programacion-asistida-por-ia)
+4. [Steering - Favoreciendo las Alucinaciones Positivas en los Asistentes de Programación](/2025/11/06/steering-favoreciendo-las-alucinaciones-positivas)

@@ -89,4 +89,11 @@ En las próximas entregas de la serie vamos a definir dos procesos claves con lo
 Compartido y publicado en: 
 - [LinkedIn el 4 de Noviembre del 2025](https://www.linkedin.com/pulse/una-visi%25C3%25B3n-de-sistemas-para-la-programaci%25C3%25B3n-asistida-por-anibal-rojas-eqdne).
 - [X (Twitter) el 4 de Noviembre del 2025](https://x.com/anibal/status/1985869541587763294).
-- 
+
+---
+## Otros artículos de la serie
+
+1. [La Alucinación es el Feature Fundamental de los LLMs](/2025/10/20/la-alucinacion-es-el-feature-fundamental-de-los-llms)
+2. [Las matemáticas del Código Asistido por IA](/2025/10/28/las-matematicas-del-codigo-asistido-por-ia)
+4. [Steering - Favoreciendo las Alucinaciones Positivas en los Asistentes de Programación](/2025/11/06/steering-favoreciendo-las-alucinaciones-positivas)
+5. [Backpressure - Rechazando las Alucinaciones Negativas en los Asistentes de Programación](/2025/11/26/backpressure-rechazando-las-alucinaciones-negativas)

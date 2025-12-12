@@ -49,3 +49,11 @@ Compartido y publicado en:
 - [LinkedIn el 27 de Octubre del 2025](https://www.linkedin.com/posts/anibalrojas_un-llmnopuedenoalucinar-porque-en-esencia-activity-7388654847971205120-6cmz?utm_source=share&utm_medium=member_desktop&rcm=ACoAAABYcI8BB_U41_Zfnth-a-K6afvWfwlghiM).
 - [Substack el 27 de Octubre del 2025](https://open.substack.com/pub/anibal/p/la-alucinacion-es-el-feature-fundamental?r=7wicq&utm_campaign=post&utm_medium=web&showWelcomeOnShare=false).
 - [(Twitter) el 27 de Octubre del 2025](https://x.com/anibal/status/1982917439898955921).
+
+---
+## Otros artículos de la serie
+
+2. [Las matemáticas del Código Asistido por IA](/2025/10/28/las-matematicas-del-codigo-asistido-por-ia)
+3. [Una Visión de Sistemas para la Programación Asistida por IA](/2025/11/03/una-vision-de-sistemas-para-la-programacion-asistida-por-ia)
+4. [Steering - Favoreciendo las Alucinaciones Positivas en los Asistentes de Programación](/2025/11/06/steering-favoreciendo-las-alucinaciones-positivas)
+5. [Backpressure - Rechazando las Alucinaciones Negativas en los Asistentes de Programación](/2025/11/26/backpressure-rechazando-las-alucinaciones-negativas)

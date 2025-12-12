@@ -78,3 +78,11 @@ Que debido a que [La Alucinación es el Feature Fundamental de los LLMs](/2025/1
 Obviamente no pretendo que esto sea un modelo matemático real, sino un artefacto  que nos ayude a entender el *sistema* que estamos operando en esta búsqueda de tener una aproximación sistemática y metódica, que *tienda* a producir código de calidad de forma repetible.
 
 Más sobre este "sistema" y cómo podemos operarlo en el próximo post de la serie [Una Visión de Sistemas para la Programación Asistida por IA](/2025/11/03/una-vision-de-sistemas-para-la-programacion-asistida-por-ia).
+
+---
+## Otros artículos de la serie
+
+1. [La Alucinación es el Feature Fundamental de los LLMs](/2025/10/20/la-alucinacion-es-el-feature-fundamental-de-los-llms)
+3. [Una Visión de Sistemas para la Programación Asistida por IA](/2025/11/03/una-vision-de-sistemas-para-la-programacion-asistida-por-ia)
+4. [Steering - Favoreciendo las Alucinaciones Positivas en los Asistentes de Programación](/2025/11/06/steering-favoreciendo-las-alucinaciones-positivas)
+5. [Backpressure - Rechazando las Alucinaciones Negativas en los Asistentes de Programación](/2025/11/26/backpressure-rechazando-las-alucinaciones-negativas)

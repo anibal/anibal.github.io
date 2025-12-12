@@ -97,4 +97,12 @@ No hay **una única** solución para esto, como en todos los aspectos de la vida
 
 En mi caso, como después de muchísimos años enfocado en el management aún estoy muy lejos de ser programador, yo le estoy apostando a la segunda, que es bastante más compleja, que tiene un feedback loop más dilatado y cuyo ROI aún está por verse.
 
-En la quinta entrega vamos a enfocarnos en entender qué significa detectar y rechazar las alucinaciones negativas (`k(∑a₋)`), lo que yo denomino **backpressure**. 
+En la quinta entrega vamos a enfocarnos en entender qué significa detectar y rechazar las alucinaciones negativas (`k(∑a₋)`), lo que yo denomino **backpressure**.
+
+---
+## Otros artículos de la serie
+
+1. [La Alucinación es el Feature Fundamental de los LLMs](/2025/10/20/la-alucinacion-es-el-feature-fundamental-de-los-llms)
+2. [Las matemáticas del Código Asistido por IA](/2025/10/28/las-matematicas-del-codigo-asistido-por-ia)
+3. [Una Visión de Sistemas para la Programación Asistida por IA](/2025/11/03/una-vision-de-sistemas-para-la-programacion-asistida-por-ia)
+5. [Backpressure - Rechazando las Alucinaciones Negativas en los Asistentes de Programación](/2025/11/26/backpressure-rechazando-las-alucinaciones-negativas) 
