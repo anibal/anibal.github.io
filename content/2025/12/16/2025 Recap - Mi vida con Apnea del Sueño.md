@@ -88,3 +88,10 @@ Mientras escribo esto sigo experimentando, y prometo compartir lo que descubra. 
 *My two cents.*
 
 Si ustedes despiertan vueltos mierda no importa si duermen ocho horas completas, roncan un montón, o se despiertan ahogados y sobresaltados en la noche, tienden a despertarse de noche y le cuesta volver a dormir, pasan el día cansados o somnolientos, tienen dificultad para concentrarse o sufren de lagunas de memoria. **NO ES NORMAL**, *no lo normalicen como hice yo*; busquen ayuda profesional, vayan primero con su médico de confianza y si este no les ayuda busquen profesionales u organizaciones especializadas en los problemas del sueño, creánme que pueden vivir una vida mucho más plena y rica si duermen bien, pero tienen que darle foco a optimizarlo.
+
+---
+
+Publicado también en:
+- [LinkedIn](https://www.linkedin.com/pulse/2025-recap-mi-extra%C3%B1o-viaje-con-la-apnea-del-sue%C3%B1o-anibal-rojas-jzzhe)
+- [Substack](https://open.substack.com/pub/anibal/p/2025-recap-mi-vida-con-apnea-del?r=7wicq&utm_campaign=post&utm_medium=web&showWelcomeOnShare=true) 
+- [X](https://x.com/anibal/status/2002523478394810728)
