@@ -29,7 +29,7 @@ function isNavActive(current: string, itemHref: string): boolean {
   <div class="header-inner">
     <div class="cli-line">
       <span class="cli-prompt">ls</span>
-      <a class="wordmark" href={homePath(locale)} aria-label="Aníbal Rojas · home"><b>~</b>/anibal-rojas</a>
+      <a class="wordmark" href={homePath(locale)} aria-label="~/anibal-rojas · Aníbal Rojas, home"><b>~</b>/anibal-rojas</a>
       <span class="cli-prompt">{'<TAB>'}</span>
     </div>
 
@@ -110,6 +110,9 @@ function isNavActive(current: string, itemHref: string): boolean {
     letter-spacing: 0.01em;
     text-decoration: none;
     background-image: none;
+    /* touch target ≥24px (WCAG 2.5.8 — LHCI gate); the extra box is padding
+       only, text position is fixed by the shared baseline */
+    padding-block: 5px;
     /* every chrome link answers the pointer in amber at --dur-1 (fix G7) */
     transition: color var(--dur-1) var(--ease);
   }
@@ -138,6 +141,9 @@ function isNavActive(current: string, itemHref: string): boolean {
     background-image: none;
     flex-shrink: 0;
     margin-right: 0.8em;
+    /* touch target ≥24px (WCAG 2.5.8 — LHCI gate); padding-block only, the
+       baseline row keeps every label in place */
+    padding-block: 5px;
   }
   .cli-item:hover { color: var(--amber); }
   .cli-item.active { color: var(--amber); }
