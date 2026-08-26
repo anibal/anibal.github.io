@@ -1,0 +1,185 @@
+---
+import { getLocale, getDict, equivalentPath, homePath } from '../i18n/utils';
+import type { Locale } from '../i18n/ui';
+
+interface Props {
+  alternates?: { en: string; es: string };
+  localeOverride?: Locale;
+}
+
+const locale = Astro.props.localeOverride ?? getLocale(Astro.url);
+const d = getDict(locale);
+const currentPath = Astro.url.pathname;
+const enPath = Astro.props.alternates?.en ?? equivalentPath(currentPath, 'en');
+const esPath = Astro.props.alternates?.es ?? equivalentPath(currentPath, 'es');
+
+const navItems = [
+  { key: 'home', ...d.nav.home },
+  { key: 'ideas', ...d.nav.ideas },
+  { key: 'about', ...d.nav.about },
+  { key: 'contact', ...d.nav.contact },
+] as const;
+
+function isNavActive(current: string, itemHref: string): boolean {
+  return current === itemHref;
+}
+---
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="cli-line">
+      <span class="cli-prompt">ls</span>
+      <a class="wordmark" href={homePath(locale)} aria-label="~/anibal-rojas · Aníbal Rojas, home"><b>~</b>/anibal-rojas</a>
+      <span class="cli-prompt">{'<TAB>'}</span>
+    </div>
+
+    <div class="header-right">
+      <nav class="seg" aria-label={d.a11y.language}>
+        <a
+          class:list={['seg-item', { active: locale === 'en' }]}
+          href={enPath}
+          aria-current={locale === 'en' ? 'true' : undefined}
+          hreflang="en"
+        >EN</a>
+        <a
+          class:list={['seg-item', { active: locale === 'es' }]}
+          href={esPath}
+          aria-current={locale === 'es' ? 'true' : undefined}
+          hreflang="es"
+        >ES</a>
+      </nav>
+      {/* solid = start the conversation → the contact room (CTA verb law,
+          ruling D2). Below 700px the same affordance survives as a compact
+          rewrite (ruling D1: mobile must never lose the persistent CTA) */}
+      <a class="btn header-cta" href={d.cta.startHref}>{d.cta.start}</a>
+      <a class="btn header-cta-compact" href={d.cta.startHref}>{d.cta.compact}</a>
+    </div>
+
+    <nav class="cli-nav" aria-label={d.a11y.nav}>
+      {
+        navItems.map((item) => (
+          <a
+            href={item.href}
+            class:list={['cli-item', { active: isNavActive(currentPath, item.href) }]}
+          >{item.label}/</a>
+        ))
+      }
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .header-inner {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: var(--space-2) var(--space-3);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    row-gap: 0;
+  }
+  .header-inner > * { line-height: 1.3; }
+
+  /* ---- top line: ls ~/anibal-rojas <TAB> ---- */
+  .cli-line {
+    font-family: var(--font-mono);
+    font-size: var(--text-ui);
+    display: flex;
+    align-items: baseline;
+    gap: 0.4em;
+    flex-shrink: 0;
+  }
+  .cli-prompt {
+    color: var(--muted);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+  .wordmark {
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    background-image: none;
+    /* touch target ≥24px (WCAG 2.5.8 — LHCI gate); the extra box is padding
+       only, text position is fixed by the shared baseline */
+    padding-block: 5px;
+    /* every chrome link answers the pointer in amber at --dur-1 (fix G7) */
+    transition: color var(--dur-1) var(--ease);
+  }
+  .wordmark:hover { color: var(--amber); }
+  .wordmark b { color: var(--amber); font-weight: 500; }
+
+  /* ---- completion row: home/  ideas/  about/  contact/ ---- */
+  .cli-nav {
+    flex: 0 0 100%;
+    font-family: var(--font-mono);
+    font-size: var(--text--1);
+    color: var(--muted);
+    white-space: nowrap;
+    display: flex;
+    align-items: baseline;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .cli-nav::-webkit-scrollbar { display: none; }
+
+  .cli-item {
+    color: var(--muted);
+    text-decoration: none;
+    transition: color var(--dur-1) var(--ease);
+    background-image: none;
+    flex-shrink: 0;
+    margin-right: 0.8em;
+    /* touch target ≥24px (WCAG 2.5.8 — LHCI gate); padding-block only, the
+       baseline row keeps every label in place */
+    padding-block: 5px;
+  }
+  .cli-item:hover { color: var(--amber); }
+  .cli-item.active { color: var(--amber); }
+
+  /* ---- right cluster ---- */
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+  .header-cta { display: none; }
+  /* compact CTA: the persistent booking affordance survives the narrow
+     header as a rewrite, not a truncation (ruling D1 — same pattern as the
+     hero callout's mobile collapse) */
+  .header-cta-compact {
+    display: inline-block;
+    font-size: var(--text--1);
+    padding: 7px 12px;
+  }
+  @media (min-width: 700px) {
+    .header-cta { display: inline-block; }
+    .header-cta-compact { display: none; }
+  }
+
+  /* narrow: drop ls + <TAB> noise, just wordmark on top; the right cluster
+     (seg + compact CTA) tightens so the row survives 360px in Spanish
+     ("Conversemos" is the widest member) without wrapping to a third line */
+  @media (max-width: 480px) {
+    .cli-prompt { display: none; }
+    .cli-line { font-size: var(--text--1); }
+    .cli-nav { font-size: var(--text-chip); }
+    .cli-item { margin-right: 0.5em; }
+    .header-right { gap: var(--space-1); }
+    .header-cta-compact { font-size: var(--text-chip); padding: 6px 10px; }
+    .header-right :global(.seg-item) { padding: 6px 9px; }
+  }
+</style>

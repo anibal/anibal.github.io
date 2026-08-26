@@ -1,0 +1,235 @@
+---
+/**
+ * /about/ page — the buying-interest click. Own content, no homepage reuse
+ * (narrative map: may share facts with the homepage bio, never sentences).
+ * Structure: the arc (personal memoir, first person) → what I do in a room
+ * (four verbs) → what I refuse → who this is not for → CTA.
+ */
+import Base from '../layouts/Base.astro';
+import { getDict, type Locale } from '../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const d = getDict(locale);
+const p = d.aboutPage;
+---
+
+<Base title={p.meta.title} description={p.meta.description}>
+  {/* the portrait is this page's LCP element — preload it at the top of head
+      so its fetch (and connection setup) overlaps the document download
+      instead of waiting for the scanner to reach the <img> (LHCI LCP<1.5s) */}
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    href="/images/anibal-rojas-280x350.avif"
+    imagesrcset="/images/anibal-rojas-280x350.avif 1x, /images/anibal-rojas-560x700.avif 2x"
+    imagesizes="280px"
+    fetchpriority="high"
+  />
+  <div class="about">
+    <header class="about-head">
+      <div class="inner">
+        <span class="eyebrow">{p.eyebrow}</span>
+        <h1>{p.heading}</h1>
+      </div>
+    </header>
+
+    <!-- The arc -->
+    <section class="section arc">
+      <div class="inner">
+        {/* the prompt rail is the ONLY section-heading device (constitution §5);
+            these were Fraunces labels before the phase-2 conformance pass */}
+        <h2 class="eyebrow">{p.arc.label}</h2>
+        <div class="arc-grid">
+          <picture>
+            <source
+              type="image/avif"
+              srcset="/images/anibal-rojas-280x350.avif 1x, /images/anibal-rojas-560x700.avif 2x"
+            />
+            <img
+              class="portrait"
+              src="/images/anibal-rojas-280x350.webp"
+              srcset="/images/anibal-rojas-280x350.webp 1x, /images/anibal-rojas-560x700.webp 2x"
+              width="280"
+              height="350"
+              alt={d.who.portraitLabel}
+              /* the portrait is the about page's LCP element (in-viewport at
+                 325px) — lazy added 1.6s of load delay; eager + high priority
+                 starts the fetch with the preload scanner (LHCI gate LCP<1.5s) */
+              fetchpriority="high"
+              decoding="async"
+            />
+          </picture>
+          <div class="arc-text">
+            {p.arc.paragraphs.map((para) => <p set:html={para} />)}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- What I actually do in a room -->
+    <section class="section room">
+      <div class="inner">
+        <h2 class="eyebrow">{p.room.label}</h2>
+        <p class="room-intro">{p.room.intro}</p>
+        <div class="verbs-grid">
+          {p.room.items.map((item) => (
+            <div class="verb-item">
+              <h3 class="verb">{item.verb}</h3>
+              <p set:html={item.text} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- What I refuse -->
+    <section class="section refusals">
+      <div class="inner">
+        <h2 class="eyebrow">{p.refusals.label}</h2>
+        <div class="refusals-body">
+          {p.refusals.paragraphs.map((para) => <p set:html={para} />)}
+        </div>
+      </div>
+    </section>
+
+    <!-- Who this is not for -->
+    <section class="section not-for">
+      <div class="inner">
+        <h2 class="eyebrow">{p.notFor.label}</h2>
+        <p class="not-for-text">{p.notFor.text}</p>
+      </div>
+    </section>
+
+  </div>
+</Base>
+
+<style>
+  /* ---------- page header ---------- */
+  .about-head {
+    padding: var(--space-6) var(--space-3) var(--space-5);
+  }
+  .about-head h1 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 640;
+    font-size: var(--text-h2-lg);
+    line-height: var(--leading-display);
+    letter-spacing: -0.01em;
+    max-width: 24ch;
+    text-wrap: balance;
+  }
+
+  /* ---------- shared section chrome ---------- */
+  .section {
+    padding: 0 var(--space-3) var(--space-6);
+  }
+
+  /* ---------- the arc ---------- */
+  .arc-grid {
+    display: grid;
+    gap: var(--space-5);
+  }
+  @media (min-width: 900px) {
+    .arc-grid {
+      grid-template-columns: max-content 1fr;
+    }
+  }
+  /* 4:5 editorial portrait behind the site's amber-rule device (blockquote family) */
+  .arc-grid picture {
+    display: block;
+    width: max-content;
+    align-self: start;
+    border-left: 2px solid var(--amber);
+    padding-left: var(--space-1);
+  }
+  @media (min-width: 900px) {
+    /* the memoir is long — the portrait rides along instead of staying at the
+       top. top clears the sticky site header (~92px tall) with breathing room. */
+    .arc-grid picture {
+      position: sticky;
+      top: calc(var(--space-7) + var(--space-3));
+    }
+  }
+  .portrait {
+    width: 280px;
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-md);
+    object-fit: cover;
+    /* gradient shows while the photo streams in */
+    background: linear-gradient(140deg, var(--slate), color-mix(in srgb, var(--slate), var(--paper) 30%));
+  }
+  .arc-text {
+    max-width: var(--prose);
+  }
+  .arc-text p + p {
+    margin-top: var(--space-2);
+  }
+  .arc-text :global(strong) {
+    font-weight: 600;
+  }
+  .arc-text :global(em) {
+    font-style: italic;
+  }
+
+  /* ---------- the room: four verbs ---------- */
+  .room-intro {
+    max-width: var(--prose);
+    margin-bottom: var(--space-4);
+    font-size: var(--text-lede);
+    line-height: var(--leading-body);
+  }
+  .verbs-grid {
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 700px) {
+    .verbs-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .verb-item {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+  }
+  .verb-item .verb {
+    font-family: var(--font-mono);
+    font-size: var(--text--1);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--amber);
+    text-transform: lowercase;
+    margin-bottom: var(--space-1);
+  }
+  .verb-item p {
+    font-size: var(--text-support);
+    line-height: var(--leading-body);
+  }
+
+  /* ---------- refusals ---------- */
+  .refusals-body {
+    max-width: var(--prose);
+  }
+  .refusals-body p + p {
+    margin-top: var(--space-2);
+  }
+  .refusals-body :global(s) {
+    color: var(--muted);
+    text-decoration-thickness: 2px;
+    text-decoration-color: var(--amber);
+  }
+
+  /* ---------- not for ---------- */
+  .not-for-text {
+    max-width: var(--prose);
+    line-height: var(--leading-body);
+  }
+
+</style>

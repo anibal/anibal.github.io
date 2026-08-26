@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+# Domain decided (2026-08-22): the site serves on i.usedtocode.com — keep in
+# sync with astro.config.mjs `site`.
+Sitemap: https://i.usedtocode.com/sitemap-index.xml

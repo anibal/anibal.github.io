@@ -1,0 +1,93 @@
+/* ------------------------------------------------------------------
+   Design tokens — every value the design system uses lives here.
+   Source of truth for MEANINGS and rules: DESIGN-GRAMMAR.md (the
+   constitution, codified 2026-08-24 from home-as-built; it supersedes
+   HANDOFF §3 where they disagree).
+   "Amber phosphor on cool paper": amber CRT phosphor identity without
+   hacker cliché; cool paper = engineering document.
+   ------------------------------------------------------------------ */
+
+:root {
+  /* ---------- color ---------- */
+  --paper: #F7F7F3;        /* page background */
+  --card: #FFFFFF;         /* raised surfaces */
+  --ink: #191C21;          /* primary text */
+  --muted: #5C6370;        /* secondary text */
+  --line: #E4E3DC;         /* hairlines, borders */
+  --amber: #A85A0A;        /* accent: links, prompts, markers */
+  --amber-bright: #D97706; /* cursor, focus, live states */
+  --slate: #3B4A63;        /* diagrams, secondary emphasis */
+  --black: #101318;        /* reserved: at most ONE inverted region per page */
+  --pen: #A03A28;          /* editor's red ink — the hero margin note only (6.3:1 on paper) */
+
+  /* ---------- typography ---------- */
+  /* "X Fallback" faces are metric-matched overrides (font-overrides.css) —
+     swap renders into an identical box, keeping CLS = 0 */
+  --font-display: 'Fraunces', 'Fraunces Fallback', Georgia, serif;
+  --font-body: 'IBM Plex Sans', 'IBM Plex Sans Fallback', Arial, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'IBM Plex Mono Fallback', 'Courier New', monospace;
+  /* hand face: one element on the site (hero margin note); no metric-matched
+     fallback — the note is absolutely positioned or last-in-flow, so a
+     fallback render can't shift surrounding content */
+  --font-hand: 'Caveat', 'Bradley Hand', 'Segoe Print', cursive;
+
+  /* Modular scale, ratio 1.25 from a 17px base (html stays at 16px, so 1rem = 16px) */
+  --text--1: 0.85rem;    /* 13.6px — metadata, colophon */
+  --text-0: 1.0625rem;   /* 17px  — body */
+  --text-1: 1.328rem;    /* 21px  */
+  --text-2: 1.66rem;     /* 27px  */
+  --text-3: 2.075rem;    /* 33px  */
+  --text-4: 2.594rem;    /* 42px  */
+  --text-5: 3.243rem;    /* 52px  */
+
+  /* Fluid display sizes (every size on the site comes from the scale) */
+  --text-hero: clamp(var(--text-3), 4.6vw, var(--text-5));
+  --text-h2: clamp(var(--text-1), 2.6vw, var(--text-2));
+  --text-h2-lg: clamp(var(--text-2), 3vw, var(--text-3));
+
+  /* Intermediate step between --text-0 and --text-1 — ledes only, never body */
+  --text-lede: 1.08rem;
+
+  /* Utility band — chrome and metadata sizes BELOW the scale, named so they
+     can't fork (audit ruling C1). Nothing outside tokens.css hardcodes a
+     font-size: prose uses the scale above, chrome uses this band.
+       --text-tag      uppercase inline metadata tags (ESSAY · 01 · …)
+       --text-chip     segmented-control chips (EN|ES)
+       --text-btn      buttons
+       --text-ui       mono UI: ledger numerals, the header cli line
+       --text-support  quiet supporting prose (card teasers)
+       --text-hand     the hand face (hero margin note) */
+  --text-tag: 0.72rem;
+  --text-chip: 0.78rem;
+  --text-btn: 0.92rem;
+  --text-ui: 0.95rem;
+  --text-support: 0.97rem;
+  --text-hand: 1.8rem;
+
+  --leading-body: 1.65;
+  --leading-display: 1.14;
+
+  /* ---------- layout ---------- */
+  --max: 1060px;   /* max content width */
+  --prose: 66ch;   /* max measure for prose */
+
+  /* ---------- spacing — 8px spatial base grid; every gap traces here ---------- */
+  --space-1: 0.5rem;   /*  8px */
+  --space-2: 1rem;     /* 16px */
+  --space-3: 1.5rem;   /* 24px */
+  --space-4: 2rem;     /* 32px */
+  --space-5: 3rem;     /* 48px */
+  --space-6: 4rem;     /* 64px */
+  --space-7: 6rem;     /* 96px */
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+
+  /* ---------- motion — a well-damped physical system ---------- */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-1: 120ms;  /* hover micro-interactions */
+  --dur-2: 240ms;
+  --dur-3: 480ms;
+  --dur-4: 900ms;  /* homepage load sequence budget */
+  --stagger: 60ms; /* reveal-batch stagger step = --dur-1 / 2 */
+}

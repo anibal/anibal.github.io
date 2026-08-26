@@ -1,0 +1,907 @@
+---
+/**
+ * Homepage template — shared by both locales.
+ * Session 7: the site collapsed into this page — /principles/ now lives here
+ * (aburrida + credo + myths, between whoami and services), the ideas grid
+ * carries the first three essays + the podcast, service rows lost their
+ * detail pages, and the hero gained its one deliberate rule-break: a
+ * handwritten ink margin note annotating the terminal.
+ * Testimonials section intentionally absent (handoff §6.1: <3 real quotes →
+ * render nothing).
+ */
+import Base from '../layouts/Base.astro';
+import { getDict, type Locale } from '../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const d = getDict(locale);
+---
+
+<Base>
+  <section class="hero">
+    <div class="inner">
+      <span class="eyebrow">{d.hero.eyebrow}</span>
+      <h1>
+        <span set:html={d.hero.title} /><span class="cursor" aria-hidden="true"></span>
+      </h1>
+      <p class="lede" set:html={d.hero.lede} />
+      {/* solid = start the conversation → the contact room (CTA verb law,
+          ruling D2); the room reassures, then books */}
+      <div class="actions">
+        <a class="btn" href={d.cta.startHref}>{d.cta.start}</a>
+        <a class="btn ghost" href="#services">{d.hero.secondary}</a>
+      </div>
+      {/* mobile-only: the margin note collapsed into one plain qualifier,
+          reading as a caption UNDER the CTAs (ruling D1/P2 — the buttons stay
+          above the fold; the qualifier no longer displaces them). The pen
+          asterisk on the headline's squiggled word pairs with the one opening
+          this line, so it still reads as a footnote — and its closing phrase
+          keeps the soft door to the contact room live, like the desktop
+          footnote. */}
+      <p class="hero-callout-compact">
+        <span class="fn-star" aria-hidden="true">*&nbsp;</span><span set:html={d.hero.calloutCompact} />
+      </p>
+      {/* The ink margin note — a human hand annotating the terminal — and its
+          asterisk footnote (the gate for the non-software-core segment) travel
+          as one unit: stacked in the right margin on desktop, stacked under
+          the actions on mobile. */}
+      <div class="hero-aside">
+        <aside class="hero-note" role="note">
+          <svg class="note-arrow" viewBox="0 0 230 46" aria-hidden="true">
+            <path
+              pathLength="1"
+              d="M226 30 C196 41 158 40 120 30 C82 20 48 13 18 14 M18 14 L31 7 M18 14 L30 22"
+              fill="none"
+            />
+          </svg>
+          <p>{d.hero.callout}</p>
+        </aside>
+        <p class="hero-footnote">
+          <span class="fn-star" aria-hidden="true">*&nbsp;</span><span set:html={d.hero.calloutNote} />
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="thesis" id="thesis">
+    <div class="inner">
+      <div class="block">
+        <h2>{d.thesis.title}</h2>
+        <p>{d.thesis.p1}</p>
+        <p set:html={d.thesis.bridge} />
+        <p set:html={d.thesis.p2} />
+      </div>
+    </div>
+  </section>
+
+  <section class="who">
+    <div class="inner">
+      {/* eyebrows are chrome and never reveal (ruling C5): the prompt is
+          already on screen; the output arrives */}
+      <h2 class="eyebrow">{d.who.eyebrow}</h2>
+      <div class="who-grid">
+        <picture data-reveal>
+          <source
+            type="image/avif"
+            srcset="/images/anibal-rojas-280x350.avif 1x, /images/anibal-rojas-560x700.avif 2x"
+          />
+          <img
+            class="portrait"
+            src="/images/anibal-rojas-280x350.webp"
+            srcset="/images/anibal-rojas-280x350.webp 1x, /images/anibal-rojas-560x700.webp 2x"
+            width="280"
+            height="350"
+            alt={d.who.portraitLabel}
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
+        <div class="who-text" data-reveal>
+          {d.who.paragraphs.map((p) => <p set:html={p} />)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ---- principles: the former /principles/ page, absorbed (session 7).
+       Rhythm: statement (aburrida) → dialog (credo) → enumeration (myths)
+       → pivot (mythsClosing hands off to services). ---- */}
+  <section class="principles" id="principles">
+    <div class="inner">
+      <h2 class="eyebrow">{d.principles.eyebrow}</h2>
+
+      <div class="aburrida" data-reveal>
+        <p class="aburrida-hook">{d.principles.aburrida.hook}</p>
+        <blockquote>
+          <p>{d.principles.aburrida.quote}</p>
+          <cite>{d.principles.aburrida.cite}</cite>
+        </blockquote>
+        <p class="aburrida-text" set:html={d.principles.aburrida.text} />
+      </div>
+
+      <div class="credo" data-reveal>
+        {/* sub-heads are prompt lines like the section eyebrows — the whole
+            section reads as three terminal prompts (h3 keeps the outline) */}
+        <h3 class="eyebrow">{d.principles.credoTitle}</h3>
+        <div class="credo-body">
+          <p>{d.principles.credo.belief}</p>
+          <p class="credo-why">{d.principles.credo.why}</p>
+          <blockquote><p>{d.principles.credo.counter}</p></blockquote>
+          <p set:html={d.principles.credo.rebuttal} />
+          <p>{d.principles.credo.consequence}</p>
+          <p class="credo-closing">{d.principles.credo.closing}</p>
+        </div>
+      </div>
+
+      <div class="myths" data-reveal>
+        <h3 class="eyebrow">{d.principles.mythsEyebrow}</h3>
+        <p class="section-title">{d.principles.mythsTitle}</p>
+        <ol class="myths-list">
+          {d.principles.myths.map((m) => (
+            <li>
+              <span class="num">{m.num}</span>
+              <span class="myth-text" set:html={m.text} />
+            </li>
+          ))}
+        </ol>
+        <p class="myths-intro" set:html={d.principles.mythsIntro} />
+        <div class="side-effects">
+          <h4>{d.principles.sideEffectsTitle}</h4>
+          <ul>
+            {d.principles.sideEffects.map((s) => (
+              <li>{s}</li>
+            ))}
+          </ul>
+        </div>
+        <p class="myths-closing">{d.principles.mythsClosing}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="services" id="services">
+    <div class="inner">
+      <h2 class="eyebrow">{d.services.eyebrow}</h2>
+      <div class="services-intro" data-reveal>
+        <p class="statement" set:html={d.services.intro.statement} />
+        <p class="verbs">{d.services.intro.verbs}</p>
+        <p class="facilitation">{d.services.intro.facilitation}</p>
+      </div>
+      {d.services.items.map((item) => (
+        <div class="service" data-reveal>
+          <div class="num">{item.num}</div>
+          <h3>{item.title}</h3>
+          <p>{item.text}</p>
+        </div>
+      ))}
+      {/* the experience is what justifies one person offering all three —
+          said in his voice, linking the long version on /about/ */}
+      <p class="services-about" data-reveal set:html={d.services.aboutHtml} />
+      <div class="after" data-reveal>
+        {/* "not sure which fits" is the contact-room visitor, not the
+            ready-to-book one — route to the room, not the calendar */}
+        <a class="btn ghost" href={d.nav.contact.href}>{d.services.after}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="ideas">
+    <div class="inner">
+      <h2 class="eyebrow">{d.ideas.eyebrow}</h2>
+      {/* section intros always reveal, like services-intro (ruling C5) */}
+      <p class="ideas-intro" data-reveal>{d.ideas.intro}</p>
+      <div class="ideas-grid">
+        {/* essays live on this site now (2026-08 migration): internal links,
+            titles in the page's own locale */}
+        {d.principles.articles.slice(0, 3).map((a) => (
+          <div class="card" data-reveal>
+            <span class="tag">{d.ideas.essayTag} · {a.num} · {a.date}</span>
+            <h3>
+              <a href={a.href}>{a.title}</a>
+            </h3>
+            <p class="teaser">{a.summary}</p>
+          </div>
+        ))}
+        <div class="card podcast" data-reveal>
+          <span class="tag">{d.ideas.podcast.tag}</span>
+          {/* thumb + copy side by side (wraps on narrow cards) so it reads
+              like the essay cards: artwork, title, teaser */}
+          <div class="podcast-row">
+            <picture>
+              <source
+                type="image/avif"
+                srcset="/images/ocorres-live-200.avif 1x, /images/ocorres-live-400.avif 2x"
+              />
+              <img
+                class="thumb"
+                src="/images/ocorres-live-200.webp"
+                srcset="/images/ocorres-live-200.webp 1x, /images/ocorres-live-400.webp 2x"
+                width="200"
+                height="113"
+                alt={d.ideas.podcast.thumbLabel}
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
+            <div class="podcast-body">
+              <h3>
+                <a href={d.ideas.podcast.href} target="_blank" rel="noopener">{d.ideas.podcast.title}</a>
+              </h3>
+              <p class="teaser">{d.ideas.podcast.teaser}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      {d.ideas.spanishNote && <p class="spanish-note" data-reveal>{d.ideas.spanishNote}</p>}
+      <p class="ideas-index-link" data-reveal>
+        <a href={d.ideas.indexLink.href}>{d.ideas.indexLink.label}</a>
+      </p>
+      <p class="ideas-index-link" data-reveal>
+        <a href={d.ideas.linkedin.href} target="_blank" rel="noopener">{d.ideas.linkedin.label}</a>
+      </p>
+    </div>
+  </section>
+</Base>
+
+<script is:inline>
+  /* Scroll reveals — the homepage's only JS. Progressive enhancement: the
+     hidden state (.reveal) is applied here, never by default CSS, so content
+     is fully visible without JS or with reduced motion. */
+  (() => {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!('IntersectionObserver' in window)) return;
+    const els = document.querySelectorAll('[data-reveal]');
+    if (!els.length) return;
+    /* stagger by the batch that enters TOGETHER, not by DOM position — an
+       element arriving alone rises immediately instead of inheriting delay
+       slots from siblings revealed screens ago (fix M5). Step comes from the
+       motion vocabulary (--stagger = --dur-1 / 2). */
+    const step =
+      parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stagger')) || 60;
+    const io = new IntersectionObserver(
+      (entries) => {
+        let i = 0;
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          e.target.style.transitionDelay = i++ * step + 'ms';
+          e.target.classList.add('is-in');
+          io.unobserve(e.target);
+        }
+      },
+      { rootMargin: '0px 0px -10% 0px' }
+    );
+    els.forEach((el) => {
+      el.classList.add('reveal');
+      io.observe(el);
+    });
+  })();
+</script>
+
+<style>
+  /* ---------- hero ---------- */
+  .hero {
+    padding: var(--space-7) var(--space-3) var(--space-6);
+  }
+  .hero .inner {
+    position: relative;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 640;
+    font-size: var(--text-hero);
+    line-height: var(--leading-display);
+    letter-spacing: -0.015em;
+    max-width: 21ch;
+    text-wrap: balance;
+  }
+  .hero h1 :global(em) {
+    font-style: italic;
+    font-weight: 560;
+    color: var(--amber);
+  }
+  /* the word the margin note points at — a proofreader's squiggle in pen ink
+     ties word and note into one gesture (tile hex = --pen) */
+  .hero h1 :global(.callout-target) {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='6' viewBox='0 0 16 6'%3E%3Cpath d='M0 4 Q4 1 8 4 T16 4' fill='none' stroke='%23A03A28' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: repeat-x;
+    background-position: left bottom;
+    background-size: 16px 6px;
+    padding-bottom: 0.12em;
+  }
+  .hero .lede {
+    max-width: var(--prose);
+    margin-top: var(--space-4);
+    font-size: var(--text-lede);
+  }
+  /* the thesis verb speaks in the accent voice — the same amber-italic
+     device as the h1 em directly above (ruling D4: a permanent underline is
+     the web's strongest link cue, and it sat on a non-link one word away from
+     a real link that only underlines on hover; amber underline now belongs to
+     link hover alone. The services strike remains the page's one edit mark) */
+  .hero .lede :global(.facilitated) {
+    font-style: italic;
+    font-weight: 500; /* a loaded Plex weight — 560 exists only in Fraunces */
+    color: var(--amber);
+  }
+  .hero .actions {
+    margin-top: var(--space-4);
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+
+  /* ---------- the ink margin note + its footnote (one unit) ----------
+     Desktop-only: below 1100px the same message renders as the plain
+     .hero-callout-compact paragraph above the CTAs instead. */
+  .hero-aside {
+    display: none;
+  }
+  .hero-callout-compact {
+    margin-top: var(--space-3);
+    max-width: var(--prose);
+    font-size: var(--text--1);
+    line-height: 1.55;
+    color: var(--muted);
+  }
+  .hero-callout-compact .fn-star {
+    font-family: var(--font-hand);
+    font-weight: 700;
+    font-size: 1.2em;
+    color: var(--pen);
+  }
+  /* the footnote's other half: a pen asterisk on the annotated headline word,
+     mobile only — on desktop the arrow ties word and note instead */
+  .hero h1 :global(.callout-target)::after {
+    content: '*' / '';
+    font-family: var(--font-hand);
+    font-weight: 700;
+    font-size: 0.55em;
+    color: var(--pen);
+    vertical-align: super;
+    line-height: 0;
+  }
+  @media (min-width: 1100px) {
+    .hero-callout-compact { display: none; }
+    .hero h1 :global(.callout-target)::after { content: none; }
+  }
+  .hero-note {
+    position: relative;
+    font-family: var(--font-hand);
+    font-size: var(--text-hand);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--pen);
+    max-width: 21ch;
+    transform: rotate(-1deg);
+  }
+  .hero-note p { margin: 0; }
+  /* the asterisk footnote: the note's claim, qualified — and the gate for
+     the not-software-core visitor. Same pen ink on the star ties the pair. */
+  .hero-footnote {
+    margin-top: var(--space-2);
+    max-width: 54ch;
+    font-size: var(--text--1);
+    line-height: 1.55;
+    font-style: italic;
+    color: var(--muted);
+  }
+  .hero-footnote .fn-star {
+    font-family: var(--font-hand);
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.2em;
+    color: var(--pen);
+  }
+  .note-arrow {
+    display: none;
+  }
+  @media (min-width: 1100px) {
+    /* the whole unit lives in the right margin; only the note rotates */
+    .hero-aside {
+      display: block;
+      position: absolute;
+      top: 5rem;
+      right: 0;
+      width: 16.5rem;
+    }
+    .hero-note {
+      transform: rotate(-2.5deg);
+    }
+    .note-arrow {
+      display: block;
+      position: absolute;
+      right: calc(100% + 0.4rem);
+      top: 0.15rem;
+      width: 280px;
+      height: auto;
+      overflow: visible;
+      pointer-events: none;
+    }
+    .note-arrow path {
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 1;
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* ---------- orchestrated load sequence (handoff §3.4): eyebrow → headline
+     → cursor blinks → lede → actions. Total 720ms ≤ 900ms budget; delays and
+     durations only from the {120, 240, 480, 900} vocabulary.
+     The h1 is the LCP element: it RISES only — an opacity fade would hold its
+     first paint hostage to the animation end (measured: LCP = FCP + delay +
+     duration). Motion must never gate the LCP paint.
+     The margin note is a deliberate post-script: it fades in at 900ms (after
+     the terminal has "printed") and the arrow draws itself — the hand comes
+     out after the machine is done. Reduced motion: the global guard in
+     global.css zeroes every duration/delay, so note + arrow appear instantly. ---------- */
+  @keyframes seq-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes seq-rise {
+    from { transform: translateY(12px); }
+    to { transform: none; }
+  }
+  @keyframes ink-draw {
+    from { stroke-dashoffset: 1; }
+    to { stroke-dashoffset: 0; }
+  }
+  .hero .eyebrow { animation: seq-fade var(--dur-2) var(--ease) backwards; }
+  .hero h1 { animation: seq-rise var(--dur-3) var(--ease) var(--dur-1) backwards; }
+  .hero .cursor { animation-delay: calc(var(--dur-3) + var(--dur-1)); }
+  /* The lede is the LCP element since the Session-7 hero shortened the h1 —
+     so it obeys the same law as the h1: it RISES only. A fade here measurably
+     gated LCP at FCP + 480 + 240ms (LHCI, devtools throttling). */
+  .hero .lede { animation: seq-rise var(--dur-2) var(--ease) var(--dur-3) backwards; }
+  .hero .actions { animation: seq-fade var(--dur-2) var(--ease) var(--dur-3) backwards; }
+  .hero-note { animation: seq-fade var(--dur-2) var(--ease) var(--dur-4) backwards; }
+  .hero-footnote { animation: seq-fade var(--dur-2) var(--ease) var(--dur-4) backwards; }
+  .hero-callout-compact { animation: seq-fade var(--dur-2) var(--ease) var(--dur-3) backwards; }
+  @media (min-width: 1100px) {
+    .note-arrow path {
+      animation: ink-draw var(--dur-3) var(--ease) calc(var(--dur-4) + var(--dur-2)) backwards;
+    }
+  }
+
+  /* ---------- thesis ---------- */
+  .thesis {
+    padding: 0 var(--space-3) var(--space-6);
+  }
+  .thesis .block {
+    border-left: 3px solid var(--amber);
+    background: var(--card);
+    padding: var(--space-4);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    box-shadow: 0 1px 2px rgba(25, 28, 33, 0.05);
+    /* cards hug their measure like every sibling (ruling D8/O2) — the calc
+       keeps the inner text at the full 66ch the surrounding prose uses; the
+       apex artifact stays apex by rule weight + shadow, not by empty width */
+    max-width: calc(var(--prose) + 2 * var(--space-4));
+  }
+  .thesis h2 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 560;
+    font-style: italic;
+    font-size: var(--text-h2);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    margin-bottom: var(--space-2);
+    text-wrap: balance;
+  }
+  .thesis p { max-width: var(--prose); }
+  .thesis p + p { margin-top: var(--space-2); }
+  .thesis :global(strong) { color: var(--slate); }
+
+  /* ---------- who ---------- */
+  .who {
+    padding: 0 var(--space-3) var(--space-6);
+  }
+  /* eyebrow above BOTH columns (AboutPage arc pattern: title, then grid).
+     Explicit margin = the deliberate gap to the grid — same var(--space-3)
+     AboutPage's .section-title uses before .arc-grid (and what the global
+     .eyebrow rule already carries; restated here so it's chosen, not
+     inherited by accident). */
+  .who .eyebrow {
+    margin-bottom: var(--space-3);
+  }
+  .who-grid {
+    display: grid;
+    gap: var(--space-5);
+  }
+  @media (min-width: 900px) {
+    .who-grid { grid-template-columns: max-content 1fr; }
+  }
+  /* 4:5 editorial portrait behind the site's amber-rule device (blockquote family) */
+  .who picture {
+    display: block;
+    width: max-content;
+    /* direct grid child now — don't stretch to row height, or the amber
+       rule would run past the photo (matches .arc-grid picture on /about/) */
+    align-self: start;
+    border-left: 2px solid var(--amber);
+    padding-left: var(--space-1);
+  }
+  .portrait {
+    width: 280px;
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-md);
+    object-fit: cover;
+    /* gradient shows while the photo streams in */
+    background: linear-gradient(140deg, var(--slate), color-mix(in srgb, var(--slate), var(--paper) 30%));
+  }
+  .who-text p { max-width: var(--prose); }
+  .who-text p + p { margin-top: var(--space-2); }
+
+  /* ---------- principles (absorbed page) ---------- */
+  .principles {
+    padding: 0 var(--space-3) var(--space-6);
+  }
+  .principles .section-title {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 560;
+    font-size: var(--text-1);
+    line-height: var(--leading-display);
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    max-width: 28ch;
+    text-wrap: balance;
+    margin-bottom: var(--space-3);
+  }
+
+  /* aburrida — intro, the Clarke quotation as a real quote card (same device
+     as the credo dialog), then the explanation. All prose register. */
+  .aburrida {
+    margin-bottom: var(--space-5);
+  }
+  .aburrida-hook {
+    max-width: var(--prose);
+    line-height: var(--leading-body);
+  }
+  .aburrida blockquote {
+    margin: var(--space-3) 0;
+    padding: var(--space-2) var(--space-3);
+    border-left: 2px solid var(--amber);
+    background: var(--card);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    max-width: var(--prose);
+  }
+  .aburrida blockquote p {
+    font-style: italic;
+    color: var(--muted);
+  }
+  .aburrida blockquote cite {
+    display: block;
+    margin-top: var(--space-1);
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-size: var(--text--1);
+    color: var(--muted);
+  }
+  .aburrida-text {
+    max-width: var(--prose);
+    line-height: var(--leading-body);
+  }
+
+  /* credo — the dialog */
+  .credo {
+    margin-bottom: var(--space-5);
+  }
+  .credo-body {
+    max-width: var(--prose);
+  }
+  .credo-body p {
+    margin-top: var(--space-2);
+    line-height: var(--leading-body);
+  }
+  .credo-why {
+    font-weight: 500;
+  }
+  .credo-body blockquote {
+    margin: var(--space-3) 0;
+    padding: var(--space-2) var(--space-3);
+    border-left: 2px solid var(--amber);
+    background: var(--card);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+  .credo-body blockquote p {
+    margin-top: 0;
+    font-style: italic;
+    color: var(--muted);
+  }
+  /* the dialog's resolution — same italic display register as the thesis,
+     so emphasis reads as the site's voice, not a system-font caption.
+     Same size as the myths closing (owner call). */
+  .credo-closing {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 560;
+    font-style: italic;
+    font-size: var(--text-1);
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  /* the resolution's breathing room beats the paragraph blanket above by
+     structure, not by !important (fix M6) */
+  .credo-body p.credo-closing {
+    margin-top: var(--space-4);
+  }
+
+  /* myths — the enumeration.
+     Ledger spec (ruling C2): numbered ledgers share mono amber numerals
+     (--text-ui, tabular) and hairline row tops. Ratified difference: a ledger
+     that is a MENU closes its frame with a bottom hairline (services); one
+     that flows into prose stays open-bottom (myths). Column width and gap
+     may differ with content scale; numeral optical padding is per-face. */
+  .myths-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 840px) {
+    .myths-list {
+      grid-template-columns: 1fr 1fr;
+      column-gap: var(--space-4);
+    }
+  }
+  .myths-list li {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: var(--space-2);
+    padding: var(--space-2) 0;
+    border-top: 1px solid var(--line);
+  }
+  .myths-list .num {
+    font-family: var(--font-mono);
+    color: var(--amber);
+    font-size: var(--text-ui);
+    font-variant-numeric: tabular-nums;
+    padding-top: 2px;
+  }
+  .myths-list .myth-text {
+    line-height: var(--leading-body);
+  }
+  .myths-list .myth-text :global(strong) {
+    color: var(--ink); /* weight comes from the global strong rule (C3) */
+  }
+  .myths-intro {
+    max-width: var(--prose);
+    margin-top: var(--space-3);
+    margin-bottom: var(--space-2);
+    line-height: var(--leading-body);
+  }
+  .side-effects {
+    margin-top: var(--space-2);
+    padding: var(--space-3);
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    max-width: var(--prose);
+  }
+  .side-effects h4 {
+    font-family: var(--font-mono);
+    font-size: var(--text--1);
+    font-weight: 500;
+    color: var(--amber);
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-2);
+  }
+  .side-effects ul {
+    list-style: none;
+  }
+  .side-effects li {
+    padding: var(--space-1) 0;
+    line-height: var(--leading-body);
+  }
+  .side-effects li::before {
+    content: '— ';
+    color: var(--amber);
+  }
+  /* the pivot line into services — display face with the amber statement
+     border, closing the section with the same device that opened it */
+  .myths-closing {
+    margin-top: var(--space-4);
+    max-width: var(--prose);
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 560;
+    font-size: var(--text-1);
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    padding-left: var(--space-3);
+    border-left: 3px solid var(--amber);
+  }
+
+  /* ---------- services ---------- */
+  .services {
+    padding: 0 var(--space-3) var(--space-6);
+  }
+  /* the refusal + the four verbs: sits above the ladder. The struck word
+     is the diff device — muted ink, amber strike line */
+  .services-intro {
+    margin-bottom: var(--space-4);
+  }
+  .services-intro .statement {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 560;
+    font-size: var(--text-1);
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    max-width: var(--prose);
+    text-wrap: balance;
+  }
+  .services-intro .statement :global(s) {
+    color: var(--muted);
+    text-decoration-thickness: 2px;
+    text-decoration-color: var(--amber);
+  }
+  .services-intro .verbs {
+    margin-top: var(--space-2);
+    max-width: var(--prose);
+    color: var(--muted);
+  }
+  /* what facilitation means here — full body voice, not fine print: "your
+     people build the answers" and "holds after I leave" are the phrases that
+     separate this offer from every consultant already fired (ruling D6/M2) */
+  .services-intro .facilitation {
+    margin-top: var(--space-2);
+    max-width: var(--prose);
+  }
+  .service {
+    display: grid;
+    gap: var(--space-1);
+    padding: var(--space-4) 0;
+    border-top: 1px solid var(--line);
+  }
+  .service:last-of-type { border-bottom: 1px solid var(--line); }
+  @media (min-width: 840px) {
+    .service { grid-template-columns: 64px 260px 1fr; gap: var(--space-3); }
+  }
+  .service .num {
+    font-family: var(--font-mono);
+    color: var(--amber);
+    font-size: var(--text-ui);
+    padding-top: 4px;
+  }
+  /* detail pages retired (session 7) — titles are plain text now */
+  .service h3 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 560;
+    font-size: var(--text-1);
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  .service p {
+    max-width: 58ch;
+  }
+  /* the voice behind the three services — prose, not a label */
+  .services-about {
+    margin-top: var(--space-2);
+    max-width: var(--prose);
+    line-height: var(--leading-body);
+  }
+  .services .after { margin-top: var(--space-3); }
+
+  /* ---------- ideas ---------- */
+  .ideas {
+    padding: 0 var(--space-3) var(--space-6);
+  }
+  .ideas-intro {
+    max-width: var(--prose);
+    margin-bottom: var(--space-3);
+  }
+  .ideas-grid {
+    display: grid;
+    /* boundary gaps must beat in-card gaps (--space-2) or the exhibits read
+       as one continuous stanza list — proximity does the grouping (fix M4) */
+    gap: var(--space-5) var(--space-3);
+  }
+  @media (min-width: 840px) {
+    .ideas-grid { grid-template-columns: 1fr 1fr; }
+  }
+  .ideas .card h3 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 560;
+    font-size: var(--text-1);
+    line-height: 1.3;
+    color: var(--ink);
+    letter-spacing: 0;
+    text-transform: none;
+    text-wrap: balance;
+  }
+  .ideas .card h3::before { content: none; }
+  .ideas .card h3 a {
+    color: inherit;
+    text-decoration: none;
+    /* opt out of the prose-link underline draw — the visible arrow is the
+       affordance; hover answers in amber like every other link (fix G3) */
+    background-image: none;
+    transition: color var(--dur-1) var(--ease);
+  }
+  .ideas .card h3 a:hover {
+    color: var(--amber);
+  }
+  /* same affordance as before; external links get the outbound mark.
+     \00a0 welds the glyph to the last word so it can never orphan (M3) */
+  .ideas .card h3 a::after {
+    content: '\00a0→';
+    font-family: var(--font-mono);
+    font-size: 0.8em;
+    color: var(--amber);
+  }
+  .ideas .card h3 a[target='_blank']::after {
+    content: '\00a0↗';
+  }
+  .ideas .card .tag {
+    font-family: var(--font-mono);
+    font-size: var(--text-tag);
+    color: var(--amber);
+    letter-spacing: 0.06em;
+    display: block;
+    margin-bottom: var(--space-2);
+    text-transform: uppercase;
+  }
+  .ideas .card .teaser {
+    margin-top: var(--space-2);
+    font-size: var(--text-support);
+    color: var(--muted);
+  }
+  /* podcast: thumb beside title + teaser; wraps to stacked on narrow cards */
+  .podcast-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--space-2) var(--space-3);
+  }
+  .podcast-body {
+    flex: 1 1 14rem;
+  }
+  .ideas .card .thumb {
+    height: 112px;
+    width: auto;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+    /* gradient shows while the art streams in — same surface as the old placeholder */
+    background: linear-gradient(140deg, var(--slate), color-mix(in srgb, var(--slate), var(--paper) 30%));
+  }
+  .ideas .spanish-note {
+    margin-top: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--text--1);
+    color: var(--muted);
+    max-width: var(--prose);
+  }
+  /* quiet mono way into the index — same register as the footer links */
+  .ideas-index-link {
+    margin-top: var(--space-3);
+  }
+  .ideas-index-link + .ideas-index-link {
+    margin-top: var(--space-1);
+  }
+  .ideas-index-link a {
+    font-family: var(--font-mono);
+    font-size: var(--text--1);
+    color: var(--muted);
+    /* quiet-mono register: no prose underline draw, one hover physics
+       (ruling C4 — this group used to snap AND draw an underline) */
+    background-image: none;
+    transition: color var(--dur-1) var(--ease);
+  }
+  .ideas-index-link a:hover {
+    color: var(--amber);
+  }
+</style>

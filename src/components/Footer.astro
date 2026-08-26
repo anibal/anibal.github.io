@@ -1,0 +1,94 @@
+---
+import { getLocale, getDict } from '../i18n/utils';
+
+interface Props {
+  /** The contact page sets this false: its body already IS this CTA. */
+  cta?: boolean;
+}
+
+const locale = getLocale(Astro.url);
+const d = getDict(locale);
+const year = new Date().getFullYear();
+const showCta = Astro.props.cta ?? true;
+---
+
+<footer class="site-footer" id="contact">
+  <div class="inner">
+    {
+      showCta && (
+        <>
+          <span class="eyebrow">{d.footer.eyebrow}</span>
+          <h2>{d.footer.title}</h2>
+          {/* primary → the contact room (book or write, laid out); the direct
+              calendar shortcut stays one register below for the already-sure.
+              Label comes from cta.start — one verb family sitewide (D2) */}
+          <a class="btn" href={d.cta.startHref}>{d.cta.start}</a>
+          <p class="write-first">
+            <a href={d.cta.bookHref} target="_blank" rel="noopener">{d.footer.bookDirect}</a>
+          </p>
+        </>
+      )
+    }
+    {/* the arrow contract holds at the exit row (ruling D3/G1): links that
+        leave the site wear ↗ (welded with a no-break space); mailto opens an
+        app, not the web — it carries no glyph */}
+    <nav class="links" aria-label={d.a11y.elsewhere}>
+      <a href="mailto:i@usedtocode.com">email</a>
+      <a href="https://www.linkedin.com/in/anibalrojas/" target="_blank" rel="noopener">linkedin&nbsp;↗</a>
+      <a href="https://anibal.substack.com/" target="_blank" rel="noopener">substack&nbsp;↗</a>
+      <a href="https://ocorres.com" target="_blank" rel="noopener">ocorres.com&nbsp;↗</a>
+    </nav>
+    <p class="colophon">© {year} Aníbal Rojas · Medellín, Colombia · {d.footer.colophon}</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--line);
+    padding: var(--space-6) var(--space-3) var(--space-5);
+    background: var(--card);
+  }
+  .site-footer .inner { text-align: center; }
+  .site-footer h2 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 560;
+    font-size: var(--text-h2-lg);
+    letter-spacing: -0.01em;
+    margin-bottom: var(--space-3);
+    text-wrap: balance;
+  }
+  .write-first {
+    margin-top: var(--space-2);
+  }
+  .write-first a {
+    font-family: var(--font-mono);
+    font-size: var(--text--1);
+    color: var(--muted);
+    background-image: none;
+    /* quiet-mono links share one hover physics (ruling C4) */
+    transition: color var(--dur-1) var(--ease);
+  }
+  .write-first a:hover { color: var(--amber); }
+  .links {
+    margin-top: var(--space-4);
+    display: flex;
+    gap: var(--space-3);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .links a {
+    color: var(--muted);
+    font-size: var(--text--1);
+    font-family: var(--font-mono);
+    transition: color var(--dur-1) var(--ease);
+    background-image: none;
+  }
+  .links a:hover { color: var(--amber); }
+  .colophon {
+    margin-top: var(--space-4);
+    font-family: var(--font-mono);
+    font-size: var(--text--1);
+    color: var(--muted);
+  }
+</style>
