@@ -1,0 +1,210 @@
+---
+/**
+ * /ideas/ index — both locales. A typeset index, not a card grid:
+ * hairline-separated rows grouped by year, newest first (handoff §6.4).
+ * Only the current locale's posts; drafts render in dev only.
+ */
+import Base from '../layouts/Base.astro';
+import { getDict, type Locale } from '../i18n/utils';
+import { getPosts, postPath, readingMinutes } from '../lib/posts';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const d = getDict(locale);
+const posts = await getPosts(locale);
+
+// Post dates are calendar dates, not instants: format in UTC.
+const dateLocale = locale === 'es' ? 'es-CO' : 'en-US';
+const fmt = new Intl.DateTimeFormat(dateLocale, {
+  day: 'numeric',
+  month: 'short',
+  timeZone: 'UTC',
+});
+
+// newest first, grouped by year
+const years = new Map<number, typeof posts>();
+for (const post of posts) {
+  const year = post.data.date.getFullYear();
+  if (!years.has(year)) years.set(year, []);
+  years.get(year)!.push(post);
+}
+---
+
+<Base title={d.ideasPage.meta.title} description={d.ideasPage.meta.description}>
+  <div class="ideas-index">
+    <header class="index-head">
+      <div class="inner">
+        <span class="eyebrow">{d.ideasPage.eyebrow}</span>
+        <h1>{d.ideasPage.heading}</h1>
+        <p class="lede">{d.ideas.intro}</p>
+      </div>
+    </header>
+
+    <div class="inner">
+      {
+        posts.length === 0 && (
+          <section class="empty">
+            <h2>{d.ideasPage.empty.title}</h2>
+            <p set:html={d.ideasPage.empty.text} />
+            <p class="empty-actions">
+              <a class="btn ghost" href="https://anibal.substack.com/" target="_blank" rel="noopener">
+                {d.ideasPage.empty.subscribeLabel}
+              </a>
+            </p>
+          </section>
+        )
+      }
+      {[...years.entries()].map(([year, yearPosts]) => (
+        <section class="year">
+          <h2>{year}</h2>
+          <ul>
+            {yearPosts.map((post) => (
+              <li class="row">
+                <div class="row-main">
+                  <a class="row-title" href={postPath(post)}>{post.data.title}</a>
+                  <p class="row-desc">{post.data.description}</p>
+                </div>
+                <div class="row-meta">
+                  <time datetime={post.data.date.toISOString().slice(0, 10)}>
+                    {fmt.format(post.data.date)}
+                  </time>
+                  <span>{readingMinutes(post.body ?? '')} {d.ideasPage.minuteRead}</span>
+                  {post.data.tags.length > 0 && (
+                    <span class="tags">{post.data.tags.join(' · ')}</span>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+
+    </div>
+  </div>
+</Base>
+
+<style>
+  .index-head {
+    padding: var(--space-6) var(--space-3) var(--space-4);
+  }
+  .index-head h1 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 640;
+    font-size: var(--text-h2-lg);
+    line-height: var(--leading-display);
+    letter-spacing: -0.01em;
+    max-width: 24ch;
+    text-wrap: balance;
+  }
+  .index-head .lede {
+    max-width: var(--prose);
+    margin-top: var(--space-2);
+    font-size: var(--text-lede);
+  }
+
+  /* zero-posts state: designed, not an accident of an empty loop */
+  .empty {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: var(--space-4) 0;
+    margin-bottom: var(--space-4);
+  }
+  .empty h2 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 560;
+    font-size: var(--text-1);
+    letter-spacing: -0.01em;
+    margin-bottom: var(--space-2);
+  }
+  .empty p {
+    max-width: var(--prose);
+    line-height: var(--leading-body);
+  }
+  .empty-actions {
+    margin-top: var(--space-3);
+  }
+
+  .year {
+    padding-bottom: var(--space-4);
+  }
+  .year h2 {
+    font-family: var(--font-mono);
+    font-size: var(--text--1);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    margin-bottom: var(--space-1);
+  }
+  .year ul {
+    list-style: none;
+  }
+  .row {
+    border-top: 1px solid var(--line);
+    padding: var(--space-2) 0;
+    display: grid;
+    gap: var(--space-1);
+  }
+  .year li:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+  @media (min-width: 840px) {
+    .row {
+      grid-template-columns: 1fr 220px;
+      gap: var(--space-3);
+      align-items: baseline;
+    }
+  }
+  .row-title {
+    /* opt out of the prose underline draw; hover answers in amber like every
+       link (same conformance as the home ideas cards, fix G3) */
+    background-image: none;
+    transition: color var(--dur-1) var(--ease);
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 560;
+    font-size: var(--text-1);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+  /* the system-wide affordance: ink title + amber mono arrow = this goes somewhere */
+  .row-title:hover {
+    color: var(--amber);
+  }
+  /* \00a0 welds the glyph so it never orphans (M3) */
+  .row-title::after {
+    content: '\00a0→';
+    font-family: var(--font-mono);
+    font-size: 0.8em;
+    color: var(--amber);
+  }
+  .row-desc {
+    margin-top: var(--space-1);
+    font-size: var(--text-support);
+    color: var(--muted);
+    max-width: 58ch;
+  }
+  .row-meta {
+    font-family: var(--font-mono);
+    font-size: var(--text--1);
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-2);
+  }
+  @media (min-width: 840px) {
+    .row-meta { justify-content: flex-end; text-align: right; }
+  }
+
+  .ideas-index > .inner {
+    padding: 0 var(--space-3) var(--space-6);
+  }
+</style>

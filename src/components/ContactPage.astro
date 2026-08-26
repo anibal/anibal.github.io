@@ -1,0 +1,96 @@
+---
+/**
+ * /contact/ page — the room for starting a conversation, two real paths:
+ * book a slot (Google Calendar, direct link) or write first (email).
+ * The global footer CTA is suppressed here (footerCta=false): this page
+ * IS that CTA, expanded.
+ */
+import Base from '../layouts/Base.astro';
+import { getDict, type Locale } from '../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const d = getDict(locale);
+const p = d.contactPage;
+---
+
+<Base title={p.meta.title} description={p.meta.description} footerCta={false}>
+  <div class="contact">
+    <header class="contact-head">
+      <div class="inner">
+        <span class="eyebrow">{p.eyebrow}</span>
+        <h1>{p.heading}</h1>
+        <p class="lede">{p.intro}</p>
+      </div>
+    </header>
+
+    <div class="paths inner">
+      <section class="path">
+        <div class="actions">
+          {/* the one place "book" belongs (CTA verb law): the calendar itself.
+              External destination opens a new tab, like every departure */}
+          <a class="btn" href={d.cta.bookHref} target="_blank" rel="noopener">{d.cta.book}</a>
+        </div>
+        <p class="note">{p.after}</p>
+      </section>
+
+      <section class="path">
+        <h2>{p.write.title}</h2>
+        <p class="write-text" set:html={p.write.text} />
+      </section>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .contact-head {
+    padding: var(--space-6) var(--space-3) var(--space-4);
+    text-align: center;
+  }
+  .contact-head h1 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 640; /* interior-page h1 spec: 640 / --text-h2-lg / -0.01em */
+    font-size: var(--text-h2-lg);
+    line-height: var(--leading-display);
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  .contact-head .lede {
+    max-width: var(--prose);
+    margin: var(--space-3) auto 0;
+    font-size: var(--text-lede);
+    line-height: var(--leading-body);
+  }
+
+  .paths {
+    padding: 0 var(--space-3) var(--space-6);
+    text-align: center;
+  }
+  .path + .path {
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--line);
+  }
+  .note {
+    margin-top: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text--1);
+    color: var(--muted);
+  }
+  .path h2 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 560;
+    font-size: var(--text-1);
+    letter-spacing: -0.01em;
+  }
+  .write-text {
+    max-width: var(--prose);
+    margin: var(--space-2) auto 0;
+    line-height: var(--leading-body);
+  }
+</style>

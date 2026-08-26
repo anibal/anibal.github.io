@@ -1,0 +1,51 @@
+---
+/**
+ * 404 — one bilingual page for both locales (GitHub Pages serves the build's
+ * 404.html on every asset miss). 0KB JS, same furniture as every other page.
+ */
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="404 · Aníbal Rojas" description="Page not found · página no encontrada.">
+  <section class="notfound">
+    <span class="eyebrow">404</span>{/* renders as a standard prompt: > 404 */}
+    <h1>There's nothing at this address.</h1>
+    <p class="es" lang="es">No hay nada en esta dirección.</p>
+    {/* recovery links read as the real dirnames — the tab-completion
+        conceit stays literally truthful, exactly like the header nav */}
+    <nav class="links" aria-label="404 navigation">
+      <a href="/">home/</a>
+      <a href="/ideas/">ideas/</a>
+      <a lang="es" href="/es/">es/</a>
+      <a lang="es" href="/es/ideas/">es/ideas/</a>
+    </nav>
+  </section>
+</Base>
+
+<style>
+  .notfound {
+    max-width: var(--prose);
+    margin: 0 auto;
+    padding: var(--space-6) var(--space-3);
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 640;
+    font-size: var(--text-h2-lg);
+    text-wrap: balance;
+    margin-top: var(--space-2);
+  }
+  .es {
+    color: var(--muted);
+    margin-top: var(--space-1);
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-3);
+    margin-top: var(--space-4);
+    font-family: var(--font-mono);
+    font-size: var(--text--1);
+  }
+</style>

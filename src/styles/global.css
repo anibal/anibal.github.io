@@ -1,0 +1,201 @@
+/* ------------------------------------------------------------------
+   Global styles — base vocabulary only. Everything traces to tokens.css.
+   Motion vocabulary (handoff §3.4): amber underline draw-in on links,
+   ≤2px card lift, CTA darken. Nothing else without handoff approval.
+   ------------------------------------------------------------------ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  /* sticky header is ~92px tall at desktop (81px narrow); anchor jumps
+     (/#services) must land content below it, not behind it */
+  scroll-padding-top: 104px;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--text-0);
+  line-height: var(--leading-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(217, 119, 6, 0.18); /* amber-bright at low alpha */
+}
+
+img, svg, video { display: block; max-width: 100%; }
+
+/* ---------- links: amber underline draws in, 120ms ---------- */
+a {
+  color: var(--amber);
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size var(--dur-1) var(--ease);
+}
+a:hover {
+  background-size: 100% 1px;
+}
+/* chrome surfaces (buttons, wordmark, locale seg, cli nav) never show the
+   underline trick — declared here as the single source of intent (fix M6:
+   the old list named .locale-link, a class that existed nowhere; the seg
+   chips escaped only via a background shorthand accident) */
+a:where(.btn, .wordmark, .seg-item, .cli-item) {
+  background-image: none;
+}
+
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  /* --amber, not --amber-bright: the bright token is 2.97:1 on paper,
+     under the 3:1 non-text-contrast threshold (WCAG 1.4.11) */
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ---------- emphasis: one rule, colored per context (ruling C3) ----------
+   strong = 600 site-wide; contexts may recolor (slate in the thesis, ink in
+   the myths) but never re-weigh. Before this rule, half the strongs on the
+   home page rendered at the browser's default 700 by accident. */
+strong { font-weight: 600; }
+
+/* wrap guard: welds a compound (e.g. "AI-assisted") into one unbreakable
+   unit — the flagship term never hyphen-splits in a display setting (M1) */
+.nowrap { white-space: nowrap; }
+
+/* ---------- numeric/metadata contexts use tabular figures ---------- */
+time, .mono-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- segmented control (locale switcher, Bottleneck presets) ---------- */
+.seg {
+  display: flex;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--card);
+}
+.seg-item {
+  font-family: var(--font-mono);
+  font-size: var(--text-chip);
+  letter-spacing: 0.04em;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  padding: 7px 12px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color var(--dur-1) var(--ease), background-color var(--dur-1) var(--ease);
+}
+.seg-item:hover { color: var(--amber); }
+.seg-item.active { background: var(--ink); color: var(--paper); }
+.seg-item.active:hover { color: var(--paper); }
+
+/* ---------- skip link ---------- */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--space-2);
+  z-index: 100;
+  font-family: var(--font-mono);
+  font-size: var(--text--1);
+  background: var(--ink);
+  color: var(--paper);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+}
+.skip-link:focus-visible {
+  top: var(--space-2);
+}
+
+/* ---------- shared section chrome (mockup conventions) ---------- */
+.inner {
+  max-width: var(--max);
+  margin: 0 auto;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text--1);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--amber);
+  margin-bottom: var(--space-3);
+  display: block;
+}
+.eyebrow::before {
+  content: "> ";
+  /* alt-text syntax hides the prompt glyph from screen readers (else a
+     heading reads as "greater than services"); older engines ignore the
+     second declaration and keep today's behavior */
+  content: "> " / "";
+  color: var(--muted);
+}
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-block;
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 600;
+  font-size: var(--text-btn);
+  padding: 11px 20px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--dur-1) var(--ease);
+}
+.btn:hover { background: color-mix(in srgb, var(--ink) 88%, black); }
+.btn.ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+  transition: background-color var(--dur-1) var(--ease), color var(--dur-1) var(--ease);
+}
+.btn.ghost:hover { background: var(--ink); color: var(--paper); }
+
+/* ---------- blinking amber cursor (hero) ---------- */
+.cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 1em;
+  background: var(--amber-bright);
+  margin-left: 0.12em;
+  vertical-align: baseline;
+  transform: translateY(0.12em);
+  animation: blink 1.1s steps(1) infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* ---------- scroll reveals: hidden state applied by JS only (progressive
+   enhancement — with no JS every element is simply visible) ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity var(--dur-3) var(--ease), transform var(--dur-3) var(--ease);
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- reduced motion: everything stops, globally ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .cursor { animation: none; }
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
