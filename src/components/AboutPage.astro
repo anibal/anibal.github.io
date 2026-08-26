@@ -18,6 +18,18 @@ const p = d.aboutPage;
 ---
 
 <Base title={p.meta.title} description={p.meta.description}>
+  {/* the portrait is this page's LCP element — preload it at the top of head
+      so its fetch (and connection setup) overlaps the document download
+      instead of waiting for the scanner to reach the <img> (LHCI LCP<1.5s) */}
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    href="/images/anibal-rojas-280x350.avif"
+    imagesrcset="/images/anibal-rojas-280x350.avif 1x, /images/anibal-rojas-560x700.avif 2x"
+    imagesizes="280px"
+    fetchpriority="high"
+  />
   <div class="about">
     <header class="about-head">
       <div class="inner">
@@ -45,7 +57,10 @@ const p = d.aboutPage;
               width="280"
               height="350"
               alt={d.who.portraitLabel}
-              loading="lazy"
+              /* the portrait is the about page's LCP element (in-viewport at
+                 325px) — lazy added 1.6s of load delay; eager + high priority
+                 starts the fetch with the preload scanner (LHCI gate LCP<1.5s) */
+              fetchpriority="high"
               decoding="async"
             />
           </picture>

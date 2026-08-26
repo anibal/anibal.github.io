@@ -1,6 +1,6 @@
 # Brain Index
 
-_Auto-generated. Last updated 2026-08-26T00:44:35.989Z._
+_Auto-generated. Last updated 2026-08-26T01:41:29.253Z._
 
 - [anibal-collaboration-conventions](pages/anibal-collaboration-conventions.md) — category: person | tags: [workflow, person] | **Who:** Aníbal Rojas, the site's owner and sole author. Reviews every change himself, often through the running site rather than the diff.
 - [astro-5-static-islands](pages/astro-5-static-islands.md) — category: decision | tags: [stack, performance] | **Decided:** Astro 5 with static output. Client JavaScript is an allowlist of three islands: the language-aware header (only if it proves ne
