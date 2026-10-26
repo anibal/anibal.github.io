@@ -1,0 +1,1106 @@
+<meta charset="utf-8"><meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>El Regreso</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;800;900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one fixed canvas (the day, as thousands of images) under a column of scroll cards; scroll is the clock. */
+:root {
+  --night: #070b1d;      /* sky before she lands */
+  --ink: #eef0f7;        /* text on the sky */
+  --mute: #9aa3c2;       /* secondary text, navy-tinted */
+  --gold: #f4c430;       /* flag yellow: light, route, her */
+  --red: #e0413a;        /* flag red: the "now" marker */
+  --blue: #2f5fd0;       /* flag blue: map ink */
+  --card: rgba(7, 11, 29, .78);
+  --line: rgba(154, 163, 194, .22);
+  --display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+  --body: "Newsreader", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  color-scheme: dark;
+}
+html { background: var(--night); }
+/* type grows with the screen: phone-sized text gets lost on a 2000 px monitor */
+body { background: var(--night); color: var(--ink); font: 400 clamp(1.08rem, .82rem + .5vw, 1.6rem)/1.55 var(--body); }
+#sky { position: fixed; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; touch-action: pan-y; }
+main { position: relative; z-index: 1; pointer-events: none;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+main a, main button, .card { pointer-events: auto; }
+section { position: relative; }
+.card { max-width: clamp(30rem, 34vw, 44rem); background: var(--card); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  border-left: 3px solid var(--gold); padding: 1.1em 1.3em 1.2em; }
+.card.note { border-left-color: var(--mute); font-style: italic; }
+.card p { margin: 0; text-wrap: pretty; }
+.card p + p { margin-top: .7rem; }
+.eyebrow { font: 500 clamp(.78rem, .55rem + .32vw, 1.05rem)/1.2 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin: 0 0 .5rem; }
+h1, h2 { font-family: var(--display); font-weight: 900; text-transform: uppercase; line-height: .86; margin: 0; text-wrap: balance; letter-spacing: .005em; }
+h2 { font-size: clamp(2.4rem, 5.4vw, 6.8rem); margin-bottom: .6rem; }
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--gold); }
+q { font-style: italic; quotes: "«" "»"; }
+
+/* hero */
+.hero { padding-block: clamp(5rem, 14vh, 9rem) 26vh; display: grid; gap: 1.4rem; }
+.hero h1 { font-size: clamp(4.6rem, 17vw, 13rem); color: var(--ink); text-shadow: 0 0 40px rgba(7,11,29,.9); }
+.hero h1 span { color: var(--gold); display: block; font-size: .32em; letter-spacing: .08em; line-height: 1; margin-bottom: .25em; font-weight: 800; }
+.hero .lede { max-width: 34rem; font-size: clamp(1.1rem, 2.2vw, 1.35rem); text-shadow: 0 1px 12px var(--night); background: var(--card); padding: 1rem 1.2rem; }
+.stats { display: flex; flex-wrap: wrap; gap: .4rem 1.6rem; font: 500 .85rem/1.3 var(--mono); color: var(--mute); }
+.stats b { display: block; font: 900 clamp(1.8rem, 4vw, 2.6rem)/1 var(--display); color: var(--ink); }
+.hint { font: 500 .78rem var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--mute); }
+
+/* chapters: tall scroll runs, cards spaced inside */
+.chapter { display: grid; gap: 70vh; padding-block: 30vh 40vh; }
+.chapter.short { gap: 50vh; }
+/* one reading column on the left; the canvas keeps its focus to the right */
+.chapter .card { justify-self: start; }
+@media (max-width: 700px) { .chapter { gap: 80vh; } }
+.stop .when { font: 900 clamp(2.6rem, 3.4vw, 4rem)/1 var(--display); color: var(--gold); }
+.stop .where { font: 500 clamp(.78rem, .55rem + .32vw, 1.05rem) var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--mute); }
+.stop h3 { font: 800 clamp(1.7rem, 2.3vw, 2.8rem)/1 var(--display); text-transform: uppercase; margin: .3rem 0 .5rem; }
+
+/* clock */
+#clock { position: fixed; z-index: 2; pointer-events: none; right: max(16px, env(safe-area-inset-right, 0px));
+  top: calc(env(safe-area-inset-top, 0px) + 12px); text-align: right; transition: opacity .4s; }
+#clock .t { font: 900 clamp(3.4rem, 11vw, 8.5rem)/.82 var(--display); color: var(--gold); font-variant-numeric: tabular-nums; text-shadow: 0 0 30px rgba(7,11,29,.95); }
+#clock .d { font: 500 .78rem var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--ink); }
+#clock .n { font: 800 clamp(1.2rem, 2.2vw, 2.4rem)/1.1 var(--display); letter-spacing: .03em; text-transform: uppercase; color: var(--ink);
+  font-variant-numeric: tabular-nums; text-shadow: 0 0 20px rgba(7,11,29,.95); }
+
+/* film: the whole day plays by itself; any scroll or tap hands control back */
+#film { position: fixed; z-index: 3; left: max(16px, env(safe-area-inset-left, 0px)); top: calc(env(safe-area-inset-top, 0px) + 14px);
+  font: 500 .8rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--gold); background: rgba(7,11,29,.85);
+  border: 1px solid rgba(244,196,48,.6); padding: .65rem .9rem; cursor: pointer; }
+#film:hover { background: var(--gold); color: var(--night); }
+#film .tri { display: inline-block; }
+#film .bar { position: absolute; left: 0; bottom: -1px; height: 2px; width: 0; background: var(--gold); }
+/* the invitation: a slow gold breath and a nudge of the triangle, as if it wanted to start */
+#film.invite { animation: invite 2.6s ease-in-out infinite; }
+#film.invite .tri { animation: nudge 2.6s ease-in-out infinite; }
+@keyframes invite { 0%, 100% { box-shadow: 0 0 0 0 rgba(244,196,48,0); } 35% { box-shadow: 0 0 0 7px rgba(244,196,48,.18), 0 0 28px rgba(244,196,48,.4); } }
+@keyframes nudge { 0%, 100% { transform: none; } 30% { transform: translateX(4px) scale(1.25); } 45% { transform: none; } }
+#film:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+/* finale */
+.finale { padding-block: 20vh 14vh; display: grid; gap: 1.2rem; }
+.btn { display: inline-flex; gap: .5rem; align-items: center; font: 800 1.15rem/1 var(--display); letter-spacing: .06em; text-transform: uppercase;
+  color: var(--night); background: var(--gold); padding: .8rem 1.2rem; text-decoration: none; border: 0; cursor: pointer; }
+.btn.ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 2px var(--line); }
+.btn:focus-visible, a:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.foot { font: 400 .8rem/1.5 var(--mono); color: var(--mute); max-width: 40rem; }
+/* work-in-progress disclaimer: a quiet tag on the opening, a full note at the end */
+.wip { margin: 0; max-width: 40rem; font: 400 clamp(.85rem, .7rem + .3vw, 1.05rem)/1.5 var(--body); color: var(--ink);
+  border-left: 3px solid var(--red); background: var(--card); padding: .7rem 1rem; }
+.wip b { color: var(--gold); font-weight: 600; }
+.wip.tag { justify-self: start; font: 500 .72rem/1.3 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--mute); padding: .45rem .7rem; }
+
+/* detail panel */
+#detail { position: fixed; z-index: 4; right: max(12px, env(safe-area-inset-right, 0px)); bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
+  width: min(23rem, calc(100% - 24px)); background: rgba(7, 11, 29, .95); border: 1px solid var(--line); border-top: 3px solid var(--gold);
+  padding: .9rem; display: grid; grid-template-columns: 96px 1fr; gap: .8rem; font-size: .92rem; line-height: 1.4; }
+#detail canvas { width: 96px; height: 96px; background: #111832; }
+#detail .who { font: 500 .82rem var(--mono); color: var(--gold); word-break: break-all; }
+#detail .txt { margin: .3rem 0; max-height: 7.5em; overflow: auto; overflow-wrap: anywhere; }
+#detail .meta { font: 400 .75rem/1.45 var(--mono); color: var(--mute); grid-column: 1 / -1; }
+#detail .meta b { color: var(--ink); font-weight: 500; }
+#detail a { color: var(--gold); }
+#detail .x { position: absolute; top: .3rem; right: .4rem; background: none; border: 0; color: var(--mute); font: 500 1.3rem var(--mono); cursor: pointer; }
+/* the card is an image lifted out of the mosaic: it pops open once its image lands, and folds away when it flies home */
+#detail.pop { animation: pop .5s cubic-bezier(.2, 1.5, .4, 1) .16s both; transform-origin: 30% 100%; }
+#detail.leave { animation: leave .26s ease-in both; transform-origin: 30% 100%; }
+@keyframes pop {
+  from { opacity: 0; transform: scale(.3) translateY(30px); }
+  60% { box-shadow: 0 0 0 2px var(--gold), 0 0 60px rgba(244,196,48,.55); }
+  to { opacity: 1; transform: none; box-shadow: none; } }
+@keyframes leave { to { opacity: 0; transform: scale(.6) translateY(16px); } }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { #detail.pop { animation: fade .2s both; } #detail.leave { animation: fade .2s reverse both; } }
+
+/* the close: her last words of the day, large */
+.card blockquote { margin: .5rem 0 0; font: italic 400 clamp(1.4rem, 1rem + 1.1vw, 2.4rem)/1.25 var(--body); color: var(--ink); text-wrap: balance; }
+.card.final blockquote { font-size: clamp(1.8rem, 1.1rem + 1.9vw, 3.4rem); color: var(--gold); }
+.card .coda { margin-top: .9rem; color: var(--mute); }
+.card .src { display: inline-block; margin-top: .9rem; font: 500 clamp(.72rem, .6rem + .2vw, .9rem) var(--mono); letter-spacing: .06em; color: var(--gold); }
+.card .credit { margin-top: .5rem; font: 500 clamp(.68rem, .58rem + .18vw, .82rem) var(--mono); letter-spacing: .06em; color: var(--mute); }
+.card .credit a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+#dImg { transition: opacity .12s; }
+#tip { position: fixed; z-index: 3; pointer-events: none; font: 500 .75rem var(--mono); background: rgba(7,11,29,.92); color: var(--ink);
+  padding: .3rem .5rem; border: 1px solid var(--line); white-space: nowrap; }
+[hidden] { display: none !important; }
+#loading { position: fixed; left: max(16px, env(safe-area-inset-left, 0px)); bottom: calc(env(safe-area-inset-bottom, 0px) + 14px); z-index: 2;
+  font: 500 .75rem var(--mono); color: var(--mute); letter-spacing: .1em; text-transform: uppercase; }
+@media (prefers-reduced-motion: reduce) { #clock { transition: none; } }
+</style>
+
+<canvas id="sky" aria-label="Mosaico animado con las imágenes publicadas en X el 25 de octubre de 2026"></canvas>
+<div id="clock" aria-hidden="true"><div class="d" id="clockD">25 · 10 · 2026</div><div class="t" id="clockT">00:00</div><div class="n" id="clockN"></div></div>
+<div id="tip" hidden></div>
+<div id="loading">Cargando imágenes…</div>
+<button id="film" aria-pressed="false"><span class="tri" id="filmTri">▶</span> <span id="filmLbl">Ver el día · 1:30</span><i class="bar" id="filmBar"></i></button>
+<aside id="detail" hidden aria-live="polite">
+  <button class="x" id="dClose" aria-label="Cerrar">×</button>
+  <canvas id="dImg" width="192" height="192"></canvas>
+  <div style="min-width:0"><div class="who" id="dWho"></div><p class="txt" id="dTxt"></p><a id="dUrl" href="#" target="_blank" rel="noopener">Ver en X ↗</a></div>
+  <div class="meta" id="dMeta"></div>
+</aside>
+
+<main>
+  <section class="hero" data-scene="hero">
+    <h1><span>25 · 10 · 2026</span>El Regreso</h1>
+    <p class="lede">María Corina Machado, Premio Nobel de la Paz 2025, vuelve a Venezuela. Este mapa está hecho con las <b class="num" id="hTiles">5.435</b> imágenes distintas que la gente publicó en X ese día. Cada una aparece una sola vez, por mucho que se haya repetido.</p>
+    <div class="stats"><div><b id="sPosts">10.647</b>publicaciones</div><div><b id="sAcc">4.945</b>cuentas</div><div><b id="sArt">6.063</b>piezas únicas</div></div>
+    <div class="hint">Desliza para recorrer el día ↓ · o pulsa ▶ y míralo pasar</div>
+    <p class="wip tag">Trabajo en progreso · <span id="build"></span> · generado automáticamente, puede contener errores</p>
+  </section>
+
+  <section class="chapter short" data-scene="night">
+    <div class="card"><p class="eyebrow">00:00 · La espera</p><h2>Medianoche</h2><p>Durante horas casi no pasa nada. Hasta las once de la mañana aparecen apenas <b class="num" id="nEarly">150</b> imágenes sobre ella. Cada una brilla aquí como una estrella.</p></div>
+    <div class="card note" data-point="future"><p>Lo demás todavía no existe. Son puntos oscuros que esperan su hora.</p></div>
+  </section>
+
+  <section class="chapter short" data-scene="burst">
+    <div class="card"><p class="eyebrow">11:31 · Estoy aquí</p><h2>La noticia estalla</h2><p>A las 11:31 su cuenta publica desde Venezuela. Dos minutos después, Edmundo González anuncia que está en territorio venezolano.</p></div>
+    <div class="card note" data-point="core"><p>En el centro, el primer video de su llegada. Cada imagen nueva sale de ahí y empuja a las anteriores hacia afuera. Entre las 12:00 y las 13:00 se publican <b class="num" id="bPosts">1.820</b> posts.</p></div>
+  </section>
+
+  <section class="chapter" data-scene="route" id="routeSec">
+    <div class="card"><p class="eyebrow">La ruta</p><h2>De Barquisimeto a Caracas</h2><p>Cada imagen cae en el lugar que nombra su texto, a la hora en que se publicó. La línea dorada sigue a su caravana según sus propias cuentas.</p></div>
+  </section>
+
+  <section class="chapter short" data-scene="echo">
+    <div class="card"><p class="eyebrow">El eco</p><h2 id="e1h">Un video, 388 veces</h2><p id="e1p"></p></div>
+    <div class="card"><h2 id="e2h">Y otro, 171</h2><p id="e2p"></p></div>
+  </section>
+
+  <section class="chapter short" data-scene="hours">
+    <div class="card"><p class="eyebrow">Hora por hora</p><h2>El día, en columnas</h2><p>Cada columna es una hora. Cada cuadro es una imagen distinta. La altura es el día tal como se vivió en X.</p></div>
+    <div class="card"><p id="hText"></p></div>
+  </section>
+
+  <section class="chapter short" data-scene="cierre" id="cierreSec"></section>
+
+  <section class="finale" data-scene="finale">
+    <div class="card" style="max-width:34rem"><p class="eyebrow">Toda Venezuela</p><h2>Hasta el final</h2>
+      <p>«¡Hasta el final!», escribió a las 21:59, al entrar a Caracas. Cada luz de esa multitud vuelve aquí a su lugar.</p>
+      <p>Toca cualquier imagen para ver quién la publicó primero, cuántas veces se repitió y abrirla en X.</p>
+      <p>Las imágenes se agrupan por contenido, aunque tengan marcas de agua, recortes o espejados. El crédito va a la publicación más temprana que encontramos.</p></div>
+    <div style="display:flex;flex-wrap:wrap;gap:.8rem"><button class="btn ghost" id="toTop">Volver al inicio</button></div>
+    <p class="wip"><b>Trabajo en progreso.</b> Esta página se generó automáticamente a partir de publicaciones públicas en X y puede contener errores: imágenes agrupadas de más o de menos, créditos o lugares equivocados. Seguimos revisándola.</p>
+    <p class="foot" id="foot"></p>
+  </section>
+</main>
+
+<script>
+(() => {
+const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const cv = document.getElementById("sky"), ctx = cv.getContext("2d");
+const $ = id => document.getElementById(id);
+const fmt = n => (n || 0).toLocaleString("es-VE");
+const clamp = (v, a = 0, b = 1) => v < a ? a : v > b ? b : v;
+const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+const easeOut = t => 1 - Math.pow(1 - t, 3);
+const hash = i => { let x = Math.sin(i * 12.9898 + 78.233) * 43758.5453; return x - Math.floor(x); };
+const GOLD = "#f4c430", RED = "#e0413a", INK = "#eef0f7";
+const GA = 2.399963229728653; // golden angle
+
+let D, N, W = 0, H = 0, DPR = 1, sheets0 = [], sheets1 = [], mapPath, otherPaths = [];
+let X, Y, S, A, PX, PY, PS, PA, mosaic, stars, hourOf, rankAt, placeRank;
+let scenes = [], cur = { k: 0, p: 0 }, pointer = null, hover = -1, selected = -1, t0 = performance.now();
+// Two clocks: scroll scrubs the story; when the reader stops, the scene keeps playing (and loops) on its own.
+const AUTO = { night: 26, burst: 24, route: 48, echo: 18, hours: 9, cierre: 24 };   // seconds for one pass of the scene
+const LENS = { hero: 1, night: 1, burst: 1, route: 1, finale: 1 };
+const SPOT = { night: 1, burst: 1, route: 1, finale: 1 };
+const FILM = [["hero", 5], ["night", 11], ["burst", 13], ["route", 26], ["echo", 11], ["hours", 6], ["cierre", 13], ["finale", 5]];
+let play = { k: -1, p: 0, ph: "follow", h: 0 }, blend = 1, lastT = performance.now(), lastInput = 0, lastPointer = 0;
+// Three reader states, one job each. Scrolling: the story moves, nothing else. Pointing: time pauses and the sky
+// holds still so images stay under the cursor. Doing nothing: the scene plays and the ambient life comes back.
+// amb is the ambient clock (twinkle, drift, heartbeat): full speed when watching, slow when scrolling, nearly
+// still when pointing. wIdle and wPoint fade each state in and out.
+let amb = 0, wIdle = 1, wPoint = 0, state = "idle";
+let fly = null, fx = [], openAt = null, everFilm = false, everScrolled = false, veil = 0, closingImg = null, glow;
+const BUILD = "v8", loadT = performance.now();
+let coreImg = null, mouse = false, lens = 0, lensAt = null, spot = null, lastSpot = 0, spotsShown = 0, film = null, notes = [], glintSet;
+
+fetch("https://pub-610a2c1e16bb4a81900d6ed8d51cfdae.r2.dev/maria-corina-machado-el-regreso/data/epic.json").then(r => r.json()).then(init).catch(e => { $("loading").textContent = "No se pudieron cargar los datos: " + e.message; });
+
+function init(d) {
+  D = d; N = d.tiles.length;
+  X = new Float32Array(N); Y = new Float32Array(N); S = new Float32Array(N); A = new Float32Array(N);
+  PX = new Float32Array(N); PY = new Float32Array(N); PS = new Float32Array(N); PA = new Float32Array(N);
+  mapPath = new Path2D(d.map.d); otherPaths = d.map.others.map(p => new Path2D(p));
+  text();
+  buildMosaic(); buildStars(); buildRanks();
+  loadSheets(d.sheets.l0, sheets0, () => { $("loading").hidden = true; });
+  setTimeout(() => loadSheets(d.sheets.l1, sheets1), 800);
+  if (d.core_img) { const im = new Image(); im.onload = () => { coreImg = im; }; im.src = "https://pub-610a2c1e16bb4a81900d6ed8d51cfdae.r2.dev/maria-corina-machado-el-regreso/data/" + d.core_img.file; }
+  if (d.closing) { const im = new Image(); im.onload = () => { closingImg = im; }; im.src = "https://pub-610a2c1e16bb4a81900d6ed8d51cfdae.r2.dev/maria-corina-machado-el-regreso/data/" + d.closing.file; }
+  // one soft warm light, stamped thousands of times in the close
+  glow = document.createElement("canvas"); glow.width = glow.height = 32;
+  const gc = glow.getContext("2d"), gg = gc.createRadialGradient(16, 16, 0, 16, 16, 16);
+  gg.addColorStop(0, "rgba(255,252,236,1)"); gg.addColorStop(.22, "rgba(255,226,150,.7)"); gg.addColorStop(1, "rgba(255,200,90,0)");
+  gc.fillStyle = gg; gc.fillRect(0, 0, 32, 32);
+  scenes = [...document.querySelectorAll("[data-scene]")].map(el => ({ el, name: el.dataset.scene }));
+  notes = [...document.querySelectorAll("[data-point]")];
+  // the night's brightest stars (most viewed) get a glint now and then
+  glintSet = new Set(D.tiles.map((t, i) => [i, t[5], t[0]]).filter(x => x[2] < 660).sort((a, b) => b[1] - a[1]).slice(0, 12).map(x => x[0]));
+  resize(); addEventListener("resize", resize);
+  bindPointer(); bindFilm();
+  requestAnimationFrame(frame);
+}
+
+function text() {
+  const t = D.totals, early = D.tiles.filter(x => x[0] < 660).length;
+  $("hTiles").textContent = fmt(t.tiles); $("sPosts").textContent = fmt(t.posts); $("sAcc").textContent = fmt(t.accounts); $("sArt").textContent = fmt(t.artifacts);
+  $("nEarly").textContent = fmt(early);
+  const h12 = D.hours.find(h => h.h === 12); if (h12) $("bPosts").textContent = fmt(h12.posts);
+  const [e1, e2] = D.echoes;
+  const echoP = e => `<b class="num">${fmt(e.posts)}</b> publicaciones de <b class="num">${fmt(e.accounts)}</b> cuentas, la última ${Math.round(e.copies[e.copies.length - 1][0] / 60)} horas después de la primera. Aquí cuenta como una sola imagen, con el crédito para <b>@${esc(e.credit || e.first)}</b>, que la publicó a las ${e.first_t}.`;
+  if (e1) { $("e1h").textContent = `Un video, ${fmt(e1.posts)} veces`; $("e1p").innerHTML = echoP(e1); }
+  if (e2) { $("e2h").textContent = `Y otro, ${fmt(e2.posts)}`; $("e2p").innerHTML = echoP(e2); }
+  const peak = D.hours.reduce((a, b) => b.posts > a.posts ? b : a, D.hours[0]);
+  $("hText").innerHTML = `La hora más intensa fue la de las ${String(peak.h).padStart(2, "0")}:00, con <b class="num">${fmt(peak.posts)}</b> publicaciones. Las repeticiones no suman columnas: solo cuentan las imágenes nuevas.`;
+  $("foot").textContent = `Datos recogidos de publicaciones públicas en X. Actualizado ${D.updated_local} (hora de Venezuela). ${fmt(t.posts)} publicaciones agrupadas en ${fmt(t.artifacts)} piezas únicas.`;
+  // route stop cards, appended to the route chapter
+  const sec = $("routeSec");
+  D.stops.forEach(s => {
+    const c = document.createElement("div"); c.className = "card stop";
+    c.innerHTML = `<div class="when">${s.t}</div><div class="where">${esc(s.label)}</div><h3>${esc(s.title)}</h3><p>${esc(s.body)}</p>`;
+    sec.appendChild(c);
+  });
+  // the close: her last posts of the day, as cards
+  const cs = $("cierreSec"), beats = (D.closing && D.closing.beats) || [];
+  beats.forEach((b, j) => {
+    const c = document.createElement("div"); c.className = "card" + (j === beats.length - 1 ? " final" : "");
+    c.innerHTML = `<p class="eyebrow">${b.t} · ${esc(b.label || "@" + b.handle)}</p>${b.title ? `<h2>${esc(b.title)}</h2>` : ""}`
+      + `${b.lead ? `<p>${esc(b.lead)}</p>` : ""}<blockquote>«${esc(b.quote)}»</blockquote>${b.coda ? `<p class="coda">${esc(b.coda)}</p>` : ""}`
+      + `<a class="src" href="${esc(b.url)}" target="_blank" rel="noopener">@${esc(b.handle)} · ${b.t} · Ver en X ↗</a>`
+      + (j === beats.length - 1 && D.closing.credit ? `<p class="credit">${esc(D.closing.credit)}${D.closing.via
+          ? ` · <a href="${esc(D.closing.via)}" target="_blank" rel="noopener">vía @${esc(D.closing.via.split("/")[3])} ↗</a>` : ""}</p>` : "");
+    cs.appendChild(c);
+  });
+  $("build").textContent = BUILD + (REDUCED ? " · movimiento reducido" : "");
+  $("toTop").onclick = () => scrollTo({ top: 0, behavior: REDUCED ? "auto" : "smooth" });
+  $("dClose").onclick = () => close(true);
+  addEventListener("keydown", e => { if (e.key === "Escape") close(true); });
+}
+function esc(s) { return String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]); }
+
+function loadSheets(spec, into, done) {
+  let left = spec.files.length;
+  spec.files.forEach((f, i) => { const im = new Image(); im.onload = () => { into[i] = im; if (--left === 0 && done) done(); }; im.onerror = () => { if (--left === 0 && done) done(); }; im.src = "https://pub-610a2c1e16bb4a81900d6ed8d51cfdae.r2.dev/maria-corina-machado-el-regreso/data/" + f; });
+}
+
+// ---- precomputed layouts (in map units or unit space) ----
+function buildMosaic() {
+  // Grid cells inside the country outline, filled west to east in time order.
+  const off = document.createElement("canvas"); off.width = D.map.w; off.height = D.map.h;
+  const o = off.getContext("2d"); o.fill(mapPath);
+  const px = o.getImageData(0, 0, off.width, off.height).data;
+  const inside = (x, y) => px[((y | 0) * off.width + (x | 0)) * 4 + 3] > 0;
+  let lo = 2, hi = 30, cells = [];
+  for (let it = 0; it < 18; it++) {
+    const c = (lo + hi) / 2, got = [];
+    for (let y = c / 2; y < D.map.h; y += c) for (let x = c / 2; x < D.map.w; x += c) if (inside(x, y)) got.push([x, y]);
+    if (got.length >= N) { lo = c; cells = got; } else hi = c;
+  }
+  mosaic = { cell: lo, xy: cells.sort((a, b) => a[0] - b[0] || a[1] - b[1]) };
+}
+function buildStars() { stars = Array.from({ length: N }, (_, i) => [hash(i * 3 + 1), hash(i * 7 + 2), .3 + hash(i * 11 + 5) * .7]); }
+function buildRanks() {
+  // tiles are sorted by time; per hour column index and per place pile index
+  hourOf = new Int16Array(N); rankAt = new Int32Array(N); placeRank = new Int32Array(N);
+  const hc = {}, pc = {};
+  for (let i = 0; i < N; i++) {
+    // the hours chart is the 25th only; images from the next day stay out of it
+    const m = Math.max(0, D.tiles[i][0]), h = m >= 1440 ? -1 : Math.floor(m / 60);
+    hourOf[i] = h; if (h >= 0) rankAt[i] = hc[h] = (hc[h] || 0) + 1;
+    const pl = D.tiles[i][1]; if (pl >= 0) placeRank[i] = pc[pl] = (pc[pl] || 0) + 1;
+  }
+  D.hourTiles = hc;
+}
+
+function resize() {
+  DPR = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight;
+  cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0); ctx.imageSmoothingQuality = "medium";
+}
+
+// camera fitting a map-unit box into the screen
+function fit(x0, y0, x1, y1, padFrac = .06, shiftX = 0, left = 0) {
+  // left: fraction of the width kept free for the text column
+  const w = W * (1 - left), s = Math.min(w * (1 - 2 * padFrac) / (x1 - x0), H * (1 - 2 * padFrac) / (y1 - y0));
+  return { s, ox: W * left + w / 2 - (x0 + x1) / 2 * s + shiftX * W, oy: H / 2 - (y0 + y1) / 2 * s };
+}
+
+// ---- scene layouts: fill X,Y,S,A for progress p; return extras for overlay drawing ----
+const L = {
+  hero(p, out = {}) {
+    const narrow = W < 760, cam = fit(0, 0, D.map.w, D.map.h, narrow ? .03 : .05, narrow ? 0 : .12);
+    if (narrow) { cam.s *= .92; cam.ox = W / 2 - D.map.w / 2 * cam.s; cam.oy = H - D.map.h * cam.s - 24; }
+    const z = 1 + p * .15; cam.ox = W / 2 + (cam.ox - W / 2) * z; cam.oy = H / 2 + (cam.oy - H / 2) * z; cam.s *= z;
+    const c = mosaic.cell * cam.s;
+    const tt = (performance.now() - t0) / 1000;
+    for (let i = 0; i < N; i++) {
+      const [mx, my] = mosaic.xy[i] || [0, 0];
+      X[i] = cam.ox + mx * cam.s; Y[i] = cam.oy + my * cam.s; S[i] = c * .94;
+      A[i] = REDUCED ? 1 : .82 + .18 * Math.sin(amb * 1.3 + mx * .03 + my * .02);
+      if (!REDUCED && tt < 4.2) {
+        // opening: every image bursts out of Caracas and lands in its cell, west to east
+        const f = easeOut(clamp((tt - .3 - (mx / D.map.w) * 1.6 - hash(i) * .9) / 1.3));
+        const ox = cam.ox + 478 * cam.s, oy = cam.oy + 138 * cam.s, sw = (1 - f) * (hash(i + 3) - .5) * 900;
+        X[i] = ox + (X[i] - ox) * f + sw * Math.sin(f * Math.PI); Y[i] = oy + (Y[i] - oy) * f - Math.sin(f * Math.PI) * 220 * hash(i + 5);
+        S[i] *= .3 + .7 * f + Math.sin(f * Math.PI) * 2.2; A[i] *= f > 0 ? 1 : 0;
+      }
+    }
+    out.cam = cam; out.map = .25; return out;
+  },
+  night(p, out = {}) {
+    const clock = p * 660, tt = amb, narrow = W < 760;
+    const big = narrow ? 20 : clamp(Math.sqrt(W * H) * .034, 30, 64), x0 = narrow ? 0 : .36;
+    const flares = [], glints = [];
+    for (let i = 0; i < N; i++) {
+      const [sx, sy, b] = stars[i], m = D.tiles[i][0];
+      const drift = REDUCED ? 0 : Math.sin(tt * .1 + i) * 6;
+      if (m < 660) {
+        // tonight's images sit right of the text column; each twinkles out of phase
+        X[i] = (x0 + (1 - x0) * sx) * W + drift; Y[i] = sy * H;
+        const on = clamp((clock - m) / 30), tw = REDUCED ? 1 : 1 - (.06 + .14 * wIdle) * (.5 + .5 * Math.sin(tt * (1.1 + b * 1.7) + i * 2.3));
+        S[i] = 3 + on * big * b; A[i] = (.25 + on * .75) * (on > 0 ? tw : 1);
+        const age = clock - m; if (age >= 0 && age < 40) flares.push([i, 1 - age / 40]);
+        if (on >= 1 && glintSet.has(i)) glints.push(i);
+      } else {
+        // everything else: dark points that shiver, waiting for their hour
+        X[i] = sx * W + drift; Y[i] = sy * H; S[i] = 1.6 * b;
+        A[i] = .35 * b * (REDUCED ? 1 : 1 - .35 * wIdle * (.5 + .5 * Math.sin(tt * (1.5 + b * 3) + i)));
+      }
+    }
+    out.clock = clock; out.flares = flares; out.glints = glints; return out;
+  },
+  burst(p, out = {}) {
+    // 11:00 → 13:00. Her arrival video sits at the core; each new image leaves the core and pushes the older ones out.
+    const clock = 660 + p * 120, tt = amb, narrow = W < 760;
+    const cx = narrow ? W / 2 : W * .675, cy = H * (narrow ? .5 : .53);
+    const rx = narrow ? W * .48 : Math.min(W * .29, H * .62), ry = narrow ? H * .34 : H * .45;
+    const core = D.core ?? -1, coreM = core >= 0 ? D.tiles[core][0] : 691;
+    const coreS = Math.min(W, H) * (narrow ? .3 : .24), here = clamp((clock - coreM) / 2);
+    // continuous count of arrived images (interpolated between arrival times), so nothing jumps
+    let j = 0; while (j < N && D.tiles[j][0] <= clock && D.tiles[j][0] < 780) j++;
+    const nxt = j < N && D.tiles[j][0] < 780 ? D.tiles[j][0] : clock + 1, prv = j > 0 ? D.tiles[j - 1][0] : clock - 1;
+    const cf = Math.max(1, j - 1 + clamp((clock - prv) / Math.max(.01, nxt - prv)));
+    const rc = .62 * coreS / Math.min(rx, ry);                       // core radius in ellipse units
+    const s0 = Math.min(narrow ? 70 : 120, Math.sqrt(Math.PI * rx * ry * (1 - rc * rc) / cf) * .98);
+    // heartbeat (lub-dub every 1.4 s) and the shockwave it sends through the disk
+    const ph = (tt % 1.4) / 1.4, beat = REDUCED ? 0 : here * wIdle * (Math.exp(-(((ph - .04) / .05) ** 2)) + .6 * Math.exp(-(((ph - .24) / .05) ** 2)));
+    const wave = rc + ph * 1.25 * (1 - rc);
+    for (let i = 0; i < N; i++) {
+      const m = D.tiles[i][0], [sx, sy, b] = stars[i];
+      if (i === core) continue;
+      if (m < 780 && m <= clock) {
+        const rank = Math.max(0, cf - i), z = hash(i + 17) < .2 ? 1.35 : hash(i + 17) > .75 ? .78 : 1;
+        let u = Math.sqrt(rc * rc + (1 - rc * rc) * Math.min(1, (rank + .5) / (cf + 1)));
+        if (here > 0 && !REDUCED) u += .018 * Math.exp(-(((u - wave) / .06) ** 2)) * here * wIdle;
+        const a = i * GA + (REDUCED ? 0 : tt * .015 * (2.2 - z));     // layers turn at different speeds: depth
+        const f = REDUCED ? 1 : easeOut(clamp((clock - m) / 4));
+        X[i] = cx + Math.cos(a) * rx * u * f; Y[i] = cy + Math.sin(a) * ry * u * f;
+        S[i] = s0 * z * (1 + (1 - f) * 1.6); A[i] = .92 + .08 * z / 1.35;
+      } else { X[i] = sx * W; Y[i] = sy * H; S[i] = 1.6 * b; A[i] = .3 * b; }
+    }
+    if (core >= 0) { X[core] = cx; Y[core] = cy; S[core] = coreS * (.6 + .4 * easeOut(here)) * (1 + .035 * beat); A[core] = here; }
+    out.clock = clock; out.count = D.tiles.filter(t => t[0] <= clock).length;
+    out.burst = { cx, cy, rx, ry, rc, coreS, here, beat, wave, core };
+    // a hint of what comes next: the map and her first stop fade in behind the debris
+    const nx = clamp((p - .72) / .28);
+    if (nx > 0) { out.cam = routeCam(); out.map = .3 * nx; out.pin = nx; }
+    return out;
+  },
+  route(p, out = {}) {
+    // clock keyframes: intro, then one per stop, evenly spaced over the chapter
+    const ks = [690, ...D.stops.map(s => s.min), 1380];
+    const q = p * (ks.length - 1), j = Math.min(ks.length - 2, Math.floor(q));
+    const clock = ks[j] + (ks[j + 1] - ks[j]) * ease(q - j);
+    const cam = routeCam();
+    const pile = Math.max(3.2, cam.s * 1.15);  // pile spacing in px
+    for (let i = 0; i < N; i++) {
+      const t = D.tiles[i], m = t[0], pl = t[1], [sx, sy, b] = stars[i];
+      if (pl >= 0 && clock >= m) {
+        const P = D.places[pl]; let bx, by;
+        if (P.dia) { const v = edgeScreen(cam, P.x, P.y); bx = v[0]; by = v[1]; }
+        else { bx = cam.ox + P.x * cam.s; by = cam.oy + P.y * cam.s; }
+        const r = placeRank[i], rr = pile * Math.sqrt(r), a = r * GA;
+        const f = REDUCED ? 1 : easeOut(clamp((clock - m) / 12));
+        X[i] = bx + Math.cos(a) * rr * f; Y[i] = by + Math.sin(a) * rr * f - (1 - f) * 60;
+        S[i] = pile * 1.6 * (1 + (1 - f) * 1.5); A[i] = .55 + .45 * f;
+      } else if (clock >= m) { X[i] = sx * W; Y[i] = sy * H; S[i] = 2.2 * b; A[i] = .5 * b; }
+      else { X[i] = sx * W; Y[i] = sy * H; S[i] = 1.4 * b; A[i] = .2 * b; }
+    }
+    out.cam = cam; out.clock = clock; out.map = 1; out.route = clock; out.count = D.tiles.filter(t => t[0] <= clock).length;
+    return out;
+  },
+  echo(p, out = {}) {
+    const e = D.echoes[p < .5 ? 0 : 1] || D.echoes[0]; const lp = p < .5 ? p * 2 : (p - .5) * 2;
+    for (let i = 0; i < N; i++) { const [sx, sy, b] = stars[i]; X[i] = sx * W; Y[i] = sy * H; S[i] = 1.5 * b; A[i] = .22 * b; }
+    const c = e.tile, cx = W < 760 ? W / 2 : W * .62, cy = H / 2, big = Math.min(W, H) * (W < 760 ? .3 : .26);
+    const R0 = big * .75, R1 = Math.min(W < 760 ? W * .48 : W * .36, H * .46);
+    const maxD = Math.log1p(e.copies[e.copies.length - 1][0] || 1);
+    const arrive = clamp(lp / .55), collapse = clamp((lp - .62) / .3);
+    const clones = [];
+    e.copies.forEach(([dm, h], j) => {
+      if (j === 0) return;
+      const appear = clamp((arrive * e.copies.length - j) / 6); if (appear <= 0) return;
+      const r = R0 + (R1 - R0) * Math.log1p(dm) / maxD, a = j * GA;
+      let x = cx + Math.cos(a) * r, y = cy + Math.sin(a) * r;
+      const f = REDUCED ? (collapse > .5 ? 1 : 0) : ease(collapse);
+      x += (cx - x) * f; y += (cy - y) * f;
+      clones.push([x, y, (big * .16) * (1 - f * .6), appear * (1 - f * .85)]);
+    });
+    X[c] = cx; Y[c] = cy; S[c] = big * (1 + collapse * .08); A[c] = 1;
+    out.echo = { e, cx, cy, big, R0, R1, maxD, clones, arrive, collapse }; return out;
+  },
+  hours(p, out = {}) {
+    const nh = 24, padX = W < 760 ? 10 : W * .06, top = H * .2, bottom = H - (W < 760 ? 46 : 56);
+    const colW = (W - padX * 2) / nh, maxC = Math.max(...Object.values(D.hourTiles));
+    const s = Math.sqrt(colW * (bottom - top) / maxC) * .98, per = Math.max(1, Math.floor(colW / s));
+    const grow = REDUCED ? 1 : clamp(p * 1.6);
+    for (let i = 0; i < N; i++) {
+      const h = hourOf[i], r = rankAt[i] - 1;
+      if (h < 0) { const [sx, sy, b] = stars[i]; X[i] = sx * W; Y[i] = sy * H; S[i] = 1.4 * b; A[i] = .2 * b; continue; }
+      const x = padX + h * colW + (r % per + .5) * s, y = bottom - (Math.floor(r / per) + .5) * s;
+      const vis = clamp(grow * maxC * 1.1 - r);
+      X[i] = x; Y[i] = y + (1 - vis) * 40; S[i] = s * .92; A[i] = vis;
+    }
+    out.hours = { padX, colW, bottom, nh }; return out;
+  },
+};
+// The close, 22:00 → 23:35. Every image of the day becomes one of the bright points of the closing photo: first the
+// lights alone in the dark, then the crowd appears under them, then her 11:31 post comes back to close the arc.
+L.cierre = (p, out = {}) => {
+  const C = D.closing; if (!C) return L.finale(p, out);
+  const clock = 1320 + p * 95, narrow = W < 760, tt = amb, nL = C.lights.length;
+  const pw = narrow ? W - 24 : Math.min(W * .5, H * .62 * C.w / C.h), ph = pw * C.h / C.w;
+  const cx = narrow ? W / 2 : W * .69, cy = narrow ? H * .34 : H * .53, x0 = cx - pw / 2, y0 = cy - ph / 2;
+  const sway = REDUCED ? 0 : .4 + .6 * wIdle;   // phones held up sway; less so while the reader scrolls
+  for (let i = 0; i < N; i++) {
+    const [lx, ly] = C.lights[(i * 7919) % nL], j = hash(i + 31);
+    X[i] = x0 + lx * pw + (hash(i + 7) - .5) * 5 + Math.sin(tt * .7 + i) * 1.8 * sway;
+    Y[i] = y0 + ly * ph + (hash(i + 11) - .5) * 5 + Math.cos(tt * .9 + i * 1.3) * 1.4 * sway;
+    S[i] = 1.1 + j * 1.3;                        // stays a point: lights are not hover targets
+    A[i] = REDUCED ? .8 : .3 + .7 * (.5 + .5 * Math.sin(tt * (1.2 + j * 2) + i * 2.1));
+  }
+  out.cierre = { x0, y0, pw, ph, cx, cy, reveal: clamp((p - .16) / .3), arc: clamp((p - .6) / .25) };
+  out.warm = 1; out.clock = clock; out.count = D.tiles.filter(t => t[0] <= clock).length;
+  return out;
+};
+L.finale = (p, out = {}) => { L.hero(.05, out); const tt = amb; for (let i = 0; i < N; i++) A[i] = REDUCED ? 1 : .75 + .25 * Math.sin(tt * 2 - X[i] * .01); return out; };
+
+function routeCam() { const narrow = W < 760; return fit(275, 110, 515, 185, narrow ? .02 : .07, 0, narrow ? 0 : .36); }
+
+function edgeScreen(cam, mx, my) {
+  // diaspora: keep in their map direction, but pinned inside the screen edge
+  const ccs = D.places.find(p => p.id === "ve-caracas") || { x: 478, y: 138 };
+  const ox = cam.ox + ccs.x * cam.s, oy = cam.oy + ccs.y * cam.s;
+  let dx = mx - ccs.x, dy = my - ccs.y; const l = Math.hypot(dx, dy) || 1; dx /= l; dy /= l;
+  const m = 70, ts = [];
+  if (dx) ts.push(((dx > 0 ? W - m : m) - ox) / dx);
+  if (dy) ts.push(((dy > 0 ? H - m : m) - oy) / dy);
+  const t = Math.min(...ts.filter(t => t > 0));
+  return [ox + dx * t, oy + dy * t];
+}
+
+// ---- frame ----
+function measure() {
+  const vh = H; let k = 0;
+  scenes.forEach((s, i) => { s.r = s.el.getBoundingClientRect(); if (s.r.top < vh * .55) k = i; });
+  const r = scenes[k].r, p = clamp((vh * .55 - r.top) / Math.max(1, r.height));
+  return { k, p };
+}
+
+function readerState(now, dt) {
+  const scrolling = !!film || now - lastInput < 1500;
+  const pointing = !scrolling && (selected >= 0 || (mouse && pointer && now - lastPointer < 2500));
+  state = scrolling ? "scroll" : pointing ? "point" : "idle";
+  wIdle += ((state === "idle" ? 1 : 0) - wIdle) * Math.min(1, dt * 1.5);
+  wPoint += ((state === "point" ? 1 : 0) - wPoint) * Math.min(1, dt * 4);
+  if (!REDUCED) amb += dt * Math.max(.04, .3 + .7 * wIdle - .26 * wPoint);
+}
+
+function stepPlay(p, dt, dur) {
+  // scrolling: follow the scroll. pointing: hold where we are. idle: play to the end, hold, rewind, play again.
+  if (state === "scroll" || !dur || REDUCED) { play.ph = "follow"; play.p += (p - play.p) * Math.min(1, dt * 12); return; }
+  if (state === "point") return;
+  if (play.ph === "follow") play.ph = "play";
+  if (play.ph === "play") { play.p = Math.min(1, play.p + dt / dur); if (play.p >= 1) { play.ph = "hold"; play.h = 0; } }
+  else if (play.ph === "hold") { if ((play.h += dt) > 3.5) { play.ph = "rewind"; play.h = 0; } }
+  else { play.h += dt; play.p = 1 - ease(clamp(play.h / 1.8)); if (play.h >= 1.8) { play.ph = "play"; play.p = 0; } }
+}
+
+function frame() {
+  requestAnimationFrame(frame);
+  if (!W) return;
+  const now = performance.now(), dt = Math.min(.1, (now - lastT) / 1000); lastT = now;
+  if (film) runFilm(now);
+  const { k, p } = measure();
+  const name = scenes[k].name, raw = k > 0 ? clamp(p / .22) : 1;
+  readerState(now, dt);
+  // an open card goes home once the reader scrolls on (40% of a screen, or into another scene)
+  if (selected >= 0 && openAt && (k !== openAt.k || Math.abs(scenes[openAt.k].r.top - openAt.top) > H * .4)) close(true);
+  veil += ((selected >= 0 ? 1 : 0) - veil) * Math.min(1, dt * 6);
+  // the play button keeps inviting until the reader scrolls for the first time, or uses it
+  $("film").classList.toggle("invite", !REDUCED && !everFilm && !everScrolled);
+  if (k !== play.k) { play = { k, p, ph: "follow", h: 0 }; blend = raw; }
+  stepPlay(p, dt, AUTO[name]);
+  // a scene left mid-transition settles once the reader stops scrolling
+  if (state === "scroll") blend += (raw - blend) * Math.min(1, dt * 6);
+  else if (state === "idle" && AUTO[name]) blend += (1 - blend) * Math.min(1, dt * 2);
+  cur = { k, p: play.p };
+  const out = L[name](play.p, {});
+  // transition from the previous scene's final layout
+  const tq = blend;
+  if (tq < .999 && !REDUCED) {
+    X.forEach((v, i) => { PX[i] = v; PY[i] = Y[i]; PS[i] = S[i]; PA[i] = A[i]; });
+    const prev = L[scenes[k - 1].name](1, {});
+    const cx = W / 2, cy = H / 2;
+    for (let i = 0; i < N; i++) {
+      const w = ease(clamp((tq * 1.5) - hash(i) * .5));
+      const bow = Math.sin(Math.PI * w) * (60 + hash(i + 9) * 160);
+      const ang = Math.atan2(Y[i] - cy, X[i] - cx);
+      const x = X[i] + (PX[i] - X[i]) * w, y = Y[i] + (PY[i] - Y[i]) * w;
+      X[i] = x + Math.cos(ang) * bow; Y[i] = y + Math.sin(ang) * bow;
+      S[i] = S[i] + (PS[i] - S[i]) * w; A[i] = A[i] + (PA[i] - A[i]) * w;
+    }
+    if (prev.cierre && !out.cierre) { out.cierre = { ...prev.cierre, reveal: 1 - tq, arc: 1 - tq }; if (tq < .5) out.warm = 1; }
+    if (prev.map && !out.map) { out.map = prev.map * (1 - tq); out.cam = prev.cam; }
+    else if (out.map && !prev.map) out.map *= tq;
+    else if (out.map) out.map = prev.map + (out.map - prev.map) * tq;
+  } else if (tq < .999 && out.map) out.map *= tq;
+  applyLens(name, dt);
+  spotlight(name, now);
+  draw(out, name);
+  annotate(out);
+  clockUI(out, name);
+}
+
+// a magnifier follows the mouse: images near it swell, so moving the mouse already reveals them
+function applyLens(name, dt) {
+  lens += ((state === "point" && pointer && mouse && LENS[name] && !REDUCED ? 1 : 0) - lens) * Math.min(1, dt * 8);
+  if (lens < .01 || !lensAt) return;
+  const [px, py] = lensAt, R = 170, kk = 1.8 * lens;
+  for (let i = 0; i < N; i++) {
+    const dx = X[i] - px, dy = Y[i] - py; if (dx > R || dx < -R || dy > R || dy < -R) continue;
+    const d = Math.hypot(dx, dy); if (d >= R) continue;
+    const t = d / R, nt = (kk + 1) * t / (kk * t + 1), g = Math.min(3, (kk + 1) / ((kk * t + 1) ** 2));
+    if (d > .01) { X[i] = px + dx / d * nt * R; Y[i] = py + dy / d * nt * R; }
+    if (S[i] < 3.2) { S[i] = Math.min(3.1, S[i] * g); A[i] = Math.min(1, A[i] * (1 + lens)); }   // a future image stays a point
+    else if (S[i] < 60 && i !== D.core) S[i] = Math.min(150, S[i] * (1 + (g - 1) * .9));         // big ones are already legible
+  }
+}
+
+// every few seconds, with nobody pointing, one image picks itself: it grows and says who posted it and when
+function spotlight(name, now) {
+  // only for a reader who is watching: never while they scroll or point, and not too often
+  if (spot && (now - spot.t > 2800 || !SPOT[name] || state !== "idle")) spot = null;
+  if (spot || REDUCED || !SPOT[name] || state !== "idle" || wIdle < .95 || now - lastInput < 4000 || now - lastPointer < 4000 || now - lastSpot < 8000) return;
+  lastSpot = now;
+  const avoid = [...document.querySelectorAll(".card"), $("clock"), $("film")].map(e => e.getBoundingClientRect()).filter(r => r.bottom > 0 && r.top < H && r.width);
+  const inside = (x, y) => avoid.some(r => x > r.left - 90 && x < r.right + 90 && y > r.top - 90 && y < r.bottom + 90);
+  let best = -1, bv = -1;
+  for (let n = 0; n < 60; n++) {
+    const i = (Math.random() * N) | 0;
+    if (i === D.core || A[i] < .7 || S[i] < 8 || X[i] < 80 || X[i] > W - 80 || Y[i] < 90 || Y[i] > H - 110 || inside(X[i], Y[i])) continue;
+    const v = D.tiles[i][5] + 1; if (v > bv) { bv = v; best = i; }
+  }
+  if (best >= 0) { spot = { i: best, t: now, n: spotsShown++ }; }
+}
+function drawSpot(now) {
+  if (!spot) return;
+  const u = (now - spot.t) / 2800, g = u < .22 ? ease(u / .22) : u > .78 ? ease((1 - u) / .22) : 1, i = spot.i;
+  const s = S[i] + ((W < 760 ? 96 : 140) - S[i]) * g, im = tileImg(i, s), x = X[i] - s / 2, y = Y[i] - s / 2;
+  ctx.save(); ctx.globalAlpha = g; ctx.shadowColor = "rgba(0,0,0,.7)"; ctx.shadowBlur = 30; ctx.fillStyle = GOLD;
+  ctx.fillRect(x - 3, y - 3, s + 6, s + 6); ctx.restore();
+  if (im) ctx.drawImage(im[0], im[1], im[2], im[3], im[3], x, y, s, s);
+  const t = D.tiles[i], label = `@${t[6] || "?"} · ${hm(t[0])}`;
+  ctx.save(); ctx.globalAlpha = g; ctx.font = '500 12px "IBM Plex Mono", monospace'; ctx.textBaseline = "middle";
+  const lines = [label]; if (spot.n < 3) lines.push(mouse || W >= 760 ? "PASA EL CURSOR · CLIC PARA ABRIR" : "TOCA UNA IMAGEN PARA ABRIRLA");
+  const w = Math.max(...lines.map(l => ctx.measureText(l).width)) + 16, ly = y + s + 10;
+  const lx = clamp(X[i] - w / 2, 8, W - w - 8);
+  ctx.fillStyle = "rgba(7,11,29,.92)"; ctx.fillRect(lx, ly, w, 10 + lines.length * 17);
+  lines.forEach((l, j) => { ctx.fillStyle = j ? "rgba(154,163,194,.95)" : GOLD; ctx.fillText(l, lx + 8, ly + 13 + j * 17); });
+  ctx.restore();
+  spot.rect = [x, y, s];
+}
+
+// cards with data-point draw a thin line to what they talk about
+function annotate(out) {
+  notes.forEach(el => {
+    const r = el.getBoundingClientRect(); if (r.bottom < 0 || r.top > H) return;
+    const vis = clamp(Math.min(r.bottom, H - r.top) / (H * .2));
+    let tx, ty, ring = 22, extra = [];
+    if (el.dataset.point === "core") { if (!out.burst) return; tx = out.burst.cx; ty = out.burst.cy; ring = (S[out.burst.core] * (coreImg ? .85 : .62) + 14) || 40; }
+    else {
+      // a dark point near the card, kept while it stays dark
+      const want = W < 760 ? [r.left + r.width * .7, r.bottom + 120] : [r.right + 240, r.top + r.height / 2];
+      if (!(el._t >= 0 && S[el._t] < 3.2 && Math.abs(X[el._t] - want[0]) < 200 && Math.abs(Y[el._t] - want[1]) < 200)) {
+        let bd = 1e9; el._t = -1;
+        for (let i = 0; i < N; i++) if (S[i] < 3.2 && A[i] > .05) { const d = (X[i] - want[0]) ** 2 + (Y[i] - want[1]) ** 2; if (d < bd) { bd = d; el._t = i; } }
+      }
+      if (el._t < 0) return; tx = X[el._t]; ty = Y[el._t];
+      for (let i = 0; i < N && extra.length < 5; i++) if (i !== el._t && S[i] < 3.2 && A[i] > .05 && Math.hypot(X[i] - tx, Y[i] - ty) < 70) extra.push(i);
+    }
+    const ax = tx > r.right ? r.right : clamp(tx, r.left + 12, r.right - 12), ay = tx > r.right ? clamp(ty, r.top + 14, r.bottom - 14) : (ty > r.bottom ? r.bottom : r.top);
+    const d = Math.hypot(tx - ax, ty - ay); if (d < ring + 8) return;
+    ctx.save(); ctx.globalAlpha = .8 * vis; ctx.strokeStyle = GOLD; ctx.lineWidth = 1.2; ctx.setLineDash([3, 5]);
+    ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(tx - (tx - ax) / d * ring, ty - (ty - ay) / d * ring); ctx.stroke();
+    ctx.setLineDash([]); ctx.beginPath(); ctx.arc(tx, ty, ring, 0, 7); ctx.stroke();
+    ctx.globalAlpha = .55 * vis; extra.forEach(i => { ctx.beginPath(); ctx.arc(X[i], Y[i], 7, 0, 7); ctx.stroke(); });
+    ctx.restore();
+  });
+}
+
+// ---- film: the whole day as a 90-second scroll; any wheel, touch, key or click gives control back ----
+function bindFilm() {
+  const b = $("film");
+  b.onclick = e => { e.stopPropagation(); film ? stopFilm() : startFilm(); };
+  const cancel = e => { if (film && !(e.target && e.target.closest && e.target.closest("#film"))) stopFilm(); };
+  ["wheel", "touchstart", "keydown", "pointerdown"].forEach(ev => addEventListener(ev, cancel, { passive: true }));
+}
+function startFilm() {
+  const maxY = document.documentElement.scrollHeight - H;
+  const keys = []; let t = 0;
+  FILM.forEach(([name, dur]) => {
+    const s = scenes.find(x => x.name === name); if (!s) return;
+    keys.push([t, clamp(s.el.getBoundingClientRect().top + scrollY - H * .55, 0, maxY)]); t += dur;
+  });
+  keys.push([t, maxY]);
+  for (let j = 1; j < keys.length; j++) keys[j][1] = Math.max(keys[j][1], keys[j - 1][1]);
+  // start where the reader is, or from the top if they are at the end
+  let off = 0; const y0 = scrollY;
+  if (y0 < maxY - 4) for (let j = 0; j < keys.length - 1; j++) if (y0 >= keys[j][1] && y0 < keys[j + 1][1]) off = keys[j][0] + (keys[j + 1][0] - keys[j][0]) * (y0 - keys[j][1]) / Math.max(1, keys[j + 1][1] - keys[j][1]);
+  film = { start: performance.now() - off * 1000, keys }; everFilm = true;
+  $("filmTri").textContent = "❚❚"; $("filmLbl").textContent = "Pausar"; $("film").setAttribute("aria-pressed", "true");
+}
+function stopFilm() {
+  film = null; $("filmTri").textContent = "▶"; $("filmLbl").textContent = "Ver el día · 1:30"; $("filmBar").style.width = 0;
+  $("film").setAttribute("aria-pressed", "false");
+}
+function runFilm(now) {
+  const t = (now - film.start) / 1000, ks = film.keys;
+  $("filmBar").style.width = (100 * clamp(t / ks[ks.length - 1][0])) + "%";
+  if (t >= ks[ks.length - 1][0]) { scrollTo(0, ks[ks.length - 1][1]); stopFilm(); return; }
+  let j = 0; while (j < ks.length - 2 && t >= ks[j + 1][0]) j++;
+  scrollTo(0, ks[j][1] + (ks[j + 1][1] - ks[j][1]) * (t - ks[j][0]) / (ks[j + 1][0] - ks[j][0]));
+}
+
+function sky(out, name) {
+  // the sky follows the story clock: night, a gold dawn at the burst, deep blue evening
+  let warm = 0;
+  if (name === "burst") warm = .25 + cur.p * .35;
+  else if (name === "route") warm = .55 - clamp((out.clock - 1080) / 300) * .45;
+  else if (name === "night") warm = cur.p * .1;
+  const g = ctx.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, "#070b1d");
+  g.addColorStop(.65, mix("#0b1230", "#1a1838", warm));
+  g.addColorStop(1, mix("#0d1430", "#5a3a1c", warm));
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+}
+function mix(a, b, t) {
+  const pa = [1, 3, 5].map(i => parseInt(a.slice(i, i + 2), 16)), pb = [1, 3, 5].map(i => parseInt(b.slice(i, i + 2), 16));
+  return `rgb(${pa.map((v, i) => Math.round(v + (pb[i] - v) * t)).join(",")})`;
+}
+
+function tileImg(i, s) {
+  const l1 = D.tiles[i][2];
+  if (s > 44 && l1 >= 0 && sheets1[(l1 / 100) | 0]) { const n = l1 % 100; return [sheets1[(l1 / 100) | 0], (n % 10) * 192, ((n / 10) | 0) * 192, 192]; }
+  const sh = sheets0[(i / 1600) | 0]; if (!sh) return null;
+  const n = i % 1600; return [sh, (n % 40) * 48, ((n / 40) | 0) * 48, 48];
+}
+
+function draw(out, name) {
+  sky(out, name);
+  if (out.map > 0 && out.cam) {
+    const c = out.cam; ctx.save(); ctx.translate(c.ox, c.oy); ctx.scale(c.s, c.s);
+    ctx.globalAlpha = out.map; ctx.lineWidth = 1.4 / c.s;
+    ctx.fillStyle = "rgba(47,95,208,.10)"; ctx.strokeStyle = "rgba(120,150,230,.55)";
+    otherPaths.forEach(p => { ctx.globalAlpha = out.map * .35; ctx.stroke(p); });
+    ctx.globalAlpha = out.map; ctx.fill(mapPath); ctx.stroke(mapPath); ctx.restore(); ctx.globalAlpha = 1;
+  }
+  if (out.route != null) drawRoute(out);
+  if (out.echo) drawEchoRings(out.echo);
+  if (out.flares) drawFlares(out.flares);
+  if (out.burst) drawShock(out.burst);
+  if (out.cierre) drawClosingPhoto(out.cierre);
+  // tiles: tiny ones as light points, the rest as images
+  ctx.fillStyle = "#dfe6ff";
+  for (let i = 0; i < N; i++) {
+    const s = S[i], a = A[i]; if (a <= .01 || i === hover || (out.burst && i === out.burst.core)) continue;
+    if (s < 3.2) { if (out.warm) continue; ctx.globalAlpha = a; ctx.fillRect(X[i] - s / 2, Y[i] - s / 2, s, s); continue; }
+    const im = tileImg(i, s); ctx.globalAlpha = a;
+    if (im) ctx.drawImage(im[0], im[1], im[2], im[3], im[3], X[i] - s / 2, Y[i] - s / 2, s, s);
+    else { ctx.fillStyle = "#26305a"; ctx.fillRect(X[i] - s / 2, Y[i] - s / 2, s, s); ctx.fillStyle = "#dfe6ff"; }
+  }
+  ctx.globalAlpha = 1;
+  if (out.warm) drawLights();
+  if (out.cierre) drawBookend(out.cierre);
+  if (out.glints) drawGlints(out.glints);
+  if (out.burst) drawCore(out.burst);
+  if (out.pin) drawPin(out);
+  if (out.echo) drawEchoClones(out.echo);
+  if (out.route != null) drawRouteLabels(out);
+  if (out.hours) drawHours(out.hours);
+  drawSpot(performance.now());
+  if (hover >= 0 && A[hover] > .05) {
+    const s = Math.max(64, S[hover] * (lens > .5 ? 1.15 : 1.6)), im = tileImg(hover, s);
+    ctx.save(); ctx.shadowColor = "rgba(0,0,0,.6)"; ctx.shadowBlur = 24;
+    ctx.fillStyle = GOLD; ctx.fillRect(X[hover] - s / 2 - 3, Y[hover] - s / 2 - 3, s + 6, s + 6); ctx.restore();
+    if (im) ctx.drawImage(im[0], im[1], im[2], im[3], im[3], X[hover] - s / 2, Y[hover] - s / 2, s, s);
+  }
+  const now = performance.now();
+  drawTether(); drawFx(now); drawFly(now);
+}
+
+function drawClosingPhoto(C) {
+  // the crowd appears under its own lights, credited to whoever took the photo
+  if (!closingImg || C.reveal <= 0) return;
+  ctx.save(); ctx.globalAlpha = .92 * ease(C.reveal);
+  ctx.drawImage(closingImg, C.x0, C.y0, C.pw, C.ph);
+  ctx.strokeStyle = GOLD; ctx.lineWidth = 2; ctx.strokeRect(C.x0 - 1, C.y0 - 1, C.pw + 2, C.ph + 2);
+  const b = D.closing.beats[D.closing.beats.length - 1], label = (D.closing.credit || `${b.t} · @${b.handle}`).toUpperCase();
+  ctx.font = '500 12px "IBM Plex Mono", monospace'; const w = ctx.measureText(label).width + 16;
+  ctx.fillStyle = GOLD; ctx.fillRect(C.x0 + C.pw - w, C.y0 + C.ph + 6, w, 22);
+  ctx.fillStyle = "#070b1d"; ctx.textBaseline = "middle"; ctx.fillText(label, C.x0 + C.pw - w + 8, C.y0 + C.ph + 17);
+  ctx.restore();
+}
+function drawLights() {
+  // each image of the day as a warm point of light, like the phones raised in the crowd
+  ctx.save(); ctx.globalCompositeOperation = "lighter";
+  for (let i = 0; i < N; i++) {
+    const s = S[i], a = A[i]; if (s >= 3.2 || a <= .01) continue;
+    const r = s * 2; ctx.globalAlpha = a * .45; ctx.drawImage(glow, X[i] - r, Y[i] - r, r * 2, r * 2);
+  }
+  ctx.restore();
+}
+function drawBookend(C) {
+  // 11:31 → 23:25: the morning post comes back beside the night one, joined by a gold arc
+  if (!coreImg || C.arc <= 0) return;
+  // above the photo's top-left corner, clear of the text column and the clock
+  const e = ease(C.arc), cw = Math.min(C.pw * .34, 300), ch = cw * coreImg.height / coreImg.width;
+  const x = C.x0 + 6, y = Math.max(8, C.y0 - ch - 34) + (1 - e) * 16;
+  const [hfx, hfy] = D.closing.focus || [.55, .3], hx = C.x0 + C.pw * hfx, hy = C.y0 + C.ph * hfy;   // lands on her
+  ctx.save(); ctx.globalAlpha = e;
+  ctx.strokeStyle = GOLD; ctx.lineWidth = 1.6; ctx.setLineDash([3, 6]);
+  ctx.beginPath(); ctx.moveTo(x + cw, y + ch / 2); ctx.quadraticCurveTo(hx, y - ch * .4, hx, hy); ctx.stroke(); ctx.setLineDash([]);
+  ctx.beginPath(); ctx.arc(hx, hy, 5, 0, 7); ctx.fillStyle = GOLD; ctx.fill();
+  ctx.shadowColor = "rgba(0,0,0,.6)"; ctx.shadowBlur = 24; ctx.fillStyle = GOLD; ctx.fillRect(x - 3, y - 3, cw + 6, ch + 6); ctx.shadowBlur = 0;
+  ctx.drawImage(coreImg, x, y, cw, ch);
+  ctx.font = '500 12px "IBM Plex Mono", monospace'; ctx.textBaseline = "middle";
+  const label = "11:31 · LLEGADA", w = ctx.measureText(label).width + 16;
+  ctx.fillStyle = GOLD; ctx.fillRect(x, y + ch + 6, w, 22); ctx.fillStyle = "#070b1d"; ctx.fillText(label, x + 8, y + ch + 17);
+  ctx.restore();
+}
+function drawFlares(fl) {
+  // an image lighting up: a soft gold bloom that fades as it settles
+  ctx.save(); ctx.globalCompositeOperation = "lighter";
+  fl.forEach(([i, f]) => {
+    const r = S[i] * .6 + (1 - f) * S[i] * 1.6 + 6, g = ctx.createRadialGradient(X[i], Y[i], 0, X[i], Y[i], r);
+    g.addColorStop(0, `rgba(244,196,48,${.4 * f})`); g.addColorStop(1, "rgba(244,196,48,0)");
+    ctx.fillStyle = g; ctx.fillRect(X[i] - r, Y[i] - r, r * 2, r * 2);
+  });
+  ctx.restore();
+}
+function drawGlints(list) {
+  // four-point star on the most viewed images, each on its own slow rhythm
+  if (REDUCED || wIdle < .02) return;
+  const tt = amb;
+  ctx.save(); ctx.globalCompositeOperation = "lighter"; ctx.lineCap = "round";
+  list.forEach(i => {
+    const gl = wIdle * Math.max(0, Math.sin(tt * .45 + i * 1.7)) ** 20; if (gl < .02) return;
+    const x = X[i] + S[i] * .42, y = Y[i] - S[i] * .42, l = (12 + S[i] * .9) * gl;
+    [[l, 0], [0, l], [l * .4, l * .4], [l * .4, -l * .4]].forEach(([dx, dy], j) => {
+      const g = ctx.createLinearGradient(x - dx, y - dy, x + dx, y + dy);
+      g.addColorStop(0, "rgba(255,240,200,0)"); g.addColorStop(.5, `rgba(255,244,214,${gl * (j < 2 ? .95 : .5)})`); g.addColorStop(1, "rgba(255,240,200,0)");
+      ctx.strokeStyle = g; ctx.lineWidth = j < 2 ? 2 : 1.2; ctx.beginPath(); ctx.moveTo(x - dx, y - dy); ctx.lineTo(x + dx, y + dy); ctx.stroke();
+    });
+    const rg = ctx.createRadialGradient(x, y, 0, x, y, 10 * gl + 2); rg.addColorStop(0, `rgba(255,248,225,${gl})`); rg.addColorStop(1, "rgba(255,248,225,0)");
+    ctx.fillStyle = rg; ctx.fillRect(x - 14, y - 14, 28, 28);
+  });
+  ctx.restore();
+}
+function drawShock(B) {
+  ctx.save();
+  // before she lands: a gold glow at the empty core, breathing
+  const tt = amb, wait = 1 - B.here, R0 = B.coreS * .6;
+  if (wait > 0) {
+    const br = REDUCED ? .6 : .5 + .5 * Math.sin(tt * 2.2), g = ctx.createRadialGradient(B.cx, B.cy, 0, B.cx, B.cy, R0 * (1.2 + br * .5));
+    g.addColorStop(0, `rgba(244,196,48,${.32 * wait})`); g.addColorStop(1, "rgba(244,196,48,0)");
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(B.cx, B.cy, R0 * 1.8, 0, 7); ctx.fill();
+  }
+  if (B.here > 0 && !REDUCED) {
+    // the heartbeat's shockwave ring, expanding through the disk
+    const ph = clamp((B.wave - B.rc) / (1.25 * (1 - B.rc)));
+    ctx.globalAlpha = B.here * wIdle * (1 - ph) * .32; ctx.strokeStyle = GOLD; ctx.lineWidth = 1.5 + (1 - ph) * 2;
+    ctx.beginPath(); ctx.ellipse(B.cx, B.cy, B.rx * B.wave, B.ry * B.wave, 0, 0, 7); ctx.stroke();
+    const g = ctx.createRadialGradient(B.cx, B.cy, R0 * .8, B.cx, B.cy, R0 * (2 + B.beat));
+    g.addColorStop(0, `rgba(244,196,48,${.35 * B.here * (.4 + B.beat)})`); g.addColorStop(1, "rgba(244,196,48,0)");
+    ctx.globalAlpha = 1; ctx.fillStyle = g; ctx.beginPath(); ctx.arc(B.cx, B.cy, R0 * (2 + B.beat), 0, 7); ctx.fill();
+  }
+  ctx.restore();
+}
+function drawCore(B) {
+  // her arrival video, on top of everything, framed in gold and credited
+  const i = B.core; if (i < 0 || A[i] <= .01) return;
+  // uncropped when we have it (a screenshot of her post is wide), square tile otherwise
+  const s = S[i], cw = coreImg ? s * 1.7 : s, ch = coreImg ? cw * coreImg.height / coreImg.width : s;
+  const x = X[i] - cw / 2, y = Y[i] - ch / 2, im = coreImg ? null : tileImg(i, s);
+  ctx.save(); ctx.globalAlpha = A[i]; ctx.shadowColor = "rgba(244,196,48,.8)"; ctx.shadowBlur = 30 + B.beat * 30;
+  ctx.fillStyle = GOLD; ctx.fillRect(x - 4, y - 4, cw + 8, ch + 8); ctx.shadowBlur = 0;
+  if (coreImg) ctx.drawImage(coreImg, x, y, cw, ch);
+  else if (im) ctx.drawImage(im[0], im[1], im[2], im[3], im[3], x, y, s, s);
+  const t = D.tiles[i], label = `${hm(t[0])} · @${(t[7] || t[6] || "").toUpperCase()}`;
+  ctx.font = '500 12px "IBM Plex Mono", monospace'; const w = ctx.measureText(label).width + 16;
+  ctx.fillStyle = GOLD; ctx.fillRect(X[i] - w / 2, y + ch + 4, w, 22);
+  ctx.fillStyle = "#070b1d"; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText(label, X[i], y + ch + 15);
+  ctx.restore();
+}
+function drawPin(out) {
+  // what comes next: her first stop, already waiting on the map
+  const st = D.stops[0], c = out.cam; if (!st || !c) return;
+  const x = c.ox + st.x * c.s, y = c.oy + st.y * c.s, tt = amb, pu = REDUCED ? .5 : (tt % 1.8) / 1.8;
+  ctx.save(); ctx.globalAlpha = out.pin * (1 - pu) * .8; ctx.strokeStyle = GOLD; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.arc(x, y, 6 + pu * 30, 0, 7); ctx.stroke();
+  ctx.globalAlpha = out.pin; ctx.fillStyle = GOLD; ctx.beginPath(); ctx.arc(x, y, 5, 0, 7); ctx.fill();
+  ctx.font = '500 12px "IBM Plex Mono", monospace'; ctx.textBaseline = "middle"; const label = `${st.t} · ${st.label.toUpperCase()}`;
+  const w = ctx.measureText(label).width + 12; ctx.fillStyle = "rgba(7,11,29,.85)"; ctx.fillRect(x - w / 2, y + 14, w, 20);
+  ctx.fillStyle = GOLD; ctx.textAlign = "center"; ctx.fillText(label, x, y + 24); ctx.restore();
+}
+
+function routePoint(clock, cam) {
+  const st = D.stops; if (clock <= st[0].min) return { i: 0, x: st[0].x, y: st[0].y, f: 0 };
+  for (let j = 0; j < st.length - 1; j++) if (clock < st[j + 1].min) {
+    const f = (clock - st[j].min) / (st[j + 1].min - st[j].min);
+    return { i: j, x: st[j].x + (st[j + 1].x - st[j].x) * f, y: st[j].y + (st[j + 1].y - st[j].y) * f, f };
+  }
+  const l = st[st.length - 1]; return { i: st.length - 1, x: l.x, y: l.y, f: 1 };
+}
+function drawRoute(out) {
+  const c = out.cam, st = D.stops, clock = out.route; if (clock < st[0].min - 30) return;
+  const pt = routePoint(clock, c), a = out.map;
+  ctx.save(); ctx.globalAlpha = a; ctx.lineCap = "round"; ctx.lineJoin = "round";
+  ctx.setLineDash([2, 7]); ctx.strokeStyle = "rgba(244,196,48,.35)"; ctx.lineWidth = 2;
+  ctx.beginPath(); st.forEach((s, j) => ctx[j ? "lineTo" : "moveTo"](c.ox + s.x * c.s, c.oy + s.y * c.s)); ctx.stroke();
+  ctx.setLineDash([]); ctx.strokeStyle = GOLD; ctx.lineWidth = 4; ctx.shadowColor = GOLD; ctx.shadowBlur = 16;
+  ctx.beginPath(); ctx.moveTo(c.ox + st[0].x * c.s, c.oy + st[0].y * c.s);
+  for (let j = 1; j <= pt.i; j++) ctx.lineTo(c.ox + st[j].x * c.s, c.oy + st[j].y * c.s);
+  ctx.lineTo(c.ox + pt.x * c.s, c.oy + pt.y * c.s); ctx.stroke(); ctx.restore();
+  out.her = [c.ox + pt.x * c.s, c.oy + pt.y * c.s, pt];
+}
+function drawRouteLabels(out) {
+  const c = out.cam, st = D.stops; if (!out.her) return;
+  ctx.save(); ctx.globalAlpha = out.map;
+  ctx.font = '500 11px "IBM Plex Mono", monospace'; ctx.textBaseline = "middle";
+  st.forEach((s, j) => {
+    if (s.min > out.route + 5) return;
+    const x = c.ox + s.x * c.s, y = c.oy + s.y * c.s;
+    ctx.fillStyle = GOLD; ctx.beginPath(); ctx.arc(x, y, 4, 0, 7); ctx.fill();
+    const label = `${s.t}  ${s.label.toUpperCase()}`, w = ctx.measureText(label).width;
+    const up = j % 2 === 0, ly = y + (up ? -34 : 34);
+    ctx.strokeStyle = "rgba(244,196,48,.6)"; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, ly); ctx.stroke();
+    ctx.fillStyle = "rgba(7,11,29,.85)"; ctx.fillRect(x - 4, ly - 9, w + 10, 18);
+    ctx.fillStyle = INK; ctx.fillText(label, x + 1, ly);
+  });
+  // diaspora labels
+  D.places.forEach(P => {
+    if (!P.dia || P.n < 3) return; const [x, y] = edgeScreen(c, P.x, P.y);
+    ctx.fillStyle = "rgba(154,163,194,.9)"; ctx.fillText(`${P.name.toUpperCase()} · ${P.n}`, Math.min(W - 150, Math.max(8, x - 40)), y + (y > H / 2 ? -46 : 46));
+  });
+  const [hx, hy] = out.her, tt = amb, pulse = REDUCED ? .5 : (tt % 1.6) / 1.6;
+  ctx.strokeStyle = RED; ctx.lineWidth = 2; ctx.globalAlpha = out.map * (1 - pulse);
+  ctx.beginPath(); ctx.arc(hx, hy, 8 + pulse * 40, 0, 7); ctx.stroke();
+  ctx.globalAlpha = out.map; ctx.fillStyle = RED; ctx.beginPath(); ctx.arc(hx, hy, 7, 0, 7); ctx.fill();
+  ctx.strokeStyle = INK; ctx.lineWidth = 2; ctx.stroke();
+  ctx.restore();
+}
+
+function drawEchoRings(E) {
+  ctx.save(); ctx.strokeStyle = "rgba(154,163,194,.25)"; ctx.fillStyle = "rgba(154,163,194,.8)";
+  ctx.font = '500 11px "IBM Plex Mono", monospace'; ctx.globalAlpha = 1 - E.collapse;
+  [[1, "+1 min"], [10, "+10 min"], [60, "+1 h"], [300, "+5 h"]].forEach(([m, l]) => {
+    const r = E.R0 + (E.R1 - E.R0) * Math.log1p(m) / E.maxD; if (r > E.R1 * 1.02) return;
+    ctx.beginPath(); ctx.arc(E.cx, E.cy, r, 0, 7); ctx.stroke(); ctx.fillText(l, E.cx + 4, E.cy - r - 5);
+  });
+  ctx.restore();
+}
+function drawEchoClones(E) {
+  const im = tileImg(E.e.tile, 60); if (!im) return;
+  E.clones.forEach(([x, y, s, a]) => { if (a <= .01) return; ctx.globalAlpha = a; ctx.drawImage(im[0], im[1], im[2], im[3], im[3], x - s / 2, y - s / 2, s, s); });
+  ctx.globalAlpha = 1;
+  // gold frame and credit on the original
+  const s = S[E.e.tile]; ctx.strokeStyle = GOLD; ctx.lineWidth = 3; ctx.strokeRect(E.cx - s / 2, E.cy - s / 2, s, s);
+  const shown = 1 + E.clones.length;
+  ctx.font = '900 ' + Math.round(Math.max(28, s * .26)) + 'px "Big Shoulders Display", sans-serif'; ctx.fillStyle = INK; ctx.textAlign = "center";
+  ctx.fillText(E.collapse > .9 ? "1" : fmt(Math.round(shown - (shown - 1) * E.collapse)), E.cx, E.cy + s / 2 + Math.max(30, s * .24));
+  ctx.font = '500 12px "IBM Plex Mono", monospace'; ctx.fillStyle = GOLD;
+  ctx.fillText(E.collapse > .9 ? `ORIGINAL · @${(E.e.credit || E.e.first).toUpperCase()} · ${E.e.first_t}` : "PUBLICACIONES", E.cx, E.cy + s / 2 + Math.max(52, s * .24 + 22));
+  ctx.textAlign = "start";
+}
+function drawHours(Hh) {
+  ctx.save(); ctx.font = '500 10px "IBM Plex Mono", monospace'; ctx.textAlign = "center"; ctx.fillStyle = "rgba(154,163,194,.95)";
+  const step = W < 760 ? 3 : 1;
+  for (let h = 0; h < Hh.nh; h += step) {
+    const x = Hh.padX + (h + .5) * Hh.colW; ctx.fillText(String(h).padStart(2, "0"), x, Hh.bottom + 16);
+    const c = D.hours[h]; if (c && W >= 760) ctx.fillText(fmt(c.posts), x, Hh.bottom + 30);
+  }
+  ctx.textAlign = "start"; ctx.fillText(W >= 760 ? "HORA · PUBLICACIONES" : "HORA", Hh.padX, Hh.bottom + 44); ctx.restore();
+}
+
+let lastClock = "";
+function clockUI(out, name) {
+  const show = out.clock != null; $("clock").style.opacity = show ? 1 : 0;
+  if (!show) return;
+  const paused = state === "point" && AUTO[name] && play.ph !== "follow", d = paused ? "EN PAUSA" : "25 · 10 · 2026";
+  if ($("clockD").textContent !== d) $("clockD").textContent = d;
+  const m = Math.max(0, Math.min(1439, Math.floor(out.clock))), t = `${String(m / 60 | 0).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
+  if (t !== lastClock) { $("clockT").textContent = t; lastClock = t; $("clockN").textContent = out.count != null ? `${fmt(out.count)} imágenes` : ""; }
+}
+
+// ---- pointer: hover tooltip, click for the detail card ----
+function bindPointer() {
+  const tip = $("tip");
+  cv.addEventListener("pointermove", e => {
+    pointer = lensAt = [e.clientX, e.clientY]; mouse = e.pointerType === "mouse"; lastPointer = performance.now(); pick();
+  });
+  cv.addEventListener("pointerleave", () => { pointer = null; hover = -1; tip.hidden = true; });
+  cv.addEventListener("click", e => {
+    pointer = [e.clientX, e.clientY]; pick();
+    if (hover >= 0) return open(hover);
+    const r = spot && spot.rect;   // the image that picked itself can be opened too
+    if (r && e.clientX > r[0] && e.clientX < r[0] + r[2] && e.clientY > r[1] && e.clientY < r[1] + r[2]) return open(spot.i);
+    close(true);   // a click on empty sky sends an open card home
+  });
+  addEventListener("scroll", () => {
+    lastInput = performance.now(); if (pointer) pick();
+    // a scroll of the reader's own (not the film, not the browser restoring the position on load)
+    if (!film && lastInput - loadT > 1500) everScrolled = true;
+  }, { passive: true });
+  ["wheel", "touchstart", "keydown"].forEach(ev => addEventListener(ev, () => { lastInput = performance.now(); }, { passive: true }));
+  function pick() {
+    let best = -1, bs = 0; const [px, py] = pointer;
+    for (let i = 0; i < N; i++) {
+      const s = Math.max(S[i], 6); if (A[i] < .3 || S[i] < 2.5) continue;
+      if (Math.abs(X[i] - px) < s / 2 && Math.abs(Y[i] - py) < s / 2 && S[i] >= bs) { best = i; bs = S[i]; }
+    }
+    hover = best; cv.style.cursor = best >= 0 ? "pointer" : "default";
+    if (best >= 0) {
+      const t = D.tiles[best]; tip.hidden = false;
+      tip.textContent = `@${t[6] || "?"} · ${hm(t[0])} · ${t[3] > 1 ? fmt(t[3]) + " publicaciones" : "1 publicación"}`;
+      tip.style.left = Math.min(W - tip.offsetWidth - 8, px + 14) + "px"; tip.style.top = (py + 18) + "px";
+    } else tip.hidden = true;
+  }
+}
+function hm(m) { if (m < 0) return "antes del 25"; m = Math.floor(m); return `${String(m / 60 | 0).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`; }
+function open(i) {
+  selected = i; const t = D.tiles[i], d = $("detail"); d.hidden = false;
+  // remember where its scene was, so the card can go home once the reader scrolls on (rect-based, like measure())
+  openAt = { k: cur.k, top: scenes[cur.k].el.getBoundingClientRect().top };
+  d.classList.remove("leave", "pop");
+  const r = $("dImg").getBoundingClientRect();   // read before the pop transform starts
+  void d.offsetWidth; d.classList.add("pop");
+  if (!REDUCED) {
+    // pop: flash, rings and flag-coloured shards at the image; the image grows in place, then flies into the card
+    const now = performance.now(), s = Math.max(S[i], 10);
+    burstAt(X[i], Y[i], s, true);
+    fly = { i, dir: "out", t: now, from: [X[i], Y[i], s], to: [r.left + r.width / 2, r.top + r.height / 2, r.width] };
+    $("dImg").style.opacity = 0;
+  }
+  const [min, pl, , posts, acc, views, handle, credit, claim, txt, url, type] = t;
+  $("dWho").textContent = `@${handle || "?"} · ${hm(min)}`;
+  $("dTxt").textContent = txt || "(sin texto)";
+  $("dUrl").href = url || "#";
+  const claimTxt = { source_status: "publicó primero el original", earliest_on_x: "fue la primera copia en X", text_credit: "aparece citado como autor", watermark_ocr: "aparece en la marca de agua", curator: "verificado a mano", footage_from: "aportó las imágenes", best_quality: "tiene la mejor calidad" }[claim] || "";
+  $("dMeta").innerHTML = `${type === "video" ? "Video" : "Imagen"}${pl >= 0 ? " · " + esc(D.places[pl].name) : ""} · <b>${fmt(posts)}</b> ${posts === 1 ? "publicación" : "publicaciones"} de <b>${fmt(acc)}</b> ${acc === 1 ? "cuenta" : "cuentas"}${views ? " · <b>" + fmt(views) + "</b> vistas" : ""}${credit ? `<br>Crédito: <b>@${esc(credit)}</b>${claimTxt ? ", " + claimTxt : ""}` : ""}`;
+  const c = $("dImg").getContext("2d"), im = tileImg(i, 100); c.clearRect(0, 0, 192, 192);
+  if (im) c.drawImage(im[0], im[1], im[2], im[3], im[3], 0, 0, 192, 192);
+}
+function close(home) {
+  if (selected < 0) return;
+  const i = selected, d = $("detail"); selected = -1; openAt = null;
+  // the image leaves the card and flies back to its place in the mosaic
+  if (home && !REDUCED && A[i] > .05) { const r = $("dImg").getBoundingClientRect(); fly = { i, dir: "home", t: performance.now(), from: [r.left + r.width / 2, r.top + r.height / 2, r.width] }; }
+  else fly = null;
+  d.classList.remove("pop"); d.classList.add("leave");
+  setTimeout(() => { if (selected < 0) d.hidden = true; d.classList.remove("leave"); }, 260);
+}
+const backOut = u => { const c = 1.6; return 1 + (c + 1) * (u - 1) ** 3 + c * (u - 1) ** 2; };
+function burstAt(x, y, s, big) {
+  // a flash, gold rings and shards in the flag's colours; small version for a landing
+  const now = performance.now(), cols = [GOLD, GOLD, "#ffffff", RED, "#3d74f0"];
+  fx.push({ type: "flash", x, y, r: big ? 160 : 60, t: now, d: big ? 380 : 260 });
+  fx.push({ type: "ring", x, y, r0: s * .6, r1: s * .6 + (big ? 180 : 60), t: now, d: big ? 640 : 420, w: big ? 4 : 2 });
+  if (big) fx.push({ type: "ring", x, y, r0: s * .4, r1: s * .4 + 110, t: now + 90, d: 560, w: 2 });
+  for (let j = 0; j < (big ? 28 : 10); j++) {
+    const a = Math.random() * Math.PI * 2, v = (big ? 220 : 110) + Math.random() * (big ? 340 : 140);
+    fx.push({ type: "shard", x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - (big ? 140 : 50), s: 3 + Math.random() * (big ? 5 : 3),
+              c: cols[j % cols.length], t: now, d: big ? 950 : 600, rot: Math.random() * 6 });
+  }
+}
+function drawFx(now) {
+  fx = fx.filter(f => now - f.t < f.d);
+  if (!fx.length) return;
+  ctx.save();
+  fx.forEach(f => {
+    const el = now - f.t; if (el < 0) return;
+    const u = el / f.d, sec = el / 1000;
+    if (f.type === "flash") {
+      ctx.globalCompositeOperation = "lighter"; ctx.globalAlpha = 1;
+      const g = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r);
+      g.addColorStop(0, `rgba(255,252,235,${(1 - u) * .95})`); g.addColorStop(.35, `rgba(244,196,48,${(1 - u) * .55})`); g.addColorStop(1, "rgba(244,196,48,0)");
+      ctx.fillStyle = g; ctx.fillRect(f.x - f.r, f.y - f.r, f.r * 2, f.r * 2);
+    } else if (f.type === "ring") {
+      ctx.globalCompositeOperation = "lighter"; ctx.globalAlpha = (1 - u) * .9; ctx.strokeStyle = GOLD; ctx.lineWidth = f.w * (1 - u) + .5;
+      ctx.beginPath(); ctx.arc(f.x, f.y, f.r0 + (f.r1 - f.r0) * easeOut(u), 0, 7); ctx.stroke();
+    } else {
+      ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 1 - u * u;
+      ctx.save(); ctx.translate(f.x + f.vx * sec, f.y + f.vy * sec + 700 * sec * sec); ctx.rotate(f.rot + sec * 8);
+      ctx.fillStyle = f.c; ctx.fillRect(-f.s / 2, -f.s * .3, f.s, f.s * .6); ctx.restore();
+    }
+  });
+  ctx.restore();
+}
+function drawFly(now) {
+  if (!fly) return;
+  const out = fly.dir === "out", i = fly.i, dur = out ? 660 : 700, el = now - fly.t, u = clamp(el / dur), f = fly.from;
+  const to = out ? fly.to : [X[i], Y[i], Math.max(S[i], 6)];
+  let x, y, s;
+  if (out) {
+    // lift: the image swells where it was, then flies into the card
+    const big = Math.max(120, f[2] * 3);
+    if (el < 180) { x = f[0]; y = f[1]; s = f[2] + (big - f[2]) * backOut(clamp(el / 180)); }
+    else { const v = ease(clamp((el - 180) / (dur - 180))); x = f[0] + (to[0] - f[0]) * v; y = f[1] + (to[1] - f[1]) * v - Math.sin(Math.PI * v) * 90; s = big + (to[2] - big) * v; }
+  } else {
+    const v = ease(u); x = f[0] + (to[0] - f[0]) * v; y = f[1] + (to[1] - f[1]) * v - Math.sin(Math.PI * v) * 90; s = f[2] + (to[2] - f[2]) * v;
+  }
+  // a short gold trail behind it
+  fly.trail = (fly.trail || []).concat([[x, y, s]]).slice(-7);
+  ctx.save(); ctx.globalCompositeOperation = "lighter"; ctx.fillStyle = GOLD;
+  fly.trail.forEach(([tx, ty, ts], j) => { ctx.globalAlpha = .07 * (j + 1); ctx.fillRect(tx - ts / 2, ty - ts / 2, ts, ts); });
+  ctx.restore();
+  const im = tileImg(i, s);
+  ctx.save(); ctx.shadowColor = "rgba(0,0,0,.6)"; ctx.shadowBlur = 24; ctx.fillStyle = GOLD;
+  ctx.fillRect(x - s / 2 - 4, y - s / 2 - 4, s + 8, s + 8); ctx.restore();
+  if (im) ctx.drawImage(im[0], im[1], im[2], im[3], im[3], x - s / 2, y - s / 2, s, s);
+  if (u >= 1) {
+    if (out) $("dImg").style.opacity = 1;
+    else burstAt(to[0], to[1], to[2], false);   // it lands home with a small burst
+    fly = null;
+  }
+}
+function drawTether() {
+  // the mosaic dims while a card is open; its image stays lit, framed, and tied to the card by a gold line
+  if (veil > .01) { ctx.fillStyle = `rgba(4,7,20,${.5 * veil})`; ctx.fillRect(0, 0, W, H); }
+  if (selected < 0 || (fly && fly.dir === "out") || A[selected] < .05) return;
+  const i = selected, r = $("dImg").getBoundingClientRect(), s = Math.max(S[i], 18), im = tileImg(i, s);
+  const tx = r.left, ty = r.top + r.height / 2;
+  ctx.save(); ctx.strokeStyle = GOLD; ctx.globalAlpha = .7; ctx.lineWidth = 1.4; ctx.setLineDash([3, 5]);
+  ctx.beginPath(); ctx.moveTo(X[i], Y[i]); ctx.quadraticCurveTo((X[i] + tx) / 2, Math.min(Y[i], ty) - 60, tx, ty); ctx.stroke();
+  ctx.setLineDash([]); ctx.globalAlpha = 1; ctx.fillStyle = GOLD; ctx.fillRect(X[i] - s / 2 - 3, Y[i] - s / 2 - 3, s + 6, s + 6);
+  if (im) ctx.drawImage(im[0], im[1], im[2], im[3], im[3], X[i] - s / 2, Y[i] - s / 2, s, s);
+  ctx.restore();
+}
+})();
+</script>

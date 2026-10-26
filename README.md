@@ -41,6 +41,7 @@ src/components/         Header, Footer, and one shared template per page type (H
 src/pages/              routes; ES mirrors EN under /es/ with localized slugs (/es/sobre-mi/, /es/contacto/); posts serve at /YYYY/MM/DD/slug/ in BOTH locales (no /es/ prefix)
 src/pages/**/*.xml.ts   RSS per locale (/rss.xml, /es/rss.xml)
 src/content/            posts + testimonials collections (zod schemas in content.config.ts)
+public/artifacts/       RESERVED: unlinked, noindex ad-hoc pages at /artifacts/<slug>/; heavy assets in R2 (scripts/sync-artifact.sh, brain: artifacts-adhoc-pages)
 reference/              approved mockup + copy docs (never shipped)
 scripts/                build-font-overrides.mjs (font metrics), shoot.mjs (design-QA screenshots → shots/), verify-migration.mjs (legacy-URL harness, runs against production)
 ```
